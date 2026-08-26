@@ -11,7 +11,7 @@
 If you want to play my game, then install Python 3.12
 
 ```
-# Make a virtual enviornment (optional)
+# Make a virtual enviornment (optional, but recommended)
 python3.12 -m venv venv
 source venv/bin/activate
 

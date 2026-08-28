@@ -1,15 +1,7 @@
 import random
 import arcade
 import math
-
-SPRITE_SCALING = 3
-# --- Constants ---
-COIN_COUNT = 30
-SPRITE_SCALING_PLAYER = 2.5
-SPRITE_SCALING_COIN = 1.5
-
-SCREEN_WIDTH = 1100
-SCREEN_HEIGHT = 600
+import constants
 
 
 class Coin(arcade.Sprite):
@@ -52,9 +44,9 @@ class Bad_coin(arcade.Sprite):
     def reset_pos(self):
 
         # Reset the coin to a random spot above the screen
-        self.center_y = random.randrange(SCREEN_HEIGHT + 20,
-                                         SCREEN_HEIGHT + 100)
-        self.center_x = random.randrange(SCREEN_WIDTH)
+        self.center_y = random.randrange(constants.SCREEN_HEIGHT + 20,
+                                         constants.SCREEN_HEIGHT + 100)
+        self.center_x = random.randrange(constants.SCREEN_WIDTH)
 
     def update(self, delta_time):
 
@@ -99,20 +91,20 @@ class MyGame(arcade.Window):
         self.score = 0
 
         # Character image from Kenney website: https://kenney.nl
-        self.player_sprite = arcade.Sprite(":resources:images/items/coinGold.png", SPRITE_SCALING_PLAYER)
+        self.player_sprite = arcade.Sprite(":resources:images/items/coinGold.png", constants.SPRITE_SCALING_PLAYER)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 70
         self.player_list.append(self.player_sprite)
 
-        for i in range(COIN_COUNT):
+        for i in range(constants.COIN_COUNT):
 
             # Create the coin instance
             # Coin image from Kenney website: https://kenney.nl
-            coin = Coin(":resources:images/items/coinGold.png", SPRITE_SCALING_COIN)
+            coin = Coin(":resources:images/items/coinGold.png", constants.SPRITE_SCALING_COIN)
 
             # Position the center of the circle the coin will orbit
-            coin.circle_center_x = random.randrange(SCREEN_WIDTH)
-            coin.circle_center_y = random.randrange(SCREEN_HEIGHT)
+            coin.circle_center_x = random.randrange(constants.SCREEN_WIDTH)
+            coin.circle_center_y = random.randrange(constants.SCREEN_HEIGHT)
 
             # Random radius from 10 to 200
             coin.circle_radius = random.randrange(10, 200)
@@ -123,16 +115,16 @@ class MyGame(arcade.Window):
             # Add the coin to the lists
             self.coin_list.append(coin)
 
-        for i in range(COIN_COUNT):
+        for i in range(constants.COIN_COUNT):
 
 
             # Create the coin instance
             # Coin image from Kenney website: https://kenney.nl
-            bad_coin = Bad_coin(":resources:images/items/coinGold.png", SPRITE_SCALING_COIN)
+            bad_coin = Bad_coin(":resources:images/items/coinGold.png", constants.SPRITE_SCALING_COIN)
 
             # Position the coin
-            bad_coin.center_x = random.randrange(SCREEN_WIDTH)
-            bad_coin.center_y = random.randrange(SCREEN_HEIGHT)
+            bad_coin.center_x = random.randrange(constants.SCREEN_WIDTH)
+            bad_coin.center_y = random.randrange(constants.SCREEN_HEIGHT)
 
             # Add the bad_coin to the lists
             self.bad_coin_list.append(bad_coin)
@@ -163,7 +155,6 @@ class MyGame(arcade.Window):
 
     def on_mouse_motion(self, x, y, dx, dy):
         self.player_sprite.center_x = x
-        self.player_sprite.center_y = y
 
     def on_update(self, delta_time):
         """ Movement and game logic """
@@ -195,7 +186,7 @@ class MyGame(arcade.Window):
 
 
 def main():
-    window = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
+    window = MyGame(constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT)
     window.start_new_game()
     arcade.run()
 

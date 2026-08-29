@@ -43,6 +43,7 @@ CAMERA_SPEED = 0.2
 PLAYER_MOVEMENT_SPEED = 7
 
 
+
 class GameView(arcade.View):
     """Main application class."""
 
@@ -65,6 +66,27 @@ class GameView(arcade.View):
         self.camera_sprites = arcade.Camera2D()
         self.camera_gui = arcade.Camera2D()
 
+    def spawn_box(self,x_input,y_input):
+        """
+        spawns a 3x1 structure of boxes.
+        Args:
+            x (int): the x-position of the center of one of the boxes (I'm not sure which box it is). Units are in terms of boxes. If you drew a line from x=0 to x=2, then it has length of 2 * BOX_LENGTH. I don't know what the BOX_LENGTH is.
+
+            y (int): the y-position of the center of all of the boxes. Units are in terms of boxes.
+
+        Returns:
+            Return (type): What is returned and why.
+
+        """
+        for x_dummy in range(x_input, x_input+3, 1):
+            wall = arcade.Sprite(
+                                ":resources:/images/tiles/boxCrate_double.png", SPRITE_SCALING_BOX
+                            )
+            wall.center_x = x_dummy * BOX_LENGTH
+            wall.center_y = y_input * BOX_LENGTH
+            self.wall_list.append(wall)
+            self.wall_y_level_list.append(wall.center_y)
+
     def setup(self):
         """Set up the game and initialize the variables."""
 
@@ -72,6 +94,7 @@ class GameView(arcade.View):
         self.player_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
+        self.wall_y_level_list = []
 
         # Set up the player
         self.player_sprite = arcade.Sprite(
@@ -80,20 +103,20 @@ class GameView(arcade.View):
         )
         self.player_sprite.center_x = 256
         self.player_sprite.center_y = 512
-        self.player_sprite.velocity = 0
-        self.player_sprite.acceleration = - my_constants.GRAVITATIONAL_ACCELERATION - my_constants.DRAG_COEFFICIENT * abs(self.player_sprite.velocity)
         self.player_list.append(self.player_sprite)
+
+        self.player_sprite.velocity = 0
+
+        # define acceleration: a = - g + b * |v|
+        self.player_sprite.acceleration = - my_constants.GRAVITATIONAL_ACCELERATION + my_constants.DRAG_COEFFICIENT * abs(self.player_sprite.velocity)
+
 
 
         # Place boxes inside a loop. 4 sets of 3 boxes.
         for y in range(-3, 9, 3):
-            for x in range(4, 7, 1):
-                wall = arcade.Sprite(
-                    ":resources:/images/tiles/boxCrate_double.png", SPRITE_SCALING_BOX
-                )
-                wall.center_x = x * BOX_LENGTH
-                wall.center_y = y * BOX_LENGTH
-                self.wall_list.append(wall)
+            self.spawn_box(x_input=constants.X_LEFT_BOX,y_input=y)
+            
+                
 
         # -- Randomly place coins where there are no walls
         # Create the coins
@@ -181,8 +204,30 @@ class GameView(arcade.View):
                                                         self.wall_list)
         
         for wall in wall_hit_list:
+            # if player hits the wall, then bounce.
             self.player_sprite.velocity *= - my_constants.BOUNCE_DECAY_CONSTANT
+            # teleport the hit wall below the lowest current wall to make it the newest lowest wall
+            # get the y position a wall 
+            # get all y values in wall list
+            #   
+            # wall_list = list of sprites
+            # sprites.y_value
+            #print minimum(wall.center_y)
+            #print(self.wall_list)
+
+
+
+            # lowest wall.center_y in a wall in wall_list
+            # generally to get lowest thing in a list, you do min(list)
+
+                # get its y position
+            # tp hit wall to that y position
+            
+
+
             wall.remove_from_sprite_lists()
+
+
 
     def scroll_to_player(self):
         """

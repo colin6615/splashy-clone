@@ -13,6 +13,9 @@ class Pad(arcade.SpriteList):
 
             y (int): the y-position of the center of all of the pads. Units are in terms of pads.
 
+        Returns:
+            Return (type): What is returned and why.
+
         """
         pad = arcade.Sprite(
             "assets/green_rectangle.png", my_constants.SPRITE_SCALING_PAD
@@ -22,8 +25,3 @@ class Pad(arcade.SpriteList):
         pad.center_y = y_input * my_constants.PAD_LENGTH
         Pad.list.append(pad)
         Pad.y_values_list = np.array([pad.center_y for pad in Pad.list])
-
-    def update(self, delta_time):
-        if pad.center_y != 0:
-            print("hi")
-        # - player_sprite.center_y > 5:

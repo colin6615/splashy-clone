@@ -210,18 +210,23 @@ class GameView(arcade.View):
         for wall2 in wall_hit_list:
             # teleport the hit wall below the lowest current wall to make it the newest lowest wall
             self.wall_y_level_list = np.array([getattr(wall, 'center_y') for wall in self.wall_list])
+
             wall2.center_y = min(self.wall_y_level_list) - my_constants.DELTA_Y * BOX_LENGTH
-            # bounce
+            # Source of next loc.- https://stackoverflow.com/a/57824234 
+            # there is probably a more efficient way of doing this.
+            self.wall_y_level_list = np.array([getattr(wall, 'center_y') for wall in self.wall_list])
+            # bounce 
             self.player_sprite.velocity *= - my_constants.BOUNCE_DECAY_CONSTANT
 
-        if max(self.wall_y_level_list) - self.player_sprite.center_y > 100:
-            print("please the top-most platform")
+            for wall3 in self.wall_list:
+                if wall3.center_y - self.player_sprite.center_y > 5:
+                    wall3.remove_from_sprite_lists()
 
             
 
 
 
-# Source - https://stackoverflow.com/a/57824234
+
 # Posted by Energya
 # Retrieved 2026-08-28, License - CC BY-SA 4.0
 

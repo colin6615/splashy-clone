@@ -17,3 +17,6 @@ X_ALL_BOXES = 4
     # the x-position of all boxes
 DELTA_Y = 3
     # y-distance between boxes
+
+SPRITE_SCALING_PAD = 0.5
+PAD_LENGTH = 64

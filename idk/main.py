@@ -172,6 +172,7 @@ class GameView(arcade.View):
 
         # Scroll the screen to the player
         self.scroll_to_player()
+        my_platform.Pad.list.update(delta_time)
 
         pad_hit_list = arcade.check_for_collision_with_list(
             self.player_sprite, my_platform.Pad.list
@@ -196,10 +197,6 @@ class GameView(arcade.View):
             )
             # bounce
             self.player_sprite.velocity *= -my_constants.BOUNCE_DECAY_CONSTANT
-
-            for pad3 in my_platform.Pad.list:
-                if pad3.center_y - self.player_sprite.center_y > 5:
-                    pad3.remove_from_sprite_lists()
 
             # lowest pad.center_y in a pad in pad_list
             # generally to get lowest thing in a list, you do min(list)

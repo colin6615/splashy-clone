@@ -10,6 +10,7 @@ python -m arcade.examples.sprite_move_scrolling_box
 import random
 import my_constants
 import arcade
+import numpy as np
 
 SPRITE_SCALING_BOX = 0.5
 SPRITE_SCALING = 0.5
@@ -58,6 +59,8 @@ class GameView(arcade.View):
         self.wall_list = None
         self.coin_list = None
 
+        self.wall_y_level_list = None
+
         # Set up the player
         self.player_sprite = None
 
@@ -78,14 +81,14 @@ class GameView(arcade.View):
             Return (type): What is returned and why.
 
         """
-        for x_dummy in range(x_input, x_input+3, 1):
-            wall = arcade.Sprite(
-                                ":resources:/images/tiles/boxCrate_double.png", SPRITE_SCALING_BOX
-                            )
-            wall.center_x = x_dummy * BOX_LENGTH
-            wall.center_y = y_input * BOX_LENGTH
-            self.wall_list.append(wall)
-            self.wall_y_level_list.append(wall.center_y)
+        wall = arcade.Sprite(
+                            "assets/green_rectangle.png", SPRITE_SCALING_BOX
+                        )
+        wall.center_x = x_input * BOX_LENGTH
+        wall.center_y = y_input * BOX_LENGTH
+        self.wall_list.append(wall)
+        self.wall_y_level_list = np.array([getattr(wall, 'center_y') for wall in self.wall_list])
+            
 
     def setup(self):
         """Set up the game and initialize the variables."""
@@ -113,12 +116,13 @@ class GameView(arcade.View):
 
 
         # Place boxes inside a loop. 4 sets of 3 boxes.
-        for y in range(-3, 9, 3):
-            self.spawn_box(x_input=constants.X_LEFT_BOX,y_input=y)
+        for y in range(- my_constants.DELTA_Y,
+                        my_constants.DELTA_Y,
+                          my_constants.DELTA_Y):
+            self.spawn_box(x_input=4,y_input=y)
             
                 
 
-        # -- Randomly place coins where there are no walls
         # Create the coins
         for i in range(NUMBER_OF_COINS):
             # Create the coin instance
@@ -156,8 +160,9 @@ class GameView(arcade.View):
         self.camera_sprites.use()
 
         # Draw all the sprites.
-        self.wall_list.draw()
+
         self.player_list.draw()
+        self.wall_list.draw()
         self.coin_list.draw()
 
         # Draw the box that we work to make sure the user stays inside of.
@@ -191,10 +196,9 @@ class GameView(arcade.View):
         """Movement and game logic"""
 
         # Calculate speed based on the keys pressed
-
         self.player_sprite.velocity += self.player_sprite.acceleration
         self.player_sprite.center_y += self.player_sprite.velocity
-        
+
 
 
         # Scroll the screen to the player
@@ -203,17 +207,26 @@ class GameView(arcade.View):
         wall_hit_list = arcade.check_for_collision_with_list(self.player_sprite,
                                                         self.wall_list)
         
-        for wall in wall_hit_list:
-            # if player hits the wall, then bounce.
-            self.player_sprite.velocity *= - my_constants.BOUNCE_DECAY_CONSTANT
+        for wall2 in wall_hit_list:
             # teleport the hit wall below the lowest current wall to make it the newest lowest wall
-            # get the y position a wall 
-            # get all y values in wall list
-            #   
-            # wall_list = list of sprites
-            # sprites.y_value
-            #print minimum(wall.center_y)
-            #print(self.wall_list)
+            self.wall_y_level_list = np.array([getattr(wall, 'center_y') for wall in self.wall_list])
+            wall2.center_y = min(self.wall_y_level_list) - my_constants.DELTA_Y * BOX_LENGTH
+            # bounce
+            self.player_sprite.velocity *= - my_constants.BOUNCE_DECAY_CONSTANT
+
+        if max(self.wall_y_level_list) - self.player_sprite.center_y > 100:
+            print("please the top-most platform")
+
+            
+
+
+
+# Source - https://stackoverflow.com/a/57824234
+# Posted by Energya
+# Retrieved 2026-08-28, License - CC BY-SA 4.0
+
+
+
 
 
 
@@ -225,7 +238,7 @@ class GameView(arcade.View):
             
 
 
-            wall.remove_from_sprite_lists()
+
 
 
 

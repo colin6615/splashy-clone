@@ -13,14 +13,17 @@ import arcade
 import numpy as np
 
 import my_constants
-import my_platform
+import pad_file
 
 SPRITE_SCALING = 0.5
-
+MOVE_PAD_X = 100
 SPRITE_SCALING_COIN = 0.3
 
 NUMBER_OF_COINS = 50
-
+TIME_FACTOR_CHANGE = 0.01
+# speeds up the game after every bounce.
+# 0 = no speed change
+# starting self.time_factor is 1, so after the n-th bounce, it updates to self.time_factor + TIME_FACTOR_CHANGE * N
 WINDOW_WIDTH = 1000
 WINDOW_HEIGHT = 600
 WINDOW_TITLE = "Sprite Move with Scrolling Screen Example"
@@ -54,14 +57,19 @@ class GameView(arcade.View):
 
         # Sprite lists
         self.player_list = None
-        my_platform.Pad.list = None
+        pad_file.Pad.list = None
         self.coin_list = None
 
-        my_platform.Pad.y_values_list = None
+        # y-level list
+        pad_file.Pad.y_values_list = None
 
         # Set up the player
         self.player_sprite = None
+        self.score = 0
+        self.score_factor = 1
+        self.time_factor = 1
 
+        # camera stuff
         self.camera_sprites = arcade.Camera2D()
         self.camera_gui = arcade.Camera2D()
 
@@ -70,9 +78,9 @@ class GameView(arcade.View):
 
         # Sprite lists
         self.player_list = arcade.SpriteList()
-        my_platform.Pad.list = arcade.SpriteList()
+        pad_file.Pad.list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
-        my_platform.Pad.y_values_list = []
+        pad_file.Pad.y_values_list = []
 
         # Set up the player
         self.player_sprite = arcade.Sprite(
@@ -80,22 +88,13 @@ class GameView(arcade.View):
             scale=0.4,
         )
         self.player_sprite.center_x = 256
-        self.player_sprite.center_y = 512
+        self.player_sprite.center_y = 0
         self.player_list.append(self.player_sprite)
-
         self.player_sprite.velocity = 0
 
-        # define acceleration: a = - g + b * |v|
-        self.player_sprite.acceleration = (
-            -my_constants.GRAVITATIONAL_ACCELERATION
-            + my_constants.DRAG_COEFFICIENT * abs(self.player_sprite.velocity)
-        )
-
-        # Place pads inside a loop. 4 sets of 3 pads.
-        for y in range(
-            -my_constants.DELTA_Y, my_constants.DELTA_Y, my_constants.DELTA_Y
-        ):
-            my_platform.Pad.spawn_pad(x_input=4, y_input=y)
+        # Make the initial pads
+        for y in range(-2 * my_constants.DELTA_Y, 0, my_constants.DELTA_Y):
+            pad_file.Pad.spawn_pad(x_input=4, y_input=y)
 
         # Create the coins
         for i in range(NUMBER_OF_COINS):
@@ -116,8 +115,7 @@ class GameView(arcade.View):
         self.background_color = arcade.color.AMAZON
 
     def on_mouse_motion(self, x, y, dx, dy):
-        """Called to update our objects.
-        Happens approximately 60 times per second."""
+        """move the player's x-position with mouse"""
         self.player_sprite.center_x = x
 
     def on_draw(self):
@@ -132,9 +130,8 @@ class GameView(arcade.View):
         self.camera_sprites.use()
 
         # Draw all the sprites.
-
         self.player_list.draw()
-        my_platform.Pad.list.draw()
+        pad_file.Pad.list.draw()
         self.coin_list.draw()
 
         # Draw the pad that we work to make sure the user stays inside of.
@@ -152,60 +149,62 @@ class GameView(arcade.View):
         # Select the (unscrolled) camera for our GUI
         self.camera_gui.use()
 
-        # Draw the GUI
-        arcade.draw_rect_filled(
-            arcade.rect.XYWH(self.width // 2, 20, self.width, 40),
-            color=arcade.color.ALMOND,
-        )
-        text = (
-            f"Scroll value: ({self.camera_sprites.position[0]:5.1f}",
-            f"{self.camera_sprites.position[1]:5.1f})",
-        )
+        # Draw the score
+        text = str(self.score)
         arcade.draw_text(text, 10, 10, arcade.color.BLACK_BEAN, 20)
 
     def on_update(self, delta_time):
         """Movement and game logic"""
 
-        # Calculate speed based on the keys pressed
+        # free-fall physics
+        # must update acceleration every tick
+        # define acceleration: a = T * (- g + b * |v|)
+        self.player_sprite.acceleration = self.time_factor * (
+            -my_constants.GRAVITATIONAL_ACCELERATION
+            + my_constants.DRAG_COEFFICIENT * abs(self.player_sprite.velocity)
+        )
         self.player_sprite.velocity += self.player_sprite.acceleration
         self.player_sprite.center_y += self.player_sprite.velocity
 
         # Scroll the screen to the player
         self.scroll_to_player()
 
+        # if a pad is above the player, then end the game
+        for pad3 in pad_file.Pad.list:
+            if pad3.center_y - self.player_sprite.center_y > 5:
+                z = 1  # TO DO: MAKE SOME WAY TO END THE GAME
+
+        # find pads that the player will hit
         pad_hit_list = arcade.check_for_collision_with_list(
-            self.player_sprite, my_platform.Pad.list
+            self.player_sprite, pad_file.Pad.list
         )
+        # if the player hits a pad, then bounce player and move pad down.
+        if len(pad_hit_list) > 0:
+            for pad2 in pad_hit_list:
+                # there is probably a more efficient way of doing this.
+                # update the list of pad's y-positions
+                pad_file.Pad.y_values_list = np.array(
+                    [pad.center_y for pad in pad_file.Pad.list]
+                )
+                # re-position the pad.
+                # move pad down
+                pad2.center_y = (
+                    min(pad_file.Pad.y_values_list)
+                    - my_constants.DELTA_Y * my_constants.PAD_LENGTH
+                )
+                # randomize pad's x-position
+                pad2.center_x += random.randrange(-MOVE_PAD_X, MOVE_PAD_X)
 
-        for pad2 in pad_hit_list:
-            # teleport the hit pad below the lowest current pad to make it the newest lowest pad
-            my_platform.Pad.y_values_list = np.array(
-                [pad.center_y for pad in my_platform.Pad.list]
-            )
+                # update the list of pad's y-positions
+                pad_file.Pad.y_values_list = np.array(
+                    [pad.center_y for pad in pad_file.Pad.list]
+                )
+                # bounce player
+                self.player_sprite.velocity *= -my_constants.BOUNCE_DECAY_CONSTANT
 
-            pad2.center_y = (
-                min(my_platform.Pad.y_values_list)
-                - my_constants.DELTA_Y * my_constants.PAD_LENGTH
-            )
-            # Source of next loc.- https://stackoverflow.com/a/57824234
-            # Posted by Energya
-            # Retrieved 2026-08-28, License - CC BY-SA 4.0
-            # there is probably a more efficient way of doing this.
-            my_platform.Pad.y_values_list = np.array(
-                [pad.center_y for pad in my_platform.Pad.list]
-            )
-            # bounce
-            self.player_sprite.velocity *= -my_constants.BOUNCE_DECAY_CONSTANT
-
-            for pad3 in my_platform.Pad.list:
-                if pad3.center_y - self.player_sprite.center_y > 5:
-                    pad3.remove_from_sprite_lists()
-
-            # lowest pad.center_y in a pad in pad_list
-            # generally to get lowest thing in a list, you do min(list)
-
-            # get its y position
-            # tp hit pad to that y position
+                # add to score
+                self.score += 1 * self.score_factor
+                self.time_factor += TIME_FACTOR_CHANGE
 
     def scroll_to_player(self):
         """

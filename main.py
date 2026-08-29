@@ -1,193 +1,238 @@
+"""
+Scroll around a large screen.
+
+Artwork from https://kenney.nl
+
+If Python and Arcade are installed, this example can be run from the command line with:
+python -m arcade.examples.sprite_move_scrolling_box
+"""
+
 import random
+import my_constants
 import arcade
-import math
-import constants
+
+SPRITE_SCALING_BOX = 0.5
+SPRITE_SCALING = 0.5
+BOX_LENGTH = 64
+SPRITE_SCALING_COIN = 0.3
+
+NUMBER_OF_COINS = 50
+
+WINDOW_WIDTH = 1000
+WINDOW_HEIGHT = 600
+WINDOW_TITLE = "Sprite Move with Scrolling Screen Example"
+
+# How many pixels to keep as a minimum margin between the character
+# and the edge of the screen.
+VIEWPORT_MARGIN = 200
+HORIZONTAL_BOUNDARY = WINDOW_WIDTH / 2.0 - VIEWPORT_MARGIN
+VERTICAL_BOUNDARY = WINDOW_HEIGHT / 2.0 - VIEWPORT_MARGIN
+# If the player moves further than this boundary away from the camera we use a
+# constraint to move the camera
+CAMERA_BOUNDARY = arcade.LRBT(
+    -HORIZONTAL_BOUNDARY,
+    HORIZONTAL_BOUNDARY,
+    -VERTICAL_BOUNDARY,
+    VERTICAL_BOUNDARY,
+)
+
+# How fast the camera pans to the player. 1.0 is instant.
+CAMERA_SPEED = 0.2
+
+# How fast the character moves
+PLAYER_MOVEMENT_SPEED = 7
 
 
-class Coin(arcade.Sprite):
+class GameView(arcade.View):
+    """Main application class."""
 
-    def __init__(self, filename, sprite_scaling):
-        """ Constructor. """
-        # Call the parent class (Sprite) constructor
-        super().__init__(filename, sprite_scaling)
-
-        # Current angle in radians
-        self.circle_angle = 0
-
-        # How far away from the center to orbit, in pixels
-        self.circle_radius = 0
-
-        # How fast to orbit, in radians per frame
-        self.circle_speed = 0.01
-
-        # Set the center of the point we will orbit around
-        self.circle_center_x = 0
-        self.circle_center_y = 0
-
-    def update(self, delta_time):
-
-        """ Update the ball's position. """
-        # Calculate a new x, y
-        self.center_x = self.circle_radius * math.sin(self.circle_angle) \
-            + self.circle_center_x
-        self.center_y = self.circle_radius * math.cos(self.circle_angle) \
-            + self.circle_center_y
-
-        # Increase the angle in prep for the next round.
-        self.circle_angle += self.circle_speed
-
-class Bad_coin(arcade.Sprite):
-    """
-    These coins will reduce your score!
-    """
-
-    def reset_pos(self):
-
-        # Reset the coin to a random spot above the screen
-        self.center_y = random.randrange(constants.SCREEN_HEIGHT + 20,
-                                         constants.SCREEN_HEIGHT + 100)
-        self.center_x = random.randrange(constants.SCREEN_WIDTH)
-
-    def update(self, delta_time):
-
-        # Move the coin
-        self.center_y -= 1
-
-        # See if the coin has fallen off the bottom of the screen.
-        # If so, reset it.
-        if self.top < 0:
-            self.reset_pos()
-
-class MyGame(arcade.Window):
-    """ Main application class. """
-
-    def __init__(self, width, height):
-
-        super().__init__(width, height)
+    def __init__(self):
+        """
+        Initializer
+        """
+        super().__init__()
 
         # Sprite lists
         self.player_list = None
+        self.wall_list = None
         self.coin_list = None
-        self.bad_coin_list = None
 
         # Set up the player
-        self.score = 0
         self.player_sprite = None
 
-        # load sounds from the Kenney website (https://kenney.nl/assets/sci-fi-sounds)
-        self.coin_01_sound = arcade.load_sound("assets/coin_01.ogg")
-        self.bad_coin_sound = arcade.load_sound("assets/coin_01.ogg")
 
 
-    def start_new_game(self):
-        """ Set up the game and initialize the variables. """
+        self.camera_sprites = arcade.Camera2D()
+        self.camera_gui = arcade.Camera2D()
+
+    def setup(self):
+        """Set up the game and initialize the variables."""
 
         # Sprite lists
         self.player_list = arcade.SpriteList()
+        self.wall_list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
-        self.bad_coin_list = arcade.SpriteList()
 
         # Set up the player
-        self.score = 0
-
-        # Character image from Kenney website: https://kenney.nl
-        self.player_sprite = arcade.Sprite(":resources:images/items/coinGold.png", constants.SPRITE_SCALING_PLAYER)
-        self.player_sprite.center_x = 50
-        self.player_sprite.center_y = 70
+        self.player_sprite = arcade.Sprite(
+            ":resources:images/animated_characters/female_person/femalePerson_idle.png",
+            scale=0.4,
+        )
+        self.player_sprite.center_x = 256
+        self.player_sprite.center_y = 512
+        self.player_sprite.velocity = 0
+        self.player_sprite.acceleration = - my_constants.GRAVITATIONAL_ACCELERATION - my_constants.DRAG_COEFFICIENT * abs(self.player_sprite.velocity)
         self.player_list.append(self.player_sprite)
 
-        for i in range(constants.COIN_COUNT):
 
+        # Place boxes inside a loop. 4 sets of 3 boxes.
+        for y in range(-3, 9, 3):
+            for x in range(4, 7, 1):
+                wall = arcade.Sprite(
+                    ":resources:/images/tiles/boxCrate_double.png", SPRITE_SCALING_BOX
+                )
+                wall.center_x = x * BOX_LENGTH
+                wall.center_y = y * BOX_LENGTH
+                self.wall_list.append(wall)
+
+        # -- Randomly place coins where there are no walls
+        # Create the coins
+        for i in range(NUMBER_OF_COINS):
             # Create the coin instance
-            # Coin image from Kenney website: https://kenney.nl
-            coin = Coin(":resources:images/items/coinGold.png", constants.SPRITE_SCALING_COIN)
+            # Coin image from kenney.nl
+            coin = arcade.Sprite(
+                ":resources:images/items/coinGold.png",
+                scale=SPRITE_SCALING_COIN,
+            )
+            # Position the coin.
+            coin.center_x = random.randrange(10, 1000)
+            coin.center_y = random.randrange(10, 1000)
 
-            # Position the center of the circle the coin will orbit
-            coin.circle_center_x = random.randrange(constants.SCREEN_WIDTH)
-            coin.circle_center_y = random.randrange(constants.SCREEN_HEIGHT)
-
-            # Random radius from 10 to 200
-            coin.circle_radius = random.randrange(10, 200)
-
-            # Random start angle from 0 to 2pi
-            coin.circle_angle = random.random() * 2 * math.pi
 
             # Add the coin to the lists
             self.coin_list.append(coin)
 
-        for i in range(constants.COIN_COUNT):
-
-
-            # Create the coin instance
-            # Coin image from Kenney website: https://kenney.nl
-            bad_coin = Bad_coin(":resources:images/items/coinGold.png", constants.SPRITE_SCALING_COIN)
-
-            # Position the coin
-            bad_coin.center_x = random.randrange(constants.SCREEN_WIDTH)
-            bad_coin.center_y = random.randrange(constants.SCREEN_HEIGHT)
-
-            # Add the bad_coin to the lists
-            self.bad_coin_list.append(bad_coin)
-
-        # Don't show the mouse cursor
-        self.set_mouse_visible(False)
 
         # Set the background color
-        arcade.set_background_color(arcade.color.AMAZON)
+        self.background_color = arcade.color.AMAZON
+
+    def on_mouse_motion(self, x, y, dx, dy):
+        """Called to update our objects.
+        Happens approximately 60 times per second."""
+        self.player_sprite.center_x = x
 
     def on_draw(self):
+        """
+        Render the screen.
+        """
 
         # This command has to happen before we start drawing
         self.clear()
 
+        # Select the camera we'll use to draw all our sprites
+        self.camera_sprites.use()
+
         # Draw all the sprites.
-        self.coin_list.draw()
-        self.bad_coin_list.draw()
+        self.wall_list.draw()
         self.player_list.draw()
+        self.coin_list.draw()
 
-        # Put the text on the screen.
-        output = "Score: " + str(self.score)
-        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
-        if len(self.coin_list) <= 0:
-            arcade.draw_text("Game Over",
-                                        300, 300,
-                                        arcade.color.BLACK, 80)
+        # Draw the box that we work to make sure the user stays inside of.
+        # This is just for illustration purposes. You'd want to remove this
+        # in your game.
+        camera_x, camera_y = self.camera_sprites.position
+        arcade.draw_rect_outline(
+            arcade.XYWH(
+                camera_x, camera_y, CAMERA_BOUNDARY.width, CAMERA_BOUNDARY.height
+            ),
+            arcade.color.RED,
+            2,
+        )
 
-    def on_mouse_motion(self, x, y, dx, dy):
-        self.player_sprite.center_x = x
+        # Select the (unscrolled) camera for our GUI
+        self.camera_gui.use()
+
+        # Draw the GUI
+        arcade.draw_rect_filled(
+            arcade.rect.XYWH(self.width // 2, 20, self.width, 40),
+            color=arcade.color.ALMOND,
+        )
+        text = (
+            f"Scroll value: ({self.camera_sprites.position[0]:5.1f}",
+            f"{self.camera_sprites.position[1]:5.1f})",
+        )
+        arcade.draw_text(text, 10, 10, arcade.color.BLACK_BEAN, 20)
+
 
     def on_update(self, delta_time):
-        """ Movement and game logic """
+        """Movement and game logic"""
 
-        # Call update on all sprites (The sprites don't do much in this
-        # example though.)
-        if len(self.coin_list) > 0:
-            self.coin_list.update(delta_time)
-            self.bad_coin_list.update(delta_time)
- 
+        # Calculate speed based on the keys pressed
 
-        # Generate a list of all sprites that collided with the player.
-        coin_hit_list = arcade.check_for_collision_with_list(self.player_sprite,
-                                                        self.coin_list)
-        bad_coin_hit_list = arcade.check_for_collision_with_list(self.player_sprite,
-                                                        self.bad_coin_list)
+        self.player_sprite.velocity += self.player_sprite.acceleration
+        self.player_sprite.center_y += self.player_sprite.velocity
+        
 
-        # Loop through each colliding sprite, remove it, and add to the score. play sound
-        for coin in coin_hit_list:
-            self.score += 1
-            coin.remove_from_sprite_lists()
-            arcade.play_sound(self.coin_01_sound)
 
-        # same thing, but remove score if it's a bad coin.
-        for bad_coin in bad_coin_hit_list:
-            self.score -= 1
-            bad_coin.remove_from_sprite_lists()
-            arcade.play_sound(self.bad_coin_sound)
+        # Scroll the screen to the player
+        self.scroll_to_player()
+
+        wall_hit_list = arcade.check_for_collision_with_list(self.player_sprite,
+                                                        self.wall_list)
+        
+        for wall in wall_hit_list:
+            self.player_sprite.velocity *= - my_constants.BOUNCE_DECAY_CONSTANT
+            wall.remove_from_sprite_lists()
+
+    def scroll_to_player(self):
+        """
+        Scroll the window to the player.
+        This method will attempt to keep the player at least VIEWPORT_MARGIN
+        pixels away from the edge.
+
+        if CAMERA_SPEED is 1, the camera will immediately move to the desired position.
+        Anything between 0 and 1 will have the camera move to the location with a smoother
+        pan.
+        """
+
+        # --- Manage Scrolling ---
+        new_position = arcade.camera.grips.constrain_boundary_xy(
+            self.camera_sprites.view_data, CAMERA_BOUNDARY, self.player_sprite.position
+        )
+
+        self.camera_sprites.position = arcade.math.lerp_2d(
+            self.camera_sprites.position,
+            (new_position[0], new_position[1]),
+            CAMERA_SPEED,
+        )
+
+    def on_resize(self, width: int, height: int):
+        """
+        Resize window
+        Handle the user grabbing the edge and resizing the window.
+        """
+        super().on_resize(width, height)
+        self.camera_sprites.match_window()
+        self.camera_gui.match_window(position=True)
 
 
 def main():
-    window = MyGame(constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT)
-    window.start_new_game()
+    """Main function"""
+    # Create a window class. This is what actually shows up on screen
+    window = arcade.Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
+
+    # Make the mouse disappear when it is over the window.
+    # So we just see our object, not the pointer.
+    window.set_mouse_visible(False)
+
+    # Create and setup the GameView
+    game = GameView()
+    game.setup()
+
+    # Show GameView on screen
+    window.show_view(game)
+
+    # Start the arcade game loop
     arcade.run()
 
 

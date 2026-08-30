@@ -6,23 +6,28 @@ import numpy as np
 import my_constants
 import pad_file
 
-MOVE_PAD_X = 100
+# -- Constants
+MOVE_PAD_X = 100  # x-displacement between non-starting pads
+
 # How many pixels to keep as a minimum margin between the character
 # and the edge of the screen.
-VIEWPORT_MARGIN = 200
-HORIZONTAL_BOUNDARY = my_constants.WINDOW_WIDTH / 2.0 - VIEWPORT_MARGIN
-VERTICAL_BOUNDARY = my_constants.WINDOW_HEIGHT / 2.0 - VIEWPORT_MARGIN
 # If the player moves further than this boundary away from the camera we use a
 # constraint to move the camera
+VIEWPORT_MARGIN = 100
+HORIZONTAL_BOUNDARY = my_constants.WINDOW_WIDTH / 2.0
+BOTTOM_BOUNDARY = 0
+TOP_BOUNDARY = my_constants.WINDOW_HEIGHT / 2.0 - VIEWPORT_MARGIN
+
+# How fast the camera pans to the player. 1.0 is instant.
+CAMERA_SPEED = 0.6
+
+
 CAMERA_BOUNDARY = arcade.LRBT(
     -HORIZONTAL_BOUNDARY,
     HORIZONTAL_BOUNDARY,
-    -VERTICAL_BOUNDARY,
-    VERTICAL_BOUNDARY,
+    -BOTTOM_BOUNDARY,
+    TOP_BOUNDARY,
 )
-
-# How fast the camera pans to the player. 1.0 is instant.
-CAMERA_SPEED = 0.2
 
 
 class GameView(arcade.View):
@@ -95,6 +100,13 @@ class GameView(arcade.View):
 
         self.started = False
 
+    def on_mouse_press(self, x, y, button, key_modifiers):
+        """
+        Start the game when the user presses a mouse button.
+        """
+        if button == arcade.MOUSE_BUTTON_LEFT:
+            self.started = True
+
     def on_mouse_motion(self, x, y, dx, dy):
         """move the player's x-position with mouse"""
         self.player_sprite.center_x = x
@@ -144,8 +156,9 @@ class GameView(arcade.View):
             -my_constants.GRAVITATIONAL_ACCELERATION
             + my_constants.DRAG_COEFFICIENT * abs(self.player_sprite.velocity)
         )
-        self.player_sprite.velocity += self.player_sprite.acceleration
-        self.player_sprite.center_y += self.player_sprite.velocity
+        if self.started == True:
+            self.player_sprite.velocity += self.player_sprite.acceleration
+            self.player_sprite.center_y += self.player_sprite.velocity
 
         # Scroll the screen to the player
         self.scroll_to_player()

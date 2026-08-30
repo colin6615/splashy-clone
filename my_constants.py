@@ -14,7 +14,7 @@ BOUNCE_DECAY_CONSTANT = 0.7
 # 1 = no energy is lost. The player will bounce back to their original y-position.
 # 0 = all energy is lost on a bounce. The player hits the pad and loses all of their velocity.
 X_ALL_PADS = 10
-# the x-position of all pads
+# the x-position of starting pads
 DELTA_Y = 2  # int
 # y-distance between pads.
 
@@ -32,5 +32,5 @@ TIME_FACTOR_CHANGE = 0.01
 # starting self.time_factor is 1, so after the n-th bounce, it updates to self.time_factor + TIME_FACTOR_CHANGE * N
 
 
-WINDOW_WIDTH = 1000
-WINDOW_HEIGHT = 600
+WINDOW_WIDTH = 1147
+WINDOW_HEIGHT = 625

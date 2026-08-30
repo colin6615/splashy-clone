@@ -1,14 +1,11 @@
 import random
 
 import arcade
-import numpy as np
 
-import gameover_file
 import my_constants
 import pad_file
 
 # -- Constants
-MOVE_PAD_X = 100  # x-displacement between non-starting pads
 
 # How many pixels to keep as a minimum margin between the character
 # and the edge of the screen.
@@ -49,7 +46,7 @@ class GameView(arcade.View):
         # Set up the player
         GameView.player_sprite = None
         GameView.score = 0
-        self.score_factor = 1
+        GameView.score_factor = 1
         GameView.time_factor = 1
 
         # camera stuff
@@ -155,45 +152,7 @@ class GameView(arcade.View):
 
         # Scroll the screen to the player
         self.scroll_to_player()
-
-        # if a pad is above the player, then end the game
-        for pad3 in pad_file.Pad.list:
-            if pad3.center_y - GameView.player_sprite.center_y > 5:
-                game_over_view = gameover_file.GameOverView()
-                self.window.set_mouse_visible(True)
-                self.window.show_view(game_over_view)
-
-        # find pads that the player will hit
-        pad_hit_list = arcade.check_for_collision_with_list(
-            GameView.player_sprite, pad_file.Pad.list
-        )
-        # if the player hits a pad, then bounce player and move pad down.
-        if len(pad_hit_list) > 0:
-            for pad2 in pad_hit_list:
-                # there is probably a more efficient way of doing this.
-                # update the list of pad's y-positions
-                pad_file.Pad.y_values_list = np.array(
-                    [pad.center_y for pad in pad_file.Pad.list]
-                )
-                # re-position the pad.
-                # move pad down
-                pad2.center_y = (
-                    min(pad_file.Pad.y_values_list)
-                    - my_constants.DELTA_Y * my_constants.PAD_LENGTH
-                )
-                # randomize pad's x-position
-                pad2.center_x += random.randrange(-MOVE_PAD_X, MOVE_PAD_X)
-
-                # update the list of pad's y-positions
-                pad_file.Pad.y_values_list = np.array(
-                    [pad.center_y for pad in pad_file.Pad.list]
-                )
-                # bounce player
-                GameView.player_sprite.velocity *= -my_constants.BOUNCE_DECAY_CONSTANT
-
-                # add to score
-                GameView.score += 1 * self.score_factor
-                GameView.time_factor += my_constants.TIME_FACTOR_CHANGE
+        pad_file.Pad.update()
 
     def scroll_to_player(self):
         """

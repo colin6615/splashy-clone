@@ -15,6 +15,10 @@ BOUNCE_DECAY_CONSTANT = 0.7
 # 0 = all energy is lost on a bounce. The player hits the pad and loses all of their velocity.
 X_ALL_PADS = 10
 # the x-position of starting pads
+
+MOVE_PAD_X = 100  # x-displacement between non-starting pads
+
+
 DELTA_Y = 2  # int
 # y-distance between pads.
 

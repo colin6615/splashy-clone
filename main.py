@@ -15,23 +15,26 @@ import my_constants
 WINDOW_TITLE = "Splashy Clone"
 
 
-def main():
-    # Create a window class. This is what actually shows up on screen
-    window = arcade.Window(
-        my_constants.WINDOW_WIDTH, my_constants.WINDOW_HEIGHT, WINDOW_TITLE
-    )
+class Testy:
+    def main():
+        # Create a window class. This is what actually shows up on screen
+        Testy.window = arcade.Window(
+            my_constants.WINDOW_WIDTH, my_constants.WINDOW_HEIGHT, WINDOW_TITLE
+        )
+        Testy.x = 2
+        print(Testy.x)
 
-    # Make the mouse disappear when it is over the window.
-    # So we just see our object, not the pointer.
-    # window.set_mouse_visible(False)
+        # Make the mouse disappear when it is over the window.
+        # So we just see our object, not the pointer.
+        # window.set_mouse_visible(False)
 
-    # Begin with StarView
-    gameview = gameview_file.GameView()
-    gameview.setup()
-    window.show_view(gameview)
+        # Begin with StarView
+        gameview = gameview_file.GameView()
+        gameview.setup()
+        Testy.window.show_view(gameview)
 
-    arcade.run()
+        arcade.run()
 
 
 if __name__ == "__main__":
-    main()
+    Testy.main()

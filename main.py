@@ -8,15 +8,13 @@ python -m arcade.examples.sprite_move_scrolling_pad
 """
 
 import arcade
-
-import gameview_file
+import startview_file
 import my_constants
 
-WINDOW_TITLE = "Sprite Move with Scrolling Screen Example"
+WINDOW_TITLE = "hi this is the window. welcome to the window."
 
 
 def main():
-    """Main function"""
     # Create a window class. This is what actually shows up on screen
     window = arcade.Window(
         my_constants.WINDOW_WIDTH, my_constants.WINDOW_HEIGHT, WINDOW_TITLE
@@ -27,14 +25,12 @@ def main():
     window.set_mouse_visible(False)
 
     # Create and setup the GameView
-    game = gameview_file.GameView()
-    game.setup()
-
-    # Show GameView on screen
-    window.show_view(game)
-
-    # Start the arcade game loop
+    start_view = startview_file.StartView()
+    window.show_view(start_view)
     arcade.run()
+
+
+
 
 
 if __name__ == "__main__":

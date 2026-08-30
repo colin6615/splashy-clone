@@ -1,12 +1,33 @@
-list=[1343,2,3413,43]
-x= min(list)
-print(x)
-print(type(list))
-# move the min y list thing to init. no need to put into updates
-#          wall_y_level_list = []
-            for wall_2 in self.wall_list:
-                wall_y_level_list.append(wall_2.center_y)
-            min(wall_y_level_list)
+import arcade
 
-# TO DO:
-# in update > wall > write code to call the spawn function with y level that is Z below  min(wall_y_level_list)
+import gameview_file
+import my_constants
+
+
+class StartView(arcade.View):
+    def on_show_view(self):
+        self.window.background_color = arcade.color.WHITE
+
+    def on_draw(self):
+        self.clear()
+        arcade.draw_text(
+            "Start Screen",
+            my_constants.WINDOW_WIDTH / 2,
+            my_constants.WINDOW_HEIGHT / 2,
+            arcade.color.BLACK,
+            font_size=50,
+            anchor_x="center",
+        )
+        arcade.draw_text(
+            "Click to advance",
+            my_constants.WINDOW_WIDTH / 2,
+            my_constants.WINDOW_HEIGHT / 2 - 75,
+            arcade.color.GRAY,
+            font_size=20,
+            anchor_x="center",
+        )
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        gameview = gameview_file.GameView()
+        gameview.setup()
+        self.window.show_view(gameview)

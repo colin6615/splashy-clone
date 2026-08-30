@@ -137,6 +137,11 @@ class GameView(arcade.View):
         text = str(GameView.score)
         arcade.draw_text(text, 10, 10, arcade.color.BLACK_BEAN, 20)
 
+    def game_over_function(self):
+        game_over_view = gameover_file.GameOverView()
+        self.window.set_mouse_visible(True)
+        self.window.show_view(game_over_view)
+
     def on_update(self, delta_time):
         """Movement and game logic"""
 
@@ -158,9 +163,7 @@ class GameView(arcade.View):
         # if a pad is above the player, then end the game
         for pad3 in pad_file.Pad.list:
             if pad3.center_y - GameView.player_sprite.center_y > 5:
-                game_over_view = gameover_file.GameOverView()
-                self.window.set_mouse_visible(True)
-                self.window.show_view(game_over_view)
+                GameView.game_over_function(self)
 
     def scroll_to_player(self):
         """

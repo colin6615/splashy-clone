@@ -50,7 +50,7 @@ class GameView(arcade.View):
         GameView.player_sprite = None
         GameView.score = 0
         self.score_factor = 1
-        self.time_factor = 1
+        GameView.time_factor = 1
 
         # camera stuff
         self.camera_sprites = arcade.Camera2D()
@@ -91,14 +91,14 @@ class GameView(arcade.View):
         # Set the background color
         self.background_color = arcade.color.AMAZON
 
-        self.started = False
+        GameView.started = False
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         """
         Start the game when the user presses a mouse button.
         """
         if button == arcade.MOUSE_BUTTON_LEFT:
-            self.started = True
+            GameView.started = True
 
     def on_mouse_motion(self, x, y, dx, dy):
         """move the player's x-position with mouse"""
@@ -145,11 +145,11 @@ class GameView(arcade.View):
         # free-fall physics
         # must update acceleration every tick
         # define acceleration: a = T * (- g + b * |v|)
-        GameView.player_sprite.acceleration = self.time_factor * (
+        GameView.player_sprite.acceleration = GameView.time_factor * (
             -my_constants.GRAVITATIONAL_ACCELERATION
             + my_constants.DRAG_COEFFICIENT * abs(GameView.player_sprite.velocity)
         )
-        if self.started == True:
+        if GameView.started == True:
             GameView.player_sprite.velocity += GameView.player_sprite.acceleration
             GameView.player_sprite.center_y += GameView.player_sprite.velocity
 
@@ -193,7 +193,7 @@ class GameView(arcade.View):
 
                 # add to score
                 GameView.score += 1 * self.score_factor
-                self.time_factor += my_constants.TIME_FACTOR_CHANGE
+                GameView.time_factor += my_constants.TIME_FACTOR_CHANGE
 
     def scroll_to_player(self):
         """

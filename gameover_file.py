@@ -52,7 +52,7 @@ class GameOverView(arcade.View):
         )
 
         arcade.draw_text(
-            f"Previous Score: {gameview_file.GameView.score}",  # self.score_text,
+            f"Previous Score: {gameview_file.GameView.score}",
             x=my_constants.WINDOW_WIDTH / 2,
             y=200,
             color=arcade.color.WHITE,
@@ -60,7 +60,7 @@ class GameOverView(arcade.View):
             anchor_x="center",
         )
         arcade.draw_text(
-            f"High Score: {self.high_score_variable}",  # self.score_text,
+            f"High Score: {self.high_score_variable}",
             x=my_constants.WINDOW_WIDTH / 2,
             y=100,
             color=arcade.color.WHITE,

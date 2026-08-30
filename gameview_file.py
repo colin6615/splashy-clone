@@ -2,6 +2,7 @@ import random
 
 import arcade
 
+import gameover_file
 import my_constants
 import pad_file
 
@@ -153,6 +154,13 @@ class GameView(arcade.View):
         # Scroll the screen to the player
         self.scroll_to_player()
         pad_file.Pad.update()
+
+        # if a pad is above the player, then end the game
+        for pad3 in pad_file.Pad.list:
+            if pad3.center_y - GameView.player_sprite.center_y > 5:
+                game_over_view = gameover_file.GameOverView()
+                self.window.set_mouse_visible(True)
+                self.window.show_view(game_over_view)
 
     def scroll_to_player(self):
         """

@@ -3,7 +3,6 @@ import random
 import arcade
 import numpy as np
 
-import gameover_file
 import main
 import my_constants
 
@@ -48,9 +47,8 @@ class Pad(arcade.SpriteList):
         # if a pad is above the player, then end the game
         for pad3 in Pad.list:
             if pad3.center_y - gameview_file.GameView.player_sprite.center_y > 5:
-                game_over_view = gameover_file.GameOverView()
-                print(main.Testy.x)
-                # main.Main.window.show_view(game_over_view)
+                main.Testy.game_over_function()
+                
 
         # find pads that the player will hit
         pad_hit_list = arcade.check_for_collision_with_list(

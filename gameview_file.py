@@ -41,13 +41,13 @@ class GameView(arcade.View):
         super().__init__()
 
         # Sprite lists
-        self.player_list = None
+        GameView.player_list = None
         self.coin_list = None
 
         # y-level list
 
         # Set up the player
-        self.player_sprite = None
+        GameView.player_sprite = None
         GameView.score = 0
         self.score_factor = 1
         self.time_factor = 1
@@ -60,22 +60,18 @@ class GameView(arcade.View):
         """Set up the game and initialize the variables."""
 
         # Sprite lists
-        self.player_list = arcade.SpriteList()
+        GameView.player_list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
         pad_file.Pad.setup()
         # Set up the player
-        self.player_sprite = arcade.Sprite(
+        GameView.player_sprite = arcade.Sprite(
             ":resources:images/animated_characters/female_person/femalePerson_idle.png",
             scale=0.4,
         )
-        self.player_sprite.center_x = 256
-        self.player_sprite.center_y = 0
-        self.player_list.append(self.player_sprite)
-        self.player_sprite.velocity = 0
-
-        # Make the initial pads
-        for y in range(-2 * my_constants.DELTA_Y, 0, my_constants.DELTA_Y):
-            pad_file.Pad.spawn_pad(x_input=4, y_input=y)
+        GameView.player_sprite.center_x = 256
+        GameView.player_sprite.center_y = 0
+        GameView.player_list.append(GameView.player_sprite)
+        GameView.player_sprite.velocity = 0
 
         # Create the coins
         for i in range(my_constants.NUMBER_OF_COINS):
@@ -106,7 +102,7 @@ class GameView(arcade.View):
 
     def on_mouse_motion(self, x, y, dx, dy):
         """move the player's x-position with mouse"""
-        self.player_sprite.center_x = x
+        GameView.player_sprite.center_x = x
 
     def on_draw(self):
         """
@@ -120,7 +116,7 @@ class GameView(arcade.View):
         self.camera_sprites.use()
 
         # Draw all the sprites.
-        self.player_list.draw()
+        GameView.player_list.draw()
         pad_file.Pad.list.draw()
         self.coin_list.draw()
 
@@ -149,27 +145,27 @@ class GameView(arcade.View):
         # free-fall physics
         # must update acceleration every tick
         # define acceleration: a = T * (- g + b * |v|)
-        self.player_sprite.acceleration = self.time_factor * (
+        GameView.player_sprite.acceleration = self.time_factor * (
             -my_constants.GRAVITATIONAL_ACCELERATION
-            + my_constants.DRAG_COEFFICIENT * abs(self.player_sprite.velocity)
+            + my_constants.DRAG_COEFFICIENT * abs(GameView.player_sprite.velocity)
         )
         if self.started == True:
-            self.player_sprite.velocity += self.player_sprite.acceleration
-            self.player_sprite.center_y += self.player_sprite.velocity
+            GameView.player_sprite.velocity += GameView.player_sprite.acceleration
+            GameView.player_sprite.center_y += GameView.player_sprite.velocity
 
         # Scroll the screen to the player
         self.scroll_to_player()
 
         # if a pad is above the player, then end the game
         for pad3 in pad_file.Pad.list:
-            if pad3.center_y - self.player_sprite.center_y > 5:
+            if pad3.center_y - GameView.player_sprite.center_y > 5:
                 game_over_view = gameover_file.GameOverView()
                 self.window.set_mouse_visible(True)
                 self.window.show_view(game_over_view)
 
         # find pads that the player will hit
         pad_hit_list = arcade.check_for_collision_with_list(
-            self.player_sprite, pad_file.Pad.list
+            GameView.player_sprite, pad_file.Pad.list
         )
         # if the player hits a pad, then bounce player and move pad down.
         if len(pad_hit_list) > 0:
@@ -193,7 +189,7 @@ class GameView(arcade.View):
                     [pad.center_y for pad in pad_file.Pad.list]
                 )
                 # bounce player
-                self.player_sprite.velocity *= -my_constants.BOUNCE_DECAY_CONSTANT
+                GameView.player_sprite.velocity *= -my_constants.BOUNCE_DECAY_CONSTANT
 
                 # add to score
                 GameView.score += 1 * self.score_factor
@@ -212,7 +208,9 @@ class GameView(arcade.View):
 
         # --- Manage Scrolling ---
         new_position = arcade.camera.grips.constrain_boundary_xy(
-            self.camera_sprites.view_data, CAMERA_BOUNDARY, self.player_sprite.position
+            self.camera_sprites.view_data,
+            CAMERA_BOUNDARY,
+            GameView.player_sprite.position,
         )
 
         self.camera_sprites.position = arcade.math.lerp_2d(

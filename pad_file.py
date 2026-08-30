@@ -36,3 +36,6 @@ class Pad(arcade.SpriteList):
         # Sprite lists
         Pad.list = arcade.SpriteList()
         Pad.y_values_list = []
+        # spawn the first 2 pads
+        for y in range(-2 * my_constants.DELTA_Y, 0, my_constants.DELTA_Y):
+            Pad.spawn_pad(x_input=4, y_input=y)

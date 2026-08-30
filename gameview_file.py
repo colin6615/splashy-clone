@@ -3,6 +3,7 @@ import random
 import arcade
 import numpy as np
 
+import gameover_file
 import my_constants
 import pad_file
 
@@ -166,7 +167,9 @@ class GameView(arcade.View):
         # if a pad is above the player, then end the game
         for pad3 in pad_file.Pad.list:
             if pad3.center_y - self.player_sprite.center_y > 5:
-                z = 1  # TO DO: MAKE SOME WAY TO END THE GAME
+                game_over_view = gameover_file.GameOverView()
+                self.window.set_mouse_visible(True)
+                self.window.show_view(game_over_view)
 
         # find pads that the player will hit
         pad_hit_list = arcade.check_for_collision_with_list(

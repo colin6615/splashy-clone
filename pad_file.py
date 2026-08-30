@@ -25,3 +25,14 @@ class Pad(arcade.SpriteList):
         pad.center_y = y_input * my_constants.PAD_LENGTH
         Pad.list.append(pad)
         Pad.y_values_list = np.array([pad.center_y for pad in Pad.list])
+
+    def __init__(self):
+        Pad.list = None
+        Pad.y_values_list = None
+
+    def setup():
+        """Set up the game and initialize the variables."""
+
+        # Sprite lists
+        Pad.list = arcade.SpriteList()
+        Pad.y_values_list = []

@@ -12,7 +12,7 @@ import arcade
 import gameview_file
 import my_constants
 
-WINDOW_TITLE = "hi this is the window. welcome to the window."
+WINDOW_TITLE = "Splashy Clone"
 
 
 def main():

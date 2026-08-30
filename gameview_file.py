@@ -42,11 +42,9 @@ class GameView(arcade.View):
 
         # Sprite lists
         self.player_list = None
-        pad_file.Pad.list = None
         self.coin_list = None
 
         # y-level list
-        pad_file.Pad.y_values_list = None
 
         # Set up the player
         self.player_sprite = None
@@ -63,10 +61,8 @@ class GameView(arcade.View):
 
         # Sprite lists
         self.player_list = arcade.SpriteList()
-        pad_file.Pad.list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
-        pad_file.Pad.y_values_list = []
-
+        pad_file.Pad.setup()
         # Set up the player
         self.player_sprite = arcade.Sprite(
             ":resources:images/animated_characters/female_person/femalePerson_idle.png",

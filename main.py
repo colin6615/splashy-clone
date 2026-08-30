@@ -114,6 +114,8 @@ class GameView(arcade.View):
         # Set the background color
         self.background_color = arcade.color.AMAZON
 
+        self.started = False
+
     def on_mouse_motion(self, x, y, dx, dy):
         """move the player's x-position with mouse"""
         self.player_sprite.center_x = x
@@ -153,6 +155,9 @@ class GameView(arcade.View):
         text = str(self.score)
         arcade.draw_text(text, 10, 10, arcade.color.BLACK_BEAN, 20)
 
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        self.started = True
+
     def on_update(self, delta_time):
         """Movement and game logic"""
 
@@ -163,7 +168,8 @@ class GameView(arcade.View):
             -my_constants.GRAVITATIONAL_ACCELERATION
             + my_constants.DRAG_COEFFICIENT * abs(self.player_sprite.velocity)
         )
-        self.player_sprite.velocity += self.player_sprite.acceleration
+        if self.started == True:
+            self.player_sprite.velocity += self.player_sprite.acceleration
         self.player_sprite.center_y += self.player_sprite.velocity
 
         # Scroll the screen to the player

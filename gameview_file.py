@@ -50,7 +50,7 @@ class GameView(arcade.View):
 
         # Set up the player
         self.player_sprite = None
-        self.score = 0
+        GameView.score = 0
         self.score_factor = 1
         self.time_factor = 1
 
@@ -144,7 +144,7 @@ class GameView(arcade.View):
         self.camera_gui.use()
 
         # Draw the score
-        text = str(self.score)
+        text = str(GameView.score)
         arcade.draw_text(text, 10, 10, arcade.color.BLACK_BEAN, 20)
 
     def on_update(self, delta_time):
@@ -200,7 +200,7 @@ class GameView(arcade.View):
                 self.player_sprite.velocity *= -my_constants.BOUNCE_DECAY_CONSTANT
 
                 # add to score
-                self.score += 1 * self.score_factor
+                GameView.score += 1 * self.score_factor
                 self.time_factor += my_constants.TIME_FACTOR_CHANGE
 
     def scroll_to_player(self):

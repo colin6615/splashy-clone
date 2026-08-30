@@ -33,7 +33,7 @@ class GameOverView(arcade.View):
             anchor_x="center",
         )
 
-        output_total = "Total Score:"
+        output_total = f"Total Score: {gameview_file.GameView.score}"
         arcade.draw_text(output_total, 10, 10, arcade.color.WHITE, 14)
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):

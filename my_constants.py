@@ -20,3 +20,17 @@ DELTA_Y = 2  # int
 
 SPRITE_SCALING_PAD = 0.5
 PAD_LENGTH = 64
+
+SPRITE_SCALING = 0.5
+
+SPRITE_SCALING_COIN = 0.3
+
+NUMBER_OF_COINS = 50
+TIME_FACTOR_CHANGE = 0.01
+# speeds up the game after every bounce.
+# 0 = no speed change
+# starting self.time_factor is 1, so after the n-th bounce, it updates to self.time_factor + TIME_FACTOR_CHANGE * N
+
+
+WINDOW_WIDTH = 1000
+WINDOW_HEIGHT = 600

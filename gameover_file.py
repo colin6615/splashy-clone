@@ -9,7 +9,7 @@ input_path (str): Description of the attribute
 
 import arcade
 
-import main
+import gameview_file
 import my_constants
 
 
@@ -27,12 +27,12 @@ class GameOverView(arcade.View):
             hi = hisc.read()
             if not hi:  # not hi will only be true for strings on an empty string
                 hi = "0"
-            if main.GameView.score > int(hi):
-                self.high_score_variable = main.GameView.score
+            if gameview_file.GameView.score > int(hi):
+                self.high_score_variable = gameview_file.GameView.score
                 hisc.seek(
                     0
                 )  # We already read to the end. We need to go back to the start
-                hisc.write(str(main.GameView.score))
+                hisc.write(str(gameview_file.GameView.score))
                 hisc.truncate()  # Delete anything left over... not strictly necessary
             else:
                 self.high_score_variable = hi
@@ -61,7 +61,7 @@ class GameOverView(arcade.View):
         )
 
         arcade.draw_text(
-            f"Previous Score: {main.GameView.score}",
+            f"Previous Score: {gameview_file.GameView.score}",
             x=my_constants.WINDOW_WIDTH / 2,
             y=200,
             color=arcade.color.WHITE,
@@ -78,6 +78,6 @@ class GameOverView(arcade.View):
         )
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
-        game_view = main.GameView()
+        game_view = gameview_file.GameView()
         game_view.setup()
         self.window.show_view(game_view)

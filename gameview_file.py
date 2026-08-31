@@ -1,3 +1,12 @@
+"""Module summary phrase. Detailed description of what this module does, what classes/functions it exposes, and any usage examples if applicable.
+
+Short one-line summary of the class's purpose.
+
+A longer description explaining what the class does, its general state, and how it is meant to be used across your program.
+Attributes:
+input_path (str): Description of the attribute
+"""
+
 import random
 
 import arcade
@@ -7,15 +16,11 @@ import my_constants
 import pad_file
 
 # -- Constants
-
-# How many pixels to keep as a minimum margin between the character
-# and the edge of the screen.
 # If the player moves further than this boundary away from the camera we use a
 # constraint to move the camera
-VIEWPORT_MARGIN = 100
 HORIZONTAL_BOUNDARY = my_constants.WINDOW_WIDTH / 2.0
-BOTTOM_BOUNDARY = 0
-TOP_BOUNDARY = my_constants.WINDOW_HEIGHT / 2.0 - VIEWPORT_MARGIN
+BOTTOM_BOUNDARY = 0 # camera will move if the player moves down past the middle of the screen.
+TOP_BOUNDARY = my_constants.WINDOW_HEIGHT / 2.0 - 100 
 
 # How fast the camera pans to the player. 1.0 is instant.
 CAMERA_SPEED = 0.6

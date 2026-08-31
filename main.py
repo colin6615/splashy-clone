@@ -1,10 +1,10 @@
 """
-Scroll around a large screen.
+run gameview to start the game
 
-Artwork from https://kenney.nl
+Attributes:
+None (I think?)
 
-If Python and Arcade are installed, this example can be run from the command line with:
-python -m arcade.examples.sprite_move_scrolling_pad
+.
 """
 
 import arcade
@@ -16,21 +16,15 @@ WINDOW_TITLE = "Splashy Clone"
 
 
 def main():
+    # Create a window class. This is what actually shows up on screen
     window = arcade.Window(
         my_constants.WINDOW_WIDTH, my_constants.WINDOW_HEIGHT, WINDOW_TITLE
     )
-    # Create a window class. This is what actually shows up on screen
 
-    # Make the mouse disappear when it is over the window.
-    # So we just see our object, not the pointer.
-    # window.set_mouse_visible(False)
-
-    # Begin with StarView
+    # create and run Gameview
     gameview = gameview_file.GameView()
     gameview.setup()
-
     window.show_view(gameview)
-
     arcade.run()
 
 

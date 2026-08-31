@@ -1,3 +1,12 @@
+"""Module summary phrase. Detailed description of what this module does, what classes/functions it exposes, and any usage examples if applicable.
+
+Short one-line summary of the class's purpose.
+
+A longer description explaining what the class does, its general state, and how it is meant to be used across your program.
+Attributes:
+input_path (str): Description of the attribute
+"""
+
 import random
 
 import arcade

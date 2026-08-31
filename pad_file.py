@@ -12,6 +12,7 @@ import random
 import arcade
 import numpy as np
 
+import main
 import my_constants
 
 
@@ -53,12 +54,12 @@ class Pad(arcade.SpriteList):
 
     def update():
         for pad3 in Pad.list:
-            if pad3.center_y - gameview_file.GameView.player_sprite.center_y > 5:
-                gameview_file.GameView.player_dead = True
+            if pad3.center_y - main.GameView.player_sprite.center_y > 5:
+                main.GameView.player_dead = True
 
         # find pads that the player will hit
         pad_hit_list = arcade.check_for_collision_with_list(
-            gameview_file.GameView.player_sprite, Pad.list
+            main.GameView.player_sprite, Pad.list
         )
         # if the player hits a pad, then bounce player and move pad down.
         if len(pad_hit_list) > 0:
@@ -80,13 +81,10 @@ class Pad(arcade.SpriteList):
                 # update the list of pad's y-positions
                 Pad.y_values_list = np.array([pad.center_y for pad in Pad.list])
                 # bounce player
-                gameview_file.GameView.player_sprite.velocity *= (
+                main.GameView.player_sprite.velocity *= (
                     -my_constants.BOUNCE_DECAY_CONSTANT
                 )
 
                 # add to score
-                gameview_file.GameView.score += 1 * gameview_file.GameView.score_factor
-                gameview_file.GameView.time_factor += my_constants.TIME_FACTOR_CHANGE
-
-
-import gameview_file
+                main.GameView.score += 1 * main.GameView.score_factor
+                main.GameView.time_factor += my_constants.TIME_FACTOR_CHANGE

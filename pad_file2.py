@@ -12,6 +12,7 @@ import random
 import arcade
 import numpy as np
 
+import gameview_file
 import my_constants
 
 
@@ -20,11 +21,12 @@ class Pad(arcade.Sprite):
         """Constructor."""
         # Call the parent class (Sprite) constructor
         super().__init__(filename, sprite_scaling)
+
         # set position
         self.center_x = 0
         self.center_y = 0
 
-    def spawn_pad(x_input, y_input):
+    def spawn_pad(self, x_input, y_input):
         """
         spawns a 3x1 structure of pads.
         Args:
@@ -36,14 +38,11 @@ class Pad(arcade.Sprite):
             Return (type): What is returned and why.
 
         """
-
         pad = Pad("assets/green_rectangle.png", my_constants.SPRITE_SCALING_PAD)
-
         # position the pad
         pad.center_x = x_input * my_constants.PAD_LENGTH
         pad.center_y = y_input * my_constants.PAD_LENGTH
         Pad.list.append(pad)
-        Pad.y_values_list = np.array([pad.center_y for pad in Pad.list])
 
     def setup():
         """Set up the game and initialize the variables."""
@@ -55,26 +54,25 @@ class Pad(arcade.Sprite):
 
         # spawn the first 2 pads
         for y in range(-2 * my_constants.DELTA_Y, 0, my_constants.DELTA_Y):
-            Pad.spawn_pad(x_input=4, y_input=y)
+            Pad.spawn_pad(Pad, x_input=4, y_input=y)
 
-    def update(self):
-        # update the list of pad's y-positions.
-        # there is probably a more efficient way of doing this.
-        Pad.y_values_list = np.array([pad4.center_y for pad4 in Pad.list])
+    def update(self, delta_time):
+        # update the list of pad's y-positions
+        Pad.y_values_list = np.array([pad.center_y for pad in Pad.list])
 
         # if the player moves below the pad, then kill player
-        for pad3 in Pad.list:
-            if pad3.center_y - gameview_file.GameView.player_sprite.center_y > 5:
-                gameview_file.GameView.player_dead = True
+        if self.center_y - gameview_file.GameView.player_sprite.center_y > 5:
+            gameview_file.GameView.player_dead = True
 
         # find pads that the player will hit
-        hit_list = arcade.check_for_collision_with_list(
+        self.hit_list = arcade.check_for_collision_with_list(
             gameview_file.GameView.player_sprite, Pad.list
         )
         # if the player hits a pad, then bounce player and move pad down.
-        if len(hit_list) > 0:
-            for hit_pad in hit_list:
+        if len(self.hit_list) > 0:
+            for hit_pad in self.hit_list:
                 # there is probably a more efficient way of doing this.
+
                 # re-position the pad.
                 # move pad down
                 hit_pad.center_y = (
@@ -94,6 +92,3 @@ class Pad(arcade.Sprite):
                 # add to score
                 gameview_file.GameView.score += 1 * gameview_file.GameView.score_factor
                 gameview_file.GameView.time_factor += my_constants.TIME_FACTOR_CHANGE
-
-
-import gameview_file

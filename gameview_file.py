@@ -19,8 +19,10 @@ import pad_file
 # If the player moves further than this boundary away from the camera we use a
 # constraint to move the camera
 HORIZONTAL_BOUNDARY = my_constants.WINDOW_WIDTH / 2.0
-BOTTOM_BOUNDARY = 0 # camera will move if the player moves down past the middle of the screen.
-TOP_BOUNDARY = my_constants.WINDOW_HEIGHT / 2.0 - 100 
+BOTTOM_BOUNDARY = (
+    0  # camera will move if the player moves down past the middle of the screen.
+)
+TOP_BOUNDARY = my_constants.WINDOW_HEIGHT / 2.0 - 100
 
 # How fast the camera pans to the player. 1.0 is instant.
 CAMERA_SPEED = 0.6
@@ -164,7 +166,7 @@ class GameView(arcade.View):
 
         # Scroll the screen to the player
         self.scroll_to_player()
-        pad_file.Pad.update()
+        pad_file.Pad.update(pad_file.Pad)
 
         # if a pad is above the player, then end the game.
         # I don't know hwo to move game_over_function() into pad_file.py

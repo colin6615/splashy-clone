@@ -1,6 +1,7 @@
 import arcade
 
 import gameview_file
+import main
 import my_constants
 
 
@@ -9,7 +10,7 @@ class GameOverView(arcade.View):
         super().__init__()
 
     def on_show_view(self):
-        self.window.background_color = arcade.color.GREEN_YELLOW
+        main.Main.window.background_color = arcade.color.GREEN_YELLOW
 
         # The with block was sourced from https://stackoverflow.com/a/47422975
         # Posted by TemporalWolf, modified by community. See post 'Timeline' for change history
@@ -71,4 +72,4 @@ class GameOverView(arcade.View):
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         game_view = gameview_file.GameView()
         game_view.setup()
-        self.window.show_view(game_view)
+        main.Main.window.show_view(game_view)

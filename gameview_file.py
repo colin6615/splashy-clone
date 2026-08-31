@@ -14,6 +14,7 @@ import arcade
 import gameover_file
 import my_constants
 import pad_file
+import player_file
 
 # -- Constants
 # If the player moves further than this boundary away from the camera we use a
@@ -46,13 +47,9 @@ class GameView(arcade.View):
         super().__init__()
 
         # Sprite lists
-        GameView.player_list = None
         self.coin_list = None
 
-        # y-level list
-
         # Set up the player
-        GameView.player_sprite = None
         GameView.score = 0
         GameView.score_factor = 1
         GameView.time_factor = 1
@@ -63,20 +60,12 @@ class GameView(arcade.View):
 
     def setup(self):
         """Set up the game and initialize the variables."""
-
+        player_file.Player.setup()
         # Sprite lists
-        GameView.player_list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
         pad_file.Pad.setup()
+
         # Set up the player
-        GameView.player_sprite = arcade.Sprite(
-            ":resources:images/animated_characters/female_person/femalePerson_idle.png",
-            scale=0.4,
-        )
-        GameView.player_sprite.center_x = 256
-        GameView.player_sprite.center_y = 0
-        GameView.player_list.append(GameView.player_sprite)
-        GameView.player_sprite.velocity = 0
 
         # Create the coins
         for i in range(my_constants.NUMBER_OF_COINS):
@@ -108,7 +97,7 @@ class GameView(arcade.View):
 
     def on_mouse_motion(self, x, y, dx, dy):
         """move the player's x-position with mouse"""
-        GameView.player_sprite.center_x = x
+        player_file.Player.sprite.center_x = x
 
     def on_draw(self):
         """
@@ -122,7 +111,7 @@ class GameView(arcade.View):
         self.camera_sprites.use()
 
         # Draw all the sprites.
-        GameView.player_list.draw()
+        player_file.Player.list.draw()
         pad_file.Pad.list.draw()
         self.coin_list.draw()
 
@@ -156,17 +145,17 @@ class GameView(arcade.View):
         # free-fall physics
         # must update acceleration every tick
         # define acceleration: a = T * (- g + b * |v|)
-        GameView.player_sprite.acceleration = GameView.time_factor * (
+        player_file.Player.sprite.acceleration = GameView.time_factor * (
             -my_constants.GRAVITATIONAL_ACCELERATION
-            + my_constants.DRAG_COEFFICIENT * abs(GameView.player_sprite.velocity)
+            + my_constants.DRAG_COEFFICIENT * abs(player_file.Player.sprite.velocity)
         )
         if GameView.started == True:
-            GameView.player_sprite.velocity += GameView.player_sprite.acceleration
-            GameView.player_sprite.center_y += GameView.player_sprite.velocity
+            player_file.Player.sprite.velocity += player_file.Player.sprite.acceleration
+            player_file.Player.sprite.center_y += player_file.Player.sprite.velocity
 
         # Scroll the screen to the player
         self.scroll_to_player()
-        pad_file.Pad.update(pad_file.Pad)
+        pad_file.Pad.update()
 
         # if a pad is above the player, then end the game.
         # I don't know hwo to move game_over_function() into pad_file.py
@@ -189,7 +178,7 @@ class GameView(arcade.View):
         new_position = arcade.camera.grips.constrain_boundary_xy(
             self.camera_sprites.view_data,
             CAMERA_BOUNDARY,
-            GameView.player_sprite.position,
+            player_file.Player.sprite.position,
         )
 
         self.camera_sprites.position = arcade.math.lerp_2d(

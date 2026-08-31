@@ -13,6 +13,7 @@ import arcade
 import numpy as np
 
 import my_constants
+import player_file
 
 
 class Pad(arcade.Sprite):
@@ -57,19 +58,19 @@ class Pad(arcade.Sprite):
         for y in range(-2 * my_constants.DELTA_Y, 0, my_constants.DELTA_Y):
             Pad.spawn_pad(x_input=4, y_input=y)
 
-    def update(self):
+    def update():
         # update the list of pad's y-positions.
         # there is probably a more efficient way of doing this.
         Pad.y_values_list = np.array([pad4.center_y for pad4 in Pad.list])
 
         # if the player moves below the pad, then kill player
         for pad3 in Pad.list:
-            if pad3.center_y - gameview_file.GameView.player_sprite.center_y > 5:
+            if pad3.center_y - player_file.Player.sprite.center_y > 5:
                 gameview_file.GameView.player_dead = True
 
         # find pads that the player will hit
         hit_list = arcade.check_for_collision_with_list(
-            gameview_file.GameView.player_sprite, Pad.list
+            player_file.Player.sprite, Pad.list
         )
         # if the player hits a pad, then bounce player and move pad down.
         if len(hit_list) > 0:
@@ -87,7 +88,7 @@ class Pad(arcade.Sprite):
                 )
 
                 # bounce player
-                gameview_file.GameView.player_sprite.velocity *= (
+                player_file.Player.sprite.velocity *= (
                     -my_constants.BOUNCE_DECAY_CONSTANT
                 )
 

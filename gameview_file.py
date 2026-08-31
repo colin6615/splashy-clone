@@ -90,6 +90,7 @@ class GameView(arcade.View):
         self.background_color = arcade.color.AMAZON
 
         GameView.started = False
+        GameView.player_dead = False
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         """
@@ -160,10 +161,11 @@ class GameView(arcade.View):
         self.scroll_to_player()
         pad_file.Pad.update()
 
-        # if a pad is above the player, then end the game
-        for pad3 in pad_file.Pad.list:
-            if pad3.center_y - GameView.player_sprite.center_y > 5:
-                GameView.game_over_function(self)
+        # if a pad is above the player, then end the game.
+        # I don't know hwo to move game_over_function() into pad_file.py
+        # so, whenever I need to call
+        if GameView.player_dead == True:
+            GameView.game_over_function(self)
 
     def scroll_to_player(self):
         """

@@ -3,7 +3,6 @@ import random
 import arcade
 import numpy as np
 
-import main
 import my_constants
 
 
@@ -44,8 +43,9 @@ class Pad(arcade.SpriteList):
             Pad.spawn_pad(x_input=4, y_input=y)
 
     def update():
-
-                
+        for pad3 in Pad.list:
+            if pad3.center_y - gameview_file.GameView.player_sprite.center_y > 5:
+                gameview_file.GameView.player_dead = True
 
         # find pads that the player will hit
         pad_hit_list = arcade.check_for_collision_with_list(

@@ -142,20 +142,10 @@ class GameView(arcade.View):
     def on_update(self, delta_time):
         """Movement and game logic"""
 
-        # free-fall physics
-        # must update acceleration every tick
-        # define acceleration: a = T * (- g + b * |v|)
-        player_file.Player.sprite.acceleration = GameView.time_factor * (
-            -my_constants.GRAVITATIONAL_ACCELERATION
-            + my_constants.DRAG_COEFFICIENT * abs(player_file.Player.sprite.velocity)
-        )
-        if GameView.started == True:
-            player_file.Player.sprite.velocity += player_file.Player.sprite.acceleration
-            player_file.Player.sprite.center_y += player_file.Player.sprite.velocity
-
         # Scroll the screen to the player
         self.scroll_to_player()
         pad_file.Pad.update()
+        player_file.Player.update()
 
         # if a pad is above the player, then end the game.
         # I don't know hwo to move game_over_function() into pad_file.py

@@ -1,11 +1,4 @@
-"""Module summary phrase. Detailed description of what this module does, what classes/functions it exposes, and any usage examples if applicable.
-
-Short one-line summary of the class's purpose.
-
-A longer description explaining what the class does, its general state, and how it is meant to be used across your program.
-Attributes:
-input_path (str): Description of the attribute
-"""
+"""holds the pad/trapoline class"""
 
 import random
 
@@ -17,38 +10,47 @@ import player_file
 
 
 class Pad(arcade.Sprite):
+    """
+    If player hits a pad, then the player bounces and the pad respawns below them.
+
+    Class Attributes:
+        Pad.list (SpriteList): list of all pad sprites
+
+    Instance Attributes:
+        center_x (float): horizontal position of a pad
+        center_y (float): vertical position of a pad
+    """
+
     def __init__(self, filename, sprite_scaling):
-        """Constructor."""
-        # Call the parent class (Sprite) constructor
+        """set default pad position"""
         super().__init__(filename, sprite_scaling)
-        # set position
+
         self.center_x = 0
         self.center_y = 0
 
     def spawn_pad(x_input, y_input):
         """
-        spawns a 3x1 structure of pads.
+        spawns pads.
+
+        Units are in terms of pads. If you drew a line from x=0 to x=2, then it has length of 2 * PAD_LENGTH.
+
         Args:
-            x (int): the x-position of the center of one of the pads (I'm not sure which pad it is). Units are in terms of pads. If you drew a line from x=0 to x=2, then it has length of 2 * PAD_LENGTH. I don't know what the PAD_LENGTH is.
+            x_input (float): the x-position of the center of the spawned pad.
 
-            y (int): the y-position of the center of all of the pads. Units are in terms of pads.
-
-        Returns:
-            Return (type): What is returned and why.
-
+            y_input (float): the y-position of the center of the spawned pad.
         """
-
+        # make pad sprite
         pad = Pad("assets/green_rectangle.png", my_constants.SPRITE_SCALING_PAD)
 
         # position the pad
         pad.center_x = x_input * my_constants.PAD_LENGTH
         pad.center_y = y_input * my_constants.PAD_LENGTH
+
         Pad.list.append(pad)
         Pad.y_values_list = np.array([pad.center_y for pad in Pad.list])
 
     def setup():
         """Set up the game and initialize the variables."""
-        # lists
         Pad.list = None
         Pad.list = arcade.SpriteList()
         Pad.y_values_list = None
@@ -60,23 +62,21 @@ class Pad(arcade.Sprite):
 
     def update():
         # update the list of pad's y-positions.
-        # there is probably a more efficient way of doing this.
         Pad.y_values_list = np.array([pad4.center_y for pad4 in Pad.list])
 
         # if the player moves below the pad, then kill player
         for pad3 in Pad.list:
             if pad3.center_y - player_file.Player.sprite.center_y > 5:
-                gameview_file.GameView.player_dead = True
+                gameview_file.GameView.dead = True
 
         # find pads that the player will hit
         hit_list = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Pad.list
         )
         # if the player hits a pad, then bounce player and move pad down.
+        # there is probably a more efficient way of writing the next 2 loc.
         if len(hit_list) > 0:
             for hit_pad in hit_list:
-                # there is probably a more efficient way of doing this.
-                # re-position the pad.
                 # move pad down
                 hit_pad.center_y = (
                     min(Pad.y_values_list)

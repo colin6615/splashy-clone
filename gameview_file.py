@@ -1,11 +1,4 @@
-"""Module summary phrase. Detailed description of what this module does, what classes/functions it exposes, and any usage examples if applicable.
-
-Short one-line summary of the class's purpose.
-
-A longer description explaining what the class does, its general state, and how it is meant to be used across your program.
-Attributes:
-input_path (str): Description of the attribute
-"""
+"""handles gameplay"""
 
 import random
 
@@ -20,9 +13,7 @@ import player_file
 # If the player moves further than this boundary away from the camera we use a
 # constraint to move the camera
 HORIZONTAL_BOUNDARY = my_constants.WINDOW_WIDTH / 2.0
-BOTTOM_BOUNDARY = (
-    0  # camera will move if the player moves down past the middle of the screen.
-)
+BOTTOM_BOUNDARY = 0
 TOP_BOUNDARY = my_constants.WINDOW_HEIGHT / 2.0 - 100
 
 # How fast the camera pans to the player. 1.0 is instant.
@@ -38,34 +29,38 @@ CAMERA_BOUNDARY = arcade.LRBT(
 
 
 class GameView(arcade.View):
-    """Main application class."""
+    """
+    If the player isn't dead, and the game has already started, then this file runs. The user can have 'fun' playing the game.
 
-    def __init__(self):
-        """
-        Initializer
-        """
-        super().__init__()
+    Class Attributes:
+        score (int): player's current score.
+        score_factor (int): How many points are added to the score after a bounce.
+            example: If score_factor=2, and 1 bounce happens, then score increases by 2.
+        time_factor (float): bounce speed
+        started (bool): Has the game started?
+        dead (bool): Is the player dead?
+    """
 
+    def setup(self):
+        """Set up the game and initialize the variables."""
         # Sprite lists
         self.coin_list = None
 
-        # Set up the player
+        # Reset numbers to their starting values.
         GameView.score = 0
         GameView.score_factor = 1
         GameView.time_factor = 1
+        GameView.started = False
+        GameView.dead = False
 
         # camera stuff
         self.camera_sprites = arcade.Camera2D()
         self.camera_gui = arcade.Camera2D()
 
-    def setup(self):
-        """Set up the game and initialize the variables."""
-        player_file.Player.setup()
-        # Sprite lists
+        # spawn player and 2 pads.
         self.coin_list = arcade.SpriteList()
         pad_file.Pad.setup()
-
-        # Set up the player
+        player_file.Player.setup()
 
         # Create the coins
         for i in range(my_constants.NUMBER_OF_COINS):
@@ -82,15 +77,11 @@ class GameView(arcade.View):
             # Add the coin to the lists
             self.coin_list.append(coin)
 
-        # Set the background color
         self.background_color = arcade.color.AMAZON
-
-        GameView.started = False
-        GameView.player_dead = False
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         """
-        Start the game when the user presses a mouse button.
+        Start the game when the user clicks
         """
         if button == arcade.MOUSE_BUTTON_LEFT:
             GameView.started = True
@@ -134,23 +125,36 @@ class GameView(arcade.View):
         text = str(GameView.score)
         arcade.draw_text(text, 10, 10, arcade.color.BLACK_BEAN, 20)
 
+        # Instruct the user to start the game by clicking, if they haven't started the game yet.
+        if GameView.started == False:
+            arcade.draw_text(
+                "Left click to start",
+                x=my_constants.WINDOW_WIDTH / 2,
+                y=my_constants.WINDOW_WIDTH / 4,
+                color=arcade.color.WHITE,
+                font_size=24,
+                anchor_x="center",
+            )
+
     def game_over_function(self):
+        """Stop gameplay. Switch to game over screen."""
         game_over_view = gameover_file.GameOverView()
+
+        # show the mouse
         self.window.set_mouse_visible(True)
+
         self.window.show_view(game_over_view)
 
     def on_update(self, delta_time):
         """Movement and game logic"""
-
-        # Scroll the screen to the player
-        self.scroll_to_player()
+        # update pads and player.
         pad_file.Pad.update()
         player_file.Player.update()
 
-        # if a pad is above the player, then end the game.
-        # I don't know hwo to move game_over_function() into pad_file.py
-        # so, whenever I need to call
-        if GameView.player_dead == True:
+        # Scroll the screen to the player
+        self.scroll_to_player()
+
+        if GameView.dead == True:
             GameView.game_over_function(self)
 
     def scroll_to_player(self):

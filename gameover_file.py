@@ -1,11 +1,4 @@
-"""Module summary phrase. Detailed description of what this module does, what classes/functions it exposes, and any usage examples if applicable.
-
-Short one-line summary of the class's purpose.
-
-A longer description explaining what the class does, its general state, and how it is meant to be used across your program.
-Attributes:
-input_path (str): Description of the attribute
-"""
+"""Game over screen"""
 
 import arcade
 
@@ -14,13 +7,16 @@ import my_constants
 
 
 class GameOverView(arcade.View):
+    """Displays score and prompts the user to restart the game."""
+
     def __init__(self):
         super().__init__()
 
     def on_show_view(self):
         self.window.background_color = arcade.color.GREEN_YELLOW
-
-        # The with block was sourced from https://stackoverflow.com/a/47422975
+        # check if the user got a high score.
+        # The "with" block was sourced from
+        # https://stackoverflow.com/a/47422975
         # Posted by TemporalWolf, modified by community. See post 'Timeline' for change history
         # Retrieved 2026-08-30, License - CC BY-SA 3.0
         with open("highscore.txt", "r+") as hisc:
@@ -40,7 +36,7 @@ class GameOverView(arcade.View):
     def on_draw(self):
         self.clear()
         """
-        Draw "Game over" across the screen.
+        Draw text on the screen. 
         """
 
         arcade.draw_text(
@@ -78,6 +74,7 @@ class GameOverView(arcade.View):
         )
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
+        """Restart the game upon click"""
         game_view = gameview_file.GameView()
         game_view.setup()
         self.window.show_view(game_view)

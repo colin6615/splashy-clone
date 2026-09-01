@@ -10,7 +10,6 @@ import player_file
 
 
 class Pad(arcade.Sprite):
-    random.seed(10)
     """
     If player hits a pad, then the player bounces and the pad respawns below them.
 
@@ -21,6 +20,9 @@ class Pad(arcade.Sprite):
         center_x (float): horizontal position of a pad
         center_y (float): vertical position of a pad
     """
+
+    # make it so the random numbers generated in this class are the same in every run of the game.
+    random.seed(10)  # remove upon release
 
     def __init__(self, filename, sprite_scaling):
         """set default pad position"""
@@ -44,8 +46,8 @@ class Pad(arcade.Sprite):
         pad = Pad("assets/green_rectangle.png", my_constants.SPRITE_SCALING_PAD)
 
         # position the pad
-        pad.center_x = x_input * my_constants.PAD_LENGTH
-        pad.center_y = y_input * my_constants.PAD_LENGTH
+        pad.center_x = x_input
+        pad.center_y = y_input
 
         Pad.list.append(pad)
         Pad.y_values_list = np.array([pad.center_y for pad in Pad.list])
@@ -58,23 +60,31 @@ class Pad(arcade.Sprite):
         Pad.y_values_list = None
         Pad.y_values_list = []
 
-        # spawn the first 2 pads
-        for y in range(-2 * my_constants.DELTA_Y, 0, my_constants.DELTA_Y):
-            Pad.spawn_pad(x_input=4, y_input=y)
+        # spawn the first 4 pads
+        for y in range(-4, 0):
+            Pad.spawn_pad(
+                x_input=random.randrange(
+                    int(my_constants.WINDOW_WIDTH / 3),
+                    int(my_constants.WINDOW_WIDTH * 2 / 3),
+                ),
+                y_input=y * my_constants.DELTA_Y * my_constants.PAD_LENGTH,
+            )
 
     def update():
 
         # update the list of pad's y-positions.
         Pad.y_values_list = np.array([pad4.center_y for pad4 in Pad.list])
 
-        if max(Pad.y_values_list) - player_file.Player.sprite.center_y > 5:
+        # kill the player if they go below the top pad
+        y_value_of_top_pad = max(Pad.y_values_list)
+        if y_value_of_top_pad - player_file.Player.sprite.center_y > 5:
             gameview_file.GameView.dead = True
 
         # find pads that the player will hit
         hit_list = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Pad.list
         )
-        # if the player hits a pad, then bounce player and move pad down.
+        # if the player hits a pad, then bounce player and move the pad.
         # there is probably a more efficient way of writing the next 2 loc.
         if len(hit_list) > 0:
             for hit_pad in hit_list:
@@ -83,10 +93,16 @@ class Pad(arcade.Sprite):
                     min(Pad.y_values_list)
                     - my_constants.DELTA_Y * my_constants.PAD_LENGTH
                 )
+                # get the x-position of next pad
 
-                # Boolean variable if we successfully placed the coin
+                # update the list of pad's y-positions.
+                Pad.y_values_list = np.array([pad4.center_y for pad4 in Pad.list])
+                # get the new top pad (this is the pad that the player is about to hit!)
+
+                # randomize pad's x-position
+                # Boolean variable if we successfully placed the pad .
                 pad_placed_successfully = False
-                # Keep trying until success
+                # Keep trying until success.
                 while not pad_placed_successfully:
                     # randomize pad's x-position
                     x_change = random.randrange(
@@ -94,7 +110,7 @@ class Pad(arcade.Sprite):
                     )
                     hit_pad.center_x += x_change
 
-                    # if the pad is not touching the screen's left edge and not touching the right screen edge, then:
+                    # if the pad is not touching the screen's edges, then pad was succesfully placed.
                     right_edge = my_constants.WINDOW_WIDTH - my_constants.PAD_LENGTH
                     if (
                         hit_pad.center_x > my_constants.PAD_LENGTH

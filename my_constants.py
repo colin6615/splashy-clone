@@ -28,7 +28,7 @@ X_ALL_PADS = 10
 
 # x-displacement between non-starting pads
 # good value is 100
-MOVE_PAD_X = 500
+MOVE_PAD_X = 100
 
 # y-distance between pads.
 DELTA_Y = 2  # int

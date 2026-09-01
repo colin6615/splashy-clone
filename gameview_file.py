@@ -107,8 +107,8 @@ class GameView(arcade.View):
         self.coin_list.draw()
 
         # Draw the pad that we work to make sure the user stays inside of.
-        # This is just for illustration purposes. You'd want to remove this
-        # in your game.
+        # This is just for illustration purposes.
+        # remove upon release
         camera_x, camera_y = self.camera_sprites.position
         arcade.draw_rect_outline(
             arcade.XYWH(

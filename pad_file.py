@@ -10,6 +10,7 @@ import player_file
 
 
 class Pad(arcade.Sprite):
+    random.seed(10)
     """
     If player hits a pad, then the player bounces and the pad respawns below them.
 
@@ -51,6 +52,7 @@ class Pad(arcade.Sprite):
 
     def setup():
         """Set up the game and initialize the variables."""
+
         Pad.list = None
         Pad.list = arcade.SpriteList()
         Pad.y_values_list = None
@@ -61,13 +63,12 @@ class Pad(arcade.Sprite):
             Pad.spawn_pad(x_input=4, y_input=y)
 
     def update():
+
         # update the list of pad's y-positions.
         Pad.y_values_list = np.array([pad4.center_y for pad4 in Pad.list])
 
-        # if the player moves below the pad, then kill player
-        for pad3 in Pad.list:
-            if pad3.center_y - player_file.Player.sprite.center_y > 5:
-                gameview_file.GameView.dead = True
+        if max(Pad.y_values_list) - player_file.Player.sprite.center_y > 5:
+            gameview_file.GameView.dead = True
 
         # find pads that the player will hit
         hit_list = arcade.check_for_collision_with_list(
@@ -85,13 +86,14 @@ class Pad(arcade.Sprite):
 
                 # Boolean variable if we successfully placed the coin
                 pad_placed_successfully = False
-
                 # Keep trying until success
                 while not pad_placed_successfully:
                     # randomize pad's x-position
-                    hit_pad.center_x += random.randrange(
+                    x_change = random.randrange(
                         -my_constants.MOVE_PAD_X, my_constants.MOVE_PAD_X
                     )
+                    hit_pad.center_x += x_change
+
                     # if the pad is not touching the screen's left edge and not touching the right screen edge, then:
                     right_edge = my_constants.WINDOW_WIDTH - my_constants.PAD_LENGTH
                     if (
@@ -99,6 +101,7 @@ class Pad(arcade.Sprite):
                         and hit_pad.center_x < right_edge
                     ):
                         pad_placed_successfully = True
+                        print(x_change)
 
                 # bounce player
                 player_file.Player.sprite.velocity *= (

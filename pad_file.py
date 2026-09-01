@@ -1,10 +1,8 @@
 """holds the pad/trapoline class"""
 
 import random
-from operator import attrgetter
 
 import arcade
-import numpy as np
 
 import my_constants
 import player_file
@@ -51,15 +49,12 @@ class Pad(arcade.Sprite):
         pad.center_y = y_input
 
         Pad.list.append(pad)
-        Pad.y_values_list = np.array([pad.center_y for pad in Pad.list])
 
     def setup():
         """Set up the game and initialize the variables."""
 
         Pad.list = None
         Pad.list = arcade.SpriteList()
-        Pad.y_values_list = None
-        Pad.y_values_list = []
 
         # spawn the first 4 pads
         for y in range(-4, 0):
@@ -72,13 +67,11 @@ class Pad(arcade.Sprite):
             )
 
     def update():
-
-        # update the list of pad's y-positions.
-        Pad.y_values_list = np.array([pad4.center_y for pad4 in Pad.list])
+        #        top_pad = max(Pad.list, key=attrgetter("center_y"))
 
         # kill the player if they go below the top pad
-        top_pad = max(Pad.list, key=attrgetter("center_y"))
-        if top_pad.center_y - player_file.Player.sprite.center_y > 5:
+        top_pad_center_y = max(pad_dummy.center_y for pad_dummy in Pad.list)
+        if top_pad_center_y - player_file.Player.sprite.center_y > 5:
             gameview_file.GameView.dead = True
 
         # find pads that the player will hit
@@ -90,14 +83,12 @@ class Pad(arcade.Sprite):
         if len(hit_list) > 0:
             for hit_pad in hit_list:
                 # move pad down
+                bottom_pad_center_y = min(pad_dummy.center_y for pad_dummy in Pad.list)
                 hit_pad.center_y = (
-                    min(Pad.y_values_list)
-                    - my_constants.DELTA_Y * my_constants.PAD_LENGTH
+                    bottom_pad_center_y - my_constants.DELTA_Y * my_constants.PAD_LENGTH
                 )
                 # get the x-position of next pad
 
-                # update the list of pad's y-positions.
-                Pad.y_values_list = np.array([pad4.center_y for pad4 in Pad.list])
                 # get the new top pad (this is the pad that the player is about to hit!)
 
                 # randomize pad's x-position
@@ -118,7 +109,6 @@ class Pad(arcade.Sprite):
                         and hit_pad.center_x < right_edge
                     ):
                         pad_placed_successfully = True
-                        print(x_change)
 
                 # bounce player
                 player_file.Player.sprite.velocity *= (

@@ -27,7 +27,7 @@ TIME_FACTOR_CHANGE = 0.01
 X_ALL_PADS = 10
 
 # x-displacement between non-starting pads
-MOVE_PAD_X = 100
+MOVE_PAD_X = 500
 
 # y-distance between pads.
 DELTA_Y = 2  # int

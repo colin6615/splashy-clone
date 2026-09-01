@@ -122,8 +122,8 @@ class GameView(arcade.View):
         self.camera_gui.use()
 
         # Draw the score
-        text = str(GameView.score)
-        arcade.draw_text(text, 10, 10, arcade.color.BLACK_BEAN, 20)
+        score_text = str(GameView.score)
+        arcade.draw_text(score_text, 10, 10, arcade.color.BLACK_BEAN, 20)
 
         # Instruct the user to start the game by clicking, if they haven't started the game yet.
         if GameView.started == False:

@@ -82,10 +82,23 @@ class Pad(arcade.Sprite):
                     min(Pad.y_values_list)
                     - my_constants.DELTA_Y * my_constants.PAD_LENGTH
                 )
-                # randomize pad's x-position
-                hit_pad.center_x += random.randrange(
-                    -my_constants.MOVE_PAD_X, my_constants.MOVE_PAD_X
-                )
+
+                # Boolean variable if we successfully placed the coin
+                pad_placed_successfully = False
+
+                # Keep trying until success
+                while not pad_placed_successfully:
+                    # randomize pad's x-position
+                    hit_pad.center_x += random.randrange(
+                        -my_constants.MOVE_PAD_X, my_constants.MOVE_PAD_X
+                    )
+                    # if the pad is not touching the screen's left edge and not touching the right screen edge, then:
+                    right_edge = my_constants.WINDOW_WIDTH - my_constants.PAD_LENGTH
+                    if (
+                        hit_pad.center_x > my_constants.PAD_LENGTH
+                        and hit_pad.center_x < right_edge
+                    ):
+                        pad_placed_successfully = True
 
                 # bounce player
                 player_file.Player.sprite.velocity *= (

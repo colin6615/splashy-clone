@@ -1,6 +1,7 @@
 """holds the pad/trapoline class"""
 
 import random
+from operator import attrgetter
 
 import arcade
 
@@ -59,6 +60,7 @@ class Pad(arcade.Sprite):
         # spawn the first 4 pads
         for y in range(-4, 0):
             Pad.spawn_pad(
+                # first pads have random x position in the middle one third of the screen
                 x_input=random.randrange(
                     int(my_constants.WINDOW_WIDTH / 3),
                     int(my_constants.WINDOW_WIDTH * 2 / 3),
@@ -67,8 +69,6 @@ class Pad(arcade.Sprite):
             )
 
     def update():
-        #        top_pad = max(Pad.list, key=attrgetter("center_y"))
-
         # kill the player if they go below the top pad
         top_pad_center_y = max(pad_dummy.center_y for pad_dummy in Pad.list)
         if top_pad_center_y - player_file.Player.sprite.center_y > 5:
@@ -82,14 +82,8 @@ class Pad(arcade.Sprite):
         # there is probably a more efficient way of writing the next 2 loc.
         if len(hit_list) > 0:
             for hit_pad in hit_list:
-                # move pad down
-                bottom_pad_center_y = min(pad_dummy.center_y for pad_dummy in Pad.list)
-                hit_pad.center_y = (
-                    bottom_pad_center_y - my_constants.DELTA_Y * my_constants.PAD_LENGTH
-                )
-                # get the x-position of next pad
-
-                # get the new top pad (this is the pad that the player is about to hit!)
+                # get the bottom pad
+                bottom_pad = min(Pad.list, key=attrgetter("center_y"))
 
                 # randomize pad's x-position
                 # Boolean variable if we successfully placed the pad .
@@ -100,7 +94,7 @@ class Pad(arcade.Sprite):
                     x_change = random.randrange(
                         -my_constants.MOVE_PAD_X, my_constants.MOVE_PAD_X
                     )
-                    hit_pad.center_x += x_change
+                    hit_pad.center_x = bottom_pad.center_x + x_change
 
                     # if the pad is not touching the screen's edges, then pad was succesfully placed.
                     right_edge = my_constants.WINDOW_WIDTH - my_constants.PAD_LENGTH
@@ -109,6 +103,12 @@ class Pad(arcade.Sprite):
                         and hit_pad.center_x < right_edge
                     ):
                         pad_placed_successfully = True
+
+                # move pad down
+                bottom_pad_center_y = min(pad_dummy.center_y for pad_dummy in Pad.list)
+                hit_pad.center_y = (
+                    bottom_pad_center_y - my_constants.DELTA_Y * my_constants.PAD_LENGTH
+                )
 
                 # bounce player
                 player_file.Player.sprite.velocity *= (

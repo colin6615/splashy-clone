@@ -76,7 +76,7 @@ class Pad(item_file.Item):
                 y_input=y * my_constants.DELTA_Y,
             )
 
-    def update(self, delta_time):
+    def _update(self, delta_time):
         # kill the player if they go below the top pad
         top_pad = max(Pad.list, key=attrgetter("center_y"))
         if (

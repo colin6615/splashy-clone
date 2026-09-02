@@ -43,4 +43,7 @@ class Item(arcade.Sprite):
         item.center_x = x_input
         item.center_y = y_input
 
-        item_class.list.append(item)
+        pad_file.Pad.list.append(item)
+
+
+import pad_file

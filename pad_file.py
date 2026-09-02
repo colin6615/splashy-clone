@@ -32,9 +32,6 @@ class Pad(item_file.Item):
         center_y (float): vertical position of a pad
     """
 
-    # make it so the random numbers generated in this class are the same in every run of the game.
-    random.seed(10)  # remove upon release
-
     def __init__(self, filename, sprite_scaling):
         """set default pad position"""
         super().__init__(filename, sprite_scaling)
@@ -86,12 +83,12 @@ class Pad(item_file.Item):
             gameview_file.GameView.dead = True
 
         # find pads that the player will hit
-        hit_list = arcade.check_for_collision_with_list(
+        self.hit_list = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Pad.list
         )
         # if the player hits a pad, then bounce player and move the pad.
-        if len(hit_list) > 0:
-            for hit_pad in hit_list:
+        if len(self.hit_list) > 0:
+            for hit_pad in self.hit_list:
                 # get the bottom pad
                 bottom_pad = min(Pad.list, key=attrgetter("center_y"))
 

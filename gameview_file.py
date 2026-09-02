@@ -18,6 +18,7 @@ TOP_BOUNDARY = my_constants.WINDOW_HEIGHT / 2.0 - 100
 
 # How fast the camera pans to the player. 1.0 is instant.
 CAMERA_SPEED = 0.6
+# ==================
 
 
 CAMERA_BOUNDARY = arcade.LRBT(

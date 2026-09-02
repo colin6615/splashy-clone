@@ -8,6 +8,16 @@ import arcade
 import my_constants
 import player_file
 
+# --- Constants ---
+# the first 4 pads will spawn with x values in between these two bounds
+# Currently, the bounds enclose the middle one third of the screen
+STARTING_PADS_LEFT_BOUND = int(my_constants.WINDOW_WIDTH / 3)
+STARTING_PADS_RIGHT_BOUND = int(my_constants.WINDOW_WIDTH * 2 / 3)
+
+# Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE underneath a pad.
+MIN_PLAYER_PAD_HEIGHT_DIFFERENCE = 0
+# ==================
+
 
 class Pad(arcade.Sprite):
     """
@@ -53,17 +63,14 @@ class Pad(arcade.Sprite):
 
     def setup():
         """Set up the game and initialize the variables."""
-
-        Pad.list = None
         Pad.list = arcade.SpriteList()
 
         # spawn the first 4 pads
         for y in range(-4, 0):
             Pad.spawn_pad(
-                # first pads have random x position in the middle one third of the screen
+                # first pads have random x position within the bounds
                 x_input=random.randrange(
-                    int(my_constants.WINDOW_WIDTH / 3),
-                    int(my_constants.WINDOW_WIDTH * 2 / 3),
+                    STARTING_PADS_LEFT_BOUND, STARTING_PADS_RIGHT_BOUND
                 ),
                 y_input=y * my_constants.DELTA_Y,
             )
@@ -71,7 +78,10 @@ class Pad(arcade.Sprite):
     def update():
         # kill the player if they go below the top pad
         top_pad = max(Pad.list, key=attrgetter("center_y"))
-        if top_pad.center_y - player_file.Player.sprite.center_y > 5:
+        if (
+            top_pad.center_y - player_file.Player.sprite.center_y
+            > MIN_PLAYER_PAD_HEIGHT_DIFFERENCE
+        ):
             gameview_file.GameView.dead = True
 
         # find pads that the player will hit

@@ -24,8 +24,6 @@ class Player(arcade.Sprite):
 
     def setup():
         """Make the sprite and list"""
-        # make sprite
-        Player.sprite = None
         Player.sprite = arcade.Sprite(
             ":resources:images/animated_characters/female_person/femalePerson_idle.png",
             scale=0.4,

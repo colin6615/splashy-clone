@@ -149,7 +149,7 @@ class GameView(arcade.View):
     def on_update(self, delta_time):
         """Movement and game logic"""
         # update pads and player.
-        pad_file.Pad.update()
+        pad_file.Pad.list.update()  # what to put into this update thingy? how to update the sprite list? idk how to update individual sprites
         player_file.Player.update()
 
         # Scroll the screen to the player

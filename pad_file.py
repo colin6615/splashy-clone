@@ -20,7 +20,7 @@ MIN_PLAYER_PAD_HEIGHT_DIFFERENCE = 0
 # ==================
 
 
-class Pad(arcade.Sprite, item_file.Item):
+class Pad(item_file.Item):
     """
     If player hits a pad, then the player bounces and the pad respawns below them.
 
@@ -76,7 +76,7 @@ class Pad(arcade.Sprite, item_file.Item):
                 y_input=y * my_constants.DELTA_Y,
             )
 
-    def _update():
+    def update(self, delta_time):
         # kill the player if they go below the top pad
         top_pad = max(Pad.list, key=attrgetter("center_y"))
         if (

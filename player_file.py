@@ -35,7 +35,6 @@ class Player(arcade.Sprite):
         Player.sprite.velocity = 0
 
         # make list and add sprite to list
-        Player.list = None
         Player.list = arcade.SpriteList()
         Player.list.append(Player.sprite)
 

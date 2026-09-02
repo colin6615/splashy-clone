@@ -78,7 +78,7 @@ class Pad(item_file.Item):
             )
             logger.debug("test log")
 
-    def _update(self, delta_time):
+    def update(self, delta_time):
         logger.debug("pad update.")
         print("test")
         # kill the player if they go below the top pad

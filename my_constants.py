@@ -31,7 +31,7 @@ X_ALL_PADS = 10
 MOVE_PAD_X = 500
 
 # y-distance between pads.
-DELTA_Y = 2  # int
+DELTA_Y = 128
 
 SPRITE_SCALING_PAD = 0.5
 PAD_LENGTH = 64

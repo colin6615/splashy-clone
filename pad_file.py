@@ -65,13 +65,13 @@ class Pad(arcade.Sprite):
                     int(my_constants.WINDOW_WIDTH / 3),
                     int(my_constants.WINDOW_WIDTH * 2 / 3),
                 ),
-                y_input=y * my_constants.DELTA_Y * my_constants.PAD_LENGTH,
+                y_input=y * my_constants.DELTA_Y,
             )
 
     def update():
         # kill the player if they go below the top pad
-        top_pad_center_y = max(pad_dummy.center_y for pad_dummy in Pad.list)
-        if top_pad_center_y - player_file.Player.sprite.center_y > 5:
+        top_pad = max(Pad.list, key=attrgetter("center_y"))
+        if top_pad.center_y - player_file.Player.sprite.center_y > 5:
             gameview_file.GameView.dead = True
 
         # find pads that the player will hit
@@ -79,14 +79,13 @@ class Pad(arcade.Sprite):
             player_file.Player.sprite, Pad.list
         )
         # if the player hits a pad, then bounce player and move the pad.
-        # there is probably a more efficient way of writing the next 2 loc.
         if len(hit_list) > 0:
             for hit_pad in hit_list:
                 # get the bottom pad
                 bottom_pad = min(Pad.list, key=attrgetter("center_y"))
 
-                # randomize pad's x-position
-                # Boolean variable if we successfully placed the pad .
+                # randomize pad's x-position, but don't touch the screen's edges
+                # Boolean variable if we successfully placed the pad.
                 pad_placed_successfully = False
                 # Keep trying until success.
                 while not pad_placed_successfully:
@@ -105,10 +104,7 @@ class Pad(arcade.Sprite):
                         pad_placed_successfully = True
 
                 # move pad down
-                bottom_pad_center_y = min(pad_dummy.center_y for pad_dummy in Pad.list)
-                hit_pad.center_y = (
-                    bottom_pad_center_y - my_constants.DELTA_Y * my_constants.PAD_LENGTH
-                )
+                hit_pad.center_y = bottom_pad.center_y - my_constants.DELTA_Y
 
                 # bounce player
                 player_file.Player.sprite.velocity *= (

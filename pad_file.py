@@ -76,7 +76,7 @@ class Pad(arcade.Sprite, item_file.Item):
                 y_input=y * my_constants.DELTA_Y,
             )
 
-    def update():
+    def _update():
         # kill the player if they go below the top pad
         top_pad = max(Pad.list, key=attrgetter("center_y"))
         if (

@@ -1,5 +1,6 @@
 """holds the pad/trapoline class"""
 
+import logging
 import random
 from operator import attrgetter
 
@@ -18,6 +19,15 @@ STARTING_PADS_RIGHT_BOUND = int(my_constants.WINDOW_WIDTH * 2 / 3)
 # Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE underneath a pad.
 MIN_PLAYER_PAD_HEIGHT_DIFFERENCE = 0
 # ==================
+
+# --- Debugging
+logging.basicConfig(level=logging.INFO)
+# Create my own logger
+logger = logging.getLogger("My Game")
+# My logger is set to DEBUG level of detail
+logger.setLevel(logging.DEBUG)
+
+# ---
 
 
 class Pad(item_file.Item):
@@ -39,16 +49,6 @@ class Pad(item_file.Item):
         self.center_x = 0
         self.center_y = 0
 
-    def spawn_pad(x_input, y_input):
-        """
-        spawns pads.
-
-        Units are in terms of pads. If you drew a line from x=0 to x=2, then it has length of 2 * PAD_LENGTH.
-
-        Args:
-            x_input (float): the x-position of the center of the spawned pad.
-
-            y_input (float): the y-position of the center of the spawned pad.
         """
         # make pad sprite
         pad = Pad("assets/green_rectangle.png", my_constants.SPRITE_SCALING_PAD)
@@ -58,6 +58,7 @@ class Pad(item_file.Item):
         pad.center_y = y_input
 
         Pad.list.append(pad)
+        """
 
     def setup():
         """Set up the game and initialize the variables."""
@@ -65,15 +66,21 @@ class Pad(item_file.Item):
 
         # spawn the first 4 pads
         for y in range(-4, 0):
-            Pad.spawn_pad(
+            item_file.Item.spawn(
                 # first pads have random x position within the bounds
                 x_input=random.randrange(
                     STARTING_PADS_LEFT_BOUND, STARTING_PADS_RIGHT_BOUND
                 ),
                 y_input=y * my_constants.DELTA_Y,
+                image_path="assets/green_rectangle.png",
+                image_scaler=my_constants.SPRITE_SCALING_PAD,
+                item_class=Pad,
             )
+            logger.debug("test log")
 
     def _update(self, delta_time):
+        logger.debug("pad update.")
+        print("test")
         # kill the player if they go below the top pad
         top_pad = max(Pad.list, key=attrgetter("center_y"))
         if (

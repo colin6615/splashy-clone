@@ -1,0 +1,10 @@
+class Item:
+    def update(self, **kwargs):
+        # Run general item stuff
+
+        # Call the child's specific logic
+        self._update(**kwargs)
+
+    def _update(self, **kwargs):
+        # children will overide this to inserrt their specific code
+        pass

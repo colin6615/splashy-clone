@@ -5,6 +5,7 @@ from operator import attrgetter
 
 import arcade
 
+import item_file
 import my_constants
 import player_file
 
@@ -19,7 +20,7 @@ MIN_PLAYER_PAD_HEIGHT_DIFFERENCE = 0
 # ==================
 
 
-class Pad(arcade.Sprite):
+class Pad(arcade.Sprite, item_file.Item):
     """
     If player hits a pad, then the player bounces and the pad respawns below them.
 

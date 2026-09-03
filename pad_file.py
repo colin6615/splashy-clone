@@ -15,7 +15,7 @@ import player_file
 STARTING_PADS_LEFT_BOUND = int(my_constants.WINDOW_WIDTH / 3)
 STARTING_PADS_RIGHT_BOUND = int(my_constants.WINDOW_WIDTH * 2 / 3)
 
-# Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE underneath a pad.
+# Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE pixels underneath a pad.
 MIN_PLAYER_PAD_HEIGHT_DIFFERENCE = 0
 # ==================
 
@@ -28,16 +28,7 @@ class Pad(item_file.Item):
         Pad.list (SpriteList): list of all pad sprites
 
     Instance Attributes:
-        center_x (float): horizontal position of a pad
-        center_y (float): vertical position of a pad
     """
-
-    def __init__(self, filename, sprite_scaling):
-        """set default pad position"""
-        super().__init__(filename, sprite_scaling)
-
-        self.center_x = 0
-        self.center_y = 0
 
     def setup():
         """Set up the game and initialize the variables."""

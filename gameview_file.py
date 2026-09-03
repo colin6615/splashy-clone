@@ -63,7 +63,7 @@ class GameView(arcade.View):
         self.coin_list = arcade.SpriteList()
         pad_file.Pad.setup()
         target_file.Target.setup()
-        player_file.Player.setup()
+        player_file.setup()
 
         # Create the coins
         for i in range(my_constants.NUMBER_OF_COINS):
@@ -152,7 +152,7 @@ class GameView(arcade.View):
         """Movement and game logic"""
         # update pads and player.
         pad_file.Pad.list.update()  # what to put into this update thingy? how to update the sprite list? idk how to update individual sprites
-        player_file.Player.update()
+        player_file.update()
 
         # Scroll the screen to the player
         self.scroll_to_player()

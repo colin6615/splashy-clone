@@ -39,7 +39,7 @@ class Pad(item_file.Item):
         self.center_x = 0
         self.center_y = 0
 
-    def spawn(x_input, y_input, image_path, image_scale):
+    def spawn(x_input, y_input, image_path, image_scale, CLASS):
         """
         spawns an item at specified coordinates
 
@@ -49,7 +49,7 @@ class Pad(item_file.Item):
             y_input (float): the y-position of the center of the spawned item.
         """
         # make item sprite
-        item = Pad(
+        item = CLASS(
             image_path, image_scale
         )  # need some way to get self.image_path without calling self?
 
@@ -57,7 +57,7 @@ class Pad(item_file.Item):
         item.center_x = x_input
         item.center_y = y_input
 
-        Pad.list.append(item)
+        CLASS.list.append(item)
 
     # def spawn_pad(x_input, y_input):
     #     """
@@ -93,7 +93,7 @@ class Pad(item_file.Item):
                 y_input=y * my_constants.DELTA_Y,
                 image_path="assets/green_rectangle.png",
                 image_scale=0.5,
-                # CLASS=Pad,
+                CLASS=Pad,
             )
             """
             

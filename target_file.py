@@ -40,8 +40,8 @@ def setup():
 
 import gameview_file
 
-pad_dict = {
-    "image_path": "assets/green_rectangle.png",
-    "image_scale": 0.5,
+dict = {
+    "image_path": "assets/target.png",
+    "image_scale": 1,
     "Input_class": Target,
 }

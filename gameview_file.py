@@ -61,8 +61,9 @@ class GameView(arcade.View):
 
         # spawn player and 2 pads.
         self.coin_list = arcade.SpriteList()
-        pad_file.Pad.setup()
         target_file.setup()
+        pad_file.Pad.setup()
+
         player_file.setup()
 
         # Create the coins
@@ -107,6 +108,7 @@ class GameView(arcade.View):
         # Draw all the sprites.
         player_file.Player.list.draw()
         pad_file.Pad.list.draw()
+        target_file.Target.list.draw()
         self.coin_list.draw()
 
         # Draw the pad that we work to make sure the user stays inside of.
@@ -154,6 +156,7 @@ class GameView(arcade.View):
         # update pads and player.
         pad_file.Pad.list.update()
         player_file.update()
+        target_file.Target.list.update()
 
         # Scroll the screen to the player
         self.scroll_to_player()

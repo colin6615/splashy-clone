@@ -69,7 +69,7 @@ class Pad(item_file.Item):
                 )
                 if len(target_pad_collision_list) > 0:
                     for target_and_pad in target_pad_collision_list:
-                        gameview_file.GameView.score = 1
+                        gameview_file.GameView.score_factor = 1
 
                 # delete the hit pad
                 hit_pad.remove_from_sprite_lists()
@@ -121,7 +121,7 @@ class Pad(item_file.Item):
 
 import gameview_file
 
-pad_dict = {
+dict = {
     "image_path": "assets/green_rectangle.png",
     "image_scale": 0.5,
     "Input_class": Pad,
@@ -132,8 +132,18 @@ def spawn_pad(
     x_input,
     y_input,
 ):
+    """
+    spawns a pad at the specified coordinates
+    spawns a target on the pad.
+    the target should have same y-input, but different x_input
+    """
     item_file.spawn(
         x_input,
         y_input,
-        **pad_dict,  # the item is a pad.
+        **dict,  # the item is a pad.
+    )
+    item_file.spawn(
+        x_input,
+        y_input,
+        **target_file.dict,
     )

@@ -8,6 +8,7 @@ import gameover_file
 import my_constants
 import pad_file
 import player_file
+import target_file
 
 # -- Constants
 # If the player moves further than this boundary away from the camera we use a
@@ -61,6 +62,7 @@ class GameView(arcade.View):
         # spawn player and 2 pads.
         self.coin_list = arcade.SpriteList()
         pad_file.Pad.setup()
+        target_file.Target.setup()
         player_file.Player.setup()
 
         # Create the coins

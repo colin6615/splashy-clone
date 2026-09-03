@@ -71,3 +71,11 @@ def spawn(x_input, y_input, **input_dict):
     # For example, if the class is Pad, then the sprite list is Pad.list
     # This is probably bad practice. rewrite, this, later, if needed.
     class_.list.append(item)
+
+
+def collision_detect(list1, list2, function):
+
+    hit_list = arcade.check_for_collision_with_list(list1, list2)
+
+    if len(hit_list) > 0:
+        return hit_list

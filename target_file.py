@@ -37,15 +37,19 @@ class Target(item_file.Item):
                     # increase score multiplier
                     gameview_file.GameView.score_factor += 1
 
+    # MAJOR BUGS HERE. NOTE:
+    output_hit_list = item_file.collision_detect(
+        list1=player_file.Player.sprite, list2=Target.list
+    )
+
     def test_function(hit_target_input):
-        # remove from sprite list to make sure that player interacts with target once
+        for hit_target in output_hit_list:
+            if hit_target in Target.list:
+                # remove from sprite list to make sure that player interacts with target once
+                hit_target.remove_from_sprite_lists()
 
-        hit_target_input.remove_from_sprite_lists()
-
-        # increase score multiplier
-        gameview_file.GameView.score_factor += 1
-
-        # output_hit_list = collision_detect(list1 =  player_file.Player.sprite, list2=Target.list,)
+                # increase score multiplier
+                gameview_file.GameView.score_factor += 1
 
 
 import gameview_file

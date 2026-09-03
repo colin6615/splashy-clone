@@ -57,7 +57,7 @@ class Pad(item_file.Item):
             > MIN_PLAYER_PAD_HEIGHT_DIFFERENCE
         ):
             gameview_file.GameView.dead = True
-        # whole seciton: if player hits a pad, then bounce player, move pad, and change score
+        # whole seciton: if player hits a pad, then bounce player, remove pad, create new pad, and change score
         # next few lines: if player hits a pad, then:
         self.hit_list = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Pad.list
@@ -71,6 +71,10 @@ class Pad(item_file.Item):
                 if len(target_pad_collision_list) > 0:
                     for target_and_pad in target_pad_collision_list:
                         gameview_file.GameView.score = 1
+
+                # delete the hit pad
+                hit_pad.remove_from_sprite_lists()
+
                 # ------------ Start of re-position pad
                 #  In this whole section, I teleport hit pad directly below the bottom pad. Then change the hit pad's x-position, slightly
                 # First, randomize pad's x-position, but don't touch the screen's edges
@@ -86,19 +90,26 @@ class Pad(item_file.Item):
                     # get bottom pad
                     bottom_pad = min(Pad.list, key=attrgetter("center_y"))
                     # add random number to bottom pad's x-position. Equate its value to the hit pad's x-position
-                    hit_pad.center_x = bottom_pad.center_x + x_change
+                    new_center_x = bottom_pad.center_x + x_change
 
                     # if the pad is not touching the screen's edges, then pad was succesfully placed.
                     right_edge = my_constants.WINDOW_WIDTH - my_constants.PAD_LENGTH
                     if (
-                        hit_pad.center_x > my_constants.PAD_LENGTH
-                        and hit_pad.center_x < right_edge
+                        new_center_x > my_constants.PAD_LENGTH
+                        and new_center_x < right_edge
                     ):
                         pad_placed_successfully = True
                 # ------------- after you successfully change the x-position
                 # move pad down
-                hit_pad.center_y = bottom_pad.center_y - my_constants.DELTA_Y
+                new_center_y = bottom_pad.center_y - my_constants.DELTA_Y
                 # ------------------- End of re-position pad
+
+                # create new pad
+                item_file.spawn(
+                    x_input=new_center_x,
+                    y_input=new_center_y,
+                    **pad_dict,  # defined at the bottom of this file. indicates that we are spawning a pad
+                )
 
                 # bounce player
                 player_file.Player.sprite.velocity *= (

@@ -35,18 +35,17 @@ class Pad(item_file.Item):
     """
 
     def setup():
-        """Set up the game and initialize the variables."""
+        """create sprite list and spawn the first pads"""
         Pad.list = arcade.SpriteList()
 
         # spawn the first 4 pads
         for y in range(-4, 0):
-            item_file.spawn(
+            spawn_pad(
                 # first pads have random x position within the bounds
                 x_input=random.randrange(
                     STARTING_PADS_LEFT_BOUND, STARTING_PADS_RIGHT_BOUND
                 ),
                 y_input=y * my_constants.DELTA_Y,
-                **pad_dict,  # defined at the bottom of this file. indicates that we are spawning a pad
             )
 
     def _update(self, delta_time):
@@ -105,10 +104,9 @@ class Pad(item_file.Item):
                 # ------------------- End of re-position pad
 
                 # create new pad
-                item_file.spawn(
+                spawn_pad(
                     x_input=new_center_x,
                     y_input=new_center_y,
-                    **pad_dict,  # defined at the bottom of this file. indicates that we are spawning a pad
                 )
 
                 # bounce player
@@ -128,3 +126,14 @@ pad_dict = {
     "image_scale": 0.5,
     "Input_class": Pad,
 }
+
+
+def spawn_pad(
+    x_input,
+    y_input,
+):
+    item_file.spawn(
+        x_input,
+        y_input,
+        **pad_dict,  # the item is a pad.
+    )

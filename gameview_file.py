@@ -62,7 +62,7 @@ class GameView(arcade.View):
         # spawn player and 2 pads.
         self.coin_list = arcade.SpriteList()
         pad_file.Pad.setup()
-        target_file.Target.setup()
+        target_file.setup()
         player_file.setup()
 
         # Create the coins
@@ -141,22 +141,24 @@ class GameView(arcade.View):
 
     def game_over_function(self):
         """Stop gameplay. Switch to game over screen."""
+        # create game over screen
         game_over_view = gameover_file.GameOverView()
 
         # show the mouse
         self.window.set_mouse_visible(True)
-
+        # switch the window to game over screen
         self.window.show_view(game_over_view)
 
     def on_update(self, delta_time):
-        """Movement and game logic"""
+        """Movement and game logic. This function calls every game tick"""
         # update pads and player.
-        pad_file.Pad.list.update()  # what to put into this update thingy? how to update the sprite list? idk how to update individual sprites
+        pad_file.Pad.list.update()
         player_file.update()
 
         # Scroll the screen to the player
         self.scroll_to_player()
 
+        # if player is dead, then go to game end screen
         if GameView.dead == True:
             GameView.game_over_function(self)
 

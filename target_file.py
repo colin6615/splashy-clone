@@ -16,10 +16,6 @@ class Target(item_file.Item):
     Instance Attributes:
     """
 
-    def setup():
-        """Set up the game and initialize the variables."""
-        Target.list = arcade.SpriteList()
-
     def _update(self, delta_time):
         """you probably need to delete all of this code and then test it line by line because its currently untested, and it probably won't work."""
         # this section: if the player hits a target, then increase the score multiplier and delete the target
@@ -35,6 +31,11 @@ class Target(item_file.Item):
 
                     # increase score multiplier
                     gameview_file.GameView.score_factor += 1
+
+
+def setup():
+    """Set up the game and initialize the variables."""
+    Target.list = arcade.SpriteList()
 
 
 import gameview_file

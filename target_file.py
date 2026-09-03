@@ -40,7 +40,7 @@ def setup():
 
 import gameview_file
 
-dict = {
+spawn_dict = {
     "image_path": "assets/target.png",
     "image_scale": 1,
     "Input_class": Target,

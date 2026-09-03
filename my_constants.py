@@ -1,3 +1,14 @@
+import arcade
+
+
+def get_width(image_path):
+    # load texture from image
+    texture = arcade.load_texture(image_path)
+
+    width_height = texture.size
+    return width_height[0]
+
+
 # ==================================
 # --- PHYSICS ----
 # ==================================
@@ -23,18 +34,19 @@ TIME_FACTOR_CHANGE = 0.01
 # ==================================
 # --- PADS ---
 # ==================================
-# the x-position of starting pads
-X_ALL_PADS = 10
 
-# x-displacement between non-starting pads
-# good value is 100
-MOVE_PAD_X = 200
+pad = {
+    "image_path": "assets/green_rectangle.png",  # path to sprite image
+    "image_scale": 0.5,  # scales size of image
+    # x-displacement between adjacent pads
+    # NOTE: good value is 100
+    "delta_x": 200,
+    # y-displacement between adjacent pads
+    # NOTE: good value is 100
+    "delta_y": 128,
+    "width": get_width("assets/green_rectangle.png"),
+}
 
-# y-distance between pads.
-DELTA_Y = 128
-
-SPRITE_SCALING_PAD = 0.5
-PAD_LENGTH = 64
 
 # ==================================
 # --- COIN ---

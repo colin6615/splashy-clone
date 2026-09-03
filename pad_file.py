@@ -45,7 +45,7 @@ class Pad(item_file.Item):
                 x_=random.randrange(
                     STARTING_PADS_LEFT_BOUND, STARTING_PADS_RIGHT_BOUND
                 ),
-                y_=y * my_constants.DELTA_Y,
+                y_=y * my_constants.pad["delta_y"],
             )
 
     def _update(self, delta_time):
@@ -92,19 +92,19 @@ class Pad(item_file.Item):
                     # ----------------- Change this pad's x-position to the bottom pad, and then add a random number to this.
                     # generate random number to add later
                     x_change = random.randrange(
-                        -my_constants.MOVE_PAD_X, my_constants.MOVE_PAD_X
+                        -my_constants.pad["delta_x"], my_constants.pad["delta_x"]
                     )
                     # add random number to bottom pad's x-position. Equate its value to the hit pad's x-position
                     new_center_x = bottom_pad.center_x + x_change
 
                     # if the pad is not touching the screen's edges, then pad was succesfully placed.
-                    right_edge = my_constants.WINDOW_WIDTH - my_constants.PAD_LENGTH
-                    left_edge = my_constants.PAD_LENGTH
+                    right_edge = my_constants.WINDOW_WIDTH - my_constants.pad["width"]
+                    left_edge = my_constants.pad["width"]
                     if new_center_x > left_edge and new_center_x < right_edge:
                         pad_placed_successfully = True
                 # ------------- after you successfully change the x-position
                 # move pad down
-                new_center_y = bottom_pad.center_y - my_constants.DELTA_Y
+                new_center_y = bottom_pad.center_y - my_constants.pad["delta_y"]
                 # ------------------- End of re-position pad
 
                 # create new pad
@@ -125,12 +125,8 @@ class Pad(item_file.Item):
 
 import gameview_file
 
-dict = {
-    "image_path": "assets/green_rectangle.png",
-    "image_scale": 0.5,
-    "Input_class": Pad,
-}
-item_dicts = [dict, target_file.dict]
+my_constants.pad["Input_class"] = Pad
+item_spawn_dicts = [my_constants.pad, target_file.spawn_dict]
 
 
 def spawn_pad(
@@ -145,7 +141,7 @@ def spawn_pad(
     spawned_pad = item_file.spawn(
         x_input=x_,
         y_input=y_,
-        **dict,  # the item is a pad.
+        **my_constants.pad,  # the item is a pad.
     )
 
     # create a list of everything spawned on this pad AKA the pad created by this call of spawn_pad()
@@ -159,14 +155,14 @@ def spawn_pad(
     percentage_chance = 0.3  # 30% chance
 
     if random.random() < percentage_chance:
-        left_bound = int(x_ - my_constants.PAD_LENGTH / 2)
-        right_bound = int(x_ + my_constants.PAD_LENGTH / 2)
+        left_bound = int(x_ - my_constants.pad["width"] / 2)
+        right_bound = int(x_ + my_constants.pad["width"] / 2)
         target_x = random.randrange(left_bound, right_bound)
         # create the target sprite
         spawned_target = item_file.spawn(
             x_input=target_x,
             y_input=y_,
-            **target_file.dict,
+            **target_file.spawn_dict,
         )
         # add target sprite to a list of items close to the pad
         spawned_pad.items_close_to_pad.append(spawned_target)

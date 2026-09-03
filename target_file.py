@@ -3,6 +3,7 @@
 import arcade
 
 import item_file
+import my_constants
 import player_file
 
 
@@ -38,10 +39,5 @@ def setup():
     Target.list = arcade.SpriteList()
 
 
+my_constants.target["Input_class"] = Target
 import gameview_file
-
-spawn_dict = {
-    "image_path": "assets/target.png",
-    "image_scale": 1,
-    "Input_class": Target,
-}

@@ -44,7 +44,14 @@ pad = {
     # y-displacement between adjacent pads
     # NOTE: good value is 100
     "delta_y": 128,
+    # width of the sprite
     "width": get_width("assets/green_rectangle.png"),
+}
+
+
+target = {
+    "image_path": "assets/target.png",
+    "image_scale": 1,
 }
 
 

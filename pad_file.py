@@ -126,7 +126,8 @@ class Pad(item_file.Item):
 import gameview_file
 
 my_constants.pad["Input_class"] = Pad
-item_spawn_dicts = [my_constants.pad, target_file.spawn_dict]
+
+dict_list = [my_constants.pad, my_constants.target]
 
 
 def spawn_pad(
@@ -162,7 +163,7 @@ def spawn_pad(
         spawned_target = item_file.spawn(
             x_input=target_x,
             y_input=y_,
-            **target_file.spawn_dict,
+            **my_constants.target,
         )
         # add target sprite to a list of items close to the pad
         spawned_pad.items_close_to_pad.append(spawned_target)

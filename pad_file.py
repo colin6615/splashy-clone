@@ -1,4 +1,7 @@
-"""holds the pad/trapoline class"""
+"""holds the pad class and dictionary
+
+Pad dictionary is only used by the pad class.
+"""
 
 import random
 from operator import attrgetter
@@ -8,6 +11,7 @@ import arcade
 import item_file
 import my_constants
 import player_file
+import target_file
 
 # --- Constants ---
 # the first 4 pads will spawn with x values in between these two bounds
@@ -25,7 +29,7 @@ class Pad(item_file.Item):
     If player hits a pad, then the player bounces and the pad respawns below them.
 
     Class Attributes:
-        Pad.list (SpriteList): list of all pad sprites
+        list (SpriteList): list of all pad sprites
 
     Instance Attributes:
     """
@@ -61,6 +65,17 @@ class Pad(item_file.Item):
         # ---------------- if the player hits a pad, then move the pad and bounce player.
         if len(self.hit_list) > 0:
             for hit_pad in self.hit_list:
+                # ------------ if the pad is touching a target, then reset score factor
+                # Find hit pads touching a targets
+                # I'm not sure if hit_pad needs to be a sprite list, or if its okay for hit_pad to be just a single sprite as a parameter in check_for_collision_with_list()
+                target_pad_collision_list = arcade.check_for_collision_with_list(
+                    hit_pad, target_file.Target.list
+                )
+
+                if len(target_pad_collision_list) > 0:
+                    for target_and_pad in target_pad_collision_list:
+                        gameview_file.GameView.score = 1
+
                 # ------------ Start of re-position pad
                 #  teleport hit pad directly below pad 4. Then change pad 1's x-position, slightly
                 # ------------ randomize pad's x-position, but don't touch the screen's edges
@@ -89,14 +104,15 @@ class Pad(item_file.Item):
                 # move pad down
                 hit_pad.center_y = bottom_pad.center_y - my_constants.DELTA_Y
                 # ------------------- End of re-position pad
+
                 # bounce player
                 player_file.Player.sprite.velocity *= (
                     -my_constants.BOUNCE_DECAY_CONSTANT
                 )
 
-                # add to score
-                gameview_file.GameView.score += 1 * gameview_file.GameView.score_factor
+                # increase time factor and score
                 gameview_file.GameView.time_factor += my_constants.TIME_FACTOR_CHANGE
+                gameview_file.GameView.score += gameview_file.GameView.score_factor
 
 
 import gameview_file

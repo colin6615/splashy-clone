@@ -3,7 +3,7 @@ import random
 import arcade
 
 
-def spawn(x_input, y_input, image_path, image_scale, Input_class):
+def spawn(x_input, y_input, **input_dict):
     """
     spawns an item at specified coordinates
 
@@ -13,15 +13,15 @@ def spawn(x_input, y_input, image_path, image_scale, Input_class):
         y_input (float): the y-position of the center of the spawned item.
     """
     # make item sprite
-    item = Input_class(
-        image_path, image_scale
+    item = input_dict['Input_class'](
+        input_dict['image_path'], input_dict['image_scale']
     )  # need some way to get self.image_path without calling self?
 
     # position the pad
     item.center_x = x_input
     item.center_y = y_input
 
-    Input_class.list.append(item)
+    input_dict['Input_class'].list.append(item)
 
 
 class Item(arcade.Sprite):

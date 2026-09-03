@@ -42,10 +42,10 @@ class Pad(item_file.Item):
         for y in range(-4, 0):
             spawn_pad(
                 # first pads have random x position within the bounds
-                x_input=random.randrange(
+                x_=random.randrange(
                     STARTING_PADS_LEFT_BOUND, STARTING_PADS_RIGHT_BOUND
                 ),
-                y_input=y * my_constants.DELTA_Y,
+                y_=y * my_constants.DELTA_Y,
             )
 
     def _update(self, delta_time):
@@ -85,23 +85,22 @@ class Pad(item_file.Item):
                 # Boolean variable if we successfully placed the pad.
                 pad_placed_successfully = False
                 # Keep trying until success.
+
+                # get bottom pad
+                bottom_pad = min(Pad.list, key=attrgetter("center_y"))
                 while not pad_placed_successfully:
                     # ----------------- Change this pad's x-position to the bottom pad, and then add a random number to this.
                     # generate random number to add later
                     x_change = random.randrange(
                         -my_constants.MOVE_PAD_X, my_constants.MOVE_PAD_X
                     )
-                    # get bottom pad
-                    bottom_pad = min(Pad.list, key=attrgetter("center_y"))
                     # add random number to bottom pad's x-position. Equate its value to the hit pad's x-position
                     new_center_x = bottom_pad.center_x + x_change
 
                     # if the pad is not touching the screen's edges, then pad was succesfully placed.
                     right_edge = my_constants.WINDOW_WIDTH - my_constants.PAD_LENGTH
-                    if (
-                        new_center_x > my_constants.PAD_LENGTH
-                        and new_center_x < right_edge
-                    ):
+                    left_edge = my_constants.PAD_LENGTH
+                    if new_center_x > left_edge and new_center_x < right_edge:
                         pad_placed_successfully = True
                 # ------------- after you successfully change the x-position
                 # move pad down
@@ -110,8 +109,8 @@ class Pad(item_file.Item):
 
                 # create new pad
                 spawn_pad(
-                    x_input=new_center_x,
-                    y_input=new_center_y,
+                    x_=new_center_x,
+                    y_=new_center_y,
                 )
 
                 # bounce player
@@ -135,17 +134,17 @@ item_dicts = [dict, target_file.dict]
 
 
 def spawn_pad(
-    x_input,
-    y_input,
+    x_,
+    y_,
 ):
     """
     spawns a pad at the specified coordinates
     spawns a target on the pad.
-    the target should have same y-input, but different x_input
+    the target should have same y-input, but different x_
     """
     spawned_pad = item_file.spawn(
-        x_input,
-        y_input,
+        x_input=x_,
+        y_input=y_,
         **dict,  # the item is a pad.
     )
 
@@ -160,10 +159,14 @@ def spawn_pad(
     percentage_chance = 0.3  # 30% chance
 
     if random.random() < percentage_chance:
-        # target_x =
+        left_bound = int(x_ - my_constants.PAD_LENGTH / 2)
+        right_bound = int(x_ + my_constants.PAD_LENGTH / 2)
+        target_x = random.randrange(left_bound, right_bound)
+        # create the target sprite
         spawned_target = item_file.spawn(
-            x_input,
-            y_input,
+            x_input=target_x,
+            y_input=y_,
             **target_file.dict,
         )
+        # add target sprite to a list of items close to the pad
         spawned_pad.items_close_to_pad.append(spawned_target)

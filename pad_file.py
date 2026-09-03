@@ -39,25 +39,45 @@ class Pad(item_file.Item):
         self.center_x = 0
         self.center_y = 0
 
-    def spawn_pad(x_input, y_input):
+    def spawn(x_input, y_input, image_path, image_scale):
         """
-        spawns pads.
-
-        Units are in terms of pads. If you drew a line from x=0 to x=2, then it has length of 2 * PAD_LENGTH.
+        spawns an item at specified coordinates
 
         Args:
-            x_input (float): the x-position of the center of the spawned pad.
+            x_input (float): the x-position of the center of the spawned item.
 
-            y_input (float): the y-position of the center of the spawned pad.
+            y_input (float): the y-position of the center of the spawned item.
         """
-        # make pad sprite
-        pad = Pad("assets/green_rectangle.png", my_constants.SPRITE_SCALING_PAD)
+        # make item sprite
+        item = Pad(
+            image_path, image_scale
+        )  # need some way to get self.image_path without calling self?
 
         # position the pad
-        pad.center_x = x_input
-        pad.center_y = y_input
+        item.center_x = x_input
+        item.center_y = y_input
 
-        Pad.list.append(pad)
+        Pad.list.append(item)
+
+    # def spawn_pad(x_input, y_input):
+    #     """
+    #     spawns pads.
+
+    #     Units are in terms of pads. If you drew a line from x=0 to x=2, then it has length of 2 * PAD_LENGTH.
+
+    #     Args:
+    #         x_input (float): the x-position of the center of the spawned pad.
+
+    #         y_input (float): the y-position of the center of the spawned pad.
+    #     """
+    #     # make pad sprite
+    #     pad = Pad("assets/green_rectangle.png", my_constants.SPRITE_SCALING_PAD)
+
+    #     # position the pad
+    #     pad.center_x = x_input
+    #     pad.center_y = y_input
+
+    #     Pad.list.append(pad)
 
     def setup():
         """Set up the game and initialize the variables."""
@@ -65,6 +85,18 @@ class Pad(item_file.Item):
 
         # spawn the first 4 pads
         for y in range(-4, 0):
+            Pad.spawn(
+                # first pads have random x position within the bounds
+                x_input=random.randrange(
+                    STARTING_PADS_LEFT_BOUND, STARTING_PADS_RIGHT_BOUND
+                ),
+                y_input=y * my_constants.DELTA_Y,
+                image_path="assets/green_rectangle.png",
+                image_scale=0.5,
+                # CLASS=Pad,
+            )
+            """
+            
             Pad.spawn_pad(
                 # first pads have random x position within the bounds
                 x_input=random.randrange(
@@ -72,6 +104,7 @@ class Pad(item_file.Item):
                 ),
                 y_input=y * my_constants.DELTA_Y,
             )
+            """
 
     def _update(self, delta_time):
         # kill the player if they go below the top pad

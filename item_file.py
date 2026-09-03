@@ -17,3 +17,4 @@ class Item(arcade.Sprite):
 
         # Call the child's specific logic
         self._update(delta_time)  # **kwargs
+

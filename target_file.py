@@ -22,17 +22,15 @@ class Target(item_file.Item):
 
     def _update(self, delta_time):
         """you probably need to delete all of this code and then test it line by line because its currently untested, and it probably won't work."""
-        #  if the player hits a target, then increase the score multiplier
-        # find pads that the player will hit
+        # this section: if the player hits a target, then increase the score multiplier and delete the target
+        # next few lines: if player hits pad, then for each colliding target:
         Target.colliding_player_and_target = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Target.list
         )
-        # if player hits pad, then:
         if len(Target.colliding_player_and_target) > 0:
-            # for each colliding target:
             for colliding_sprite in Target.colliding_player_and_target:
+                # remove target from sprite list to make sure that player interacts with target once
                 if colliding_sprite in Target.list:
-                    # remove target from sprite list to make sure that player interacts with target once
                     colliding_sprite.remove_from_sprite_lists()
 
                     # increase score multiplier

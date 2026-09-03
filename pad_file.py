@@ -46,7 +46,7 @@ class Pad(item_file.Item):
                     STARTING_PADS_LEFT_BOUND, STARTING_PADS_RIGHT_BOUND
                 ),
                 y_input=y * my_constants.DELTA_Y,
-                **pad_dict,  # defined at the bottom of this file
+                **pad_dict,  # defined at the bottom of this file. indicates that we are spawning a pad
             )
 
     def _update(self, delta_time):
@@ -57,28 +57,23 @@ class Pad(item_file.Item):
             > MIN_PLAYER_PAD_HEIGHT_DIFFERENCE
         ):
             gameview_file.GameView.dead = True
-        # ---------------- For pads that the player hits.
-        # find pads that the player will hit
+        # whole seciton: if player hits a pad, then bounce player, move pad, and change score
+        # next few lines: if player hits a pad, then:
         self.hit_list = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Pad.list
         )
-        # ---------------- if the player hits a pad, then move the pad and bounce player.
         if len(self.hit_list) > 0:
             for hit_pad in self.hit_list:
-                # ------------ if the pad is touching a target, then reset score factor
-                # Find hit pads touching a targets
-                # I'm not sure if hit_pad needs to be a sprite list, or if its okay for hit_pad to be just a single sprite as a parameter in check_for_collision_with_list()
+                # if the pad is touching a target, then reset score factor
                 target_pad_collision_list = arcade.check_for_collision_with_list(
                     hit_pad, target_file.Target.list
                 )
-
                 if len(target_pad_collision_list) > 0:
                     for target_and_pad in target_pad_collision_list:
                         gameview_file.GameView.score = 1
-
                 # ------------ Start of re-position pad
-                #  teleport hit pad directly below pad 4. Then change pad 1's x-position, slightly
-                # ------------ randomize pad's x-position, but don't touch the screen's edges
+                #  In this whole section, I teleport hit pad directly below the bottom pad. Then change the hit pad's x-position, slightly
+                # First, randomize pad's x-position, but don't touch the screen's edges
                 # Boolean variable if we successfully placed the pad.
                 pad_placed_successfully = False
                 # Keep trying until success.

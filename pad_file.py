@@ -127,7 +127,6 @@ import gameview_file
 
 my_constants.pad["Input_class"] = Pad
 
-dict_list = [my_constants.pad, my_constants.target]
 
 
 def spawn_pad(

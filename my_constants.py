@@ -32,28 +32,33 @@ BOUNCE_DECAY_CONSTANT = 0.6  # good value = 0.6
 TIME_FACTOR_CHANGE = 0.01
 
 # ==================================
-# --- PADS ---
+# --- item dictionaries ---
 # ==================================
 
 pad = {
     "image_path": "assets/green_rectangle.png",  # path to sprite image
-    "image_scale": 0.5,  # scales size of image
+    "image_scale": 0.5,  # scales size of image. should be 0.5
     # x-displacement between adjacent pads
     # NOTE: good value is 100
     "delta_x": 200,
     # y-displacement between adjacent pads
     # NOTE: good value is 100
     "delta_y": 128,
-    # width of the sprite
-    "width": get_width("assets/green_rectangle.png"),
 }
-
 
 target = {
     "image_path": "assets/target.png",
     "image_scale": 1,
 }
 
+# list of item dictionaries
+item_dicts = [pad, target]
+
+# add width entry to each dictionary
+for dictionary in item_dicts:
+    dictionary["width"] = (
+        get_width(dictionary["image_path"]) * dictionary["image_scale"]
+    )
 
 # ==================================
 # --- COIN ---

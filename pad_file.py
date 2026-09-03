@@ -71,9 +71,9 @@ class Pad(item_file.Item):
                     STARTING_PADS_LEFT_BOUND, STARTING_PADS_RIGHT_BOUND
                 ),
                 y_input=y * my_constants.DELTA_Y,
-                image_path="assets/green_rectangle.png",
-                image_scale=0.5,
-                CLASS=Pad,
+                image_path=pad_dict["image_path"],
+                image_scale=pad_dict["image_scale"],
+                Input_class=pad_dict["class"],
             )
             """
             
@@ -138,3 +138,9 @@ class Pad(item_file.Item):
 
 
 import gameview_file
+
+pad_dict = {
+    "image_path": "assets/green_rectangle.png",
+    "image_scale": 0.5,
+    "class": Pad,
+}

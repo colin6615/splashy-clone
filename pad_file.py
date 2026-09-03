@@ -39,26 +39,6 @@ class Pad(item_file.Item):
         self.center_x = 0
         self.center_y = 0
 
-    def spawn(x_input, y_input, image_path, image_scale, CLASS):
-        """
-        spawns an item at specified coordinates
-
-        Args:
-            x_input (float): the x-position of the center of the spawned item.
-
-            y_input (float): the y-position of the center of the spawned item.
-        """
-        # make item sprite
-        item = CLASS(
-            image_path, image_scale
-        )  # need some way to get self.image_path without calling self?
-
-        # position the pad
-        item.center_x = x_input
-        item.center_y = y_input
-
-        CLASS.list.append(item)
-
     # def spawn_pad(x_input, y_input):
     #     """
     #     spawns pads.
@@ -85,7 +65,7 @@ class Pad(item_file.Item):
 
         # spawn the first 4 pads
         for y in range(-4, 0):
-            Pad.spawn(
+            item_file.spawn(
                 # first pads have random x position within the bounds
                 x_input=random.randrange(
                     STARTING_PADS_LEFT_BOUND, STARTING_PADS_RIGHT_BOUND

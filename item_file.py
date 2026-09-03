@@ -71,3 +71,5 @@ def spawn(x_input, y_input, **input_dict):
     # For example, if the class is Pad, then the sprite list is Pad.list
     # This is probably bad practice. rewrite, this, later, if needed.
     class_.list.append(item)
+
+    return item

@@ -71,6 +71,11 @@ class Pad(item_file.Item):
                     for target_and_pad in target_pad_collision_list:
                         gameview_file.GameView.score_factor = 1
 
+                # delete items on pad
+                # for each thing in items_close_to_pad, remove it
+                for pad_item in hit_pad.items_close_to_pad:
+                    pad_item.remove_from_sprite_lists()
+
                 # delete the hit pad
                 hit_pad.remove_from_sprite_lists()
 
@@ -126,6 +131,7 @@ dict = {
     "image_scale": 0.5,
     "Input_class": Pad,
 }
+item_dicts = [dict, target_file.dict]
 
 
 def spawn_pad(
@@ -137,13 +143,27 @@ def spawn_pad(
     spawns a target on the pad.
     the target should have same y-input, but different x_input
     """
-    item_file.spawn(
+    spawned_pad = item_file.spawn(
         x_input,
         y_input,
         **dict,  # the item is a pad.
     )
-    item_file.spawn(
-        x_input,
-        y_input,
-        **target_file.dict,
-    )
+
+    # create a list of everything spawned on this pad AKA the pad created by this call of spawn_pad()
+    spawned_pad.items_close_to_pad = []
+
+    # source for next 2 loc:  https://stackoverflow.com/a/3203121
+    # Posted by SilentGhost, modified by community. See post 'Timeline' for change history
+    # Retrieved 2026-09-03, License - CC BY-SA 4.0
+
+    # 30% of the time, a target spawns
+    percentage_chance = 0.3  # 30% chance
+
+    if random.random() < percentage_chance:
+        # target_x =
+        spawned_target = item_file.spawn(
+            x_input,
+            y_input,
+            **target_file.dict,
+        )
+        spawned_pad.items_close_to_pad.append(spawned_target)

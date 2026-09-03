@@ -1,14 +1,5 @@
 import arcade
 
-
-def get_width(image_path):
-    # load texture from image
-    texture = arcade.load_texture(image_path)
-
-    width_height = texture.size
-    return width_height[0]
-
-
 # ==================================
 # --- PHYSICS ----
 # ==================================
@@ -46,6 +37,7 @@ pad = {
     "delta_y": 128,
 }
 
+
 target = {
     "image_path": "assets/target.png",
     "image_scale": 1,
@@ -54,11 +46,16 @@ target = {
 # list of item dictionaries
 item_dicts = [pad, target]
 
-# add width entry to each dictionary
+# add sprite width entry to each dictionary
 for dictionary in item_dicts:
-    dictionary["width"] = (
-        get_width(dictionary["image_path"]) * dictionary["image_scale"]
-    )
+    # load texture from image
+    texture = arcade.load_texture(dictionary["image_path"])
+
+    # get width_height tuple
+    width_height = texture.size
+
+    # sprite width = image width * image scale
+    dictionary["width"] = width_height[0] * dictionary["image_scale"]
 
 # ==================================
 # --- COIN ---
@@ -70,5 +67,16 @@ NUMBER_OF_COINS = 50
 # ==================================
 # --- OTHER ---
 # ==================================
+# other
 WINDOW_WIDTH = 1147
 WINDOW_HEIGHT = 625
+
+# camera
+# If the player moves further than this boundary away from the camera we use a
+# constraint to move the camera
+HORIZONTAL_BOUNDARY = WINDOW_WIDTH / 2.0
+BOTTOM_BOUNDARY = 0
+TOP_BOUNDARY = WINDOW_HEIGHT / 2.0 - 100
+
+# How fast the camera pans to the player. 1.0 is instant.
+CAMERA_SPEED = 0.6

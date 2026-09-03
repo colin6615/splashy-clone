@@ -10,23 +10,14 @@ import pad_file
 import player_file
 import target_file
 
-# -- Constants
-# If the player moves further than this boundary away from the camera we use a
-# constraint to move the camera
-HORIZONTAL_BOUNDARY = my_constants.WINDOW_WIDTH / 2.0
-BOTTOM_BOUNDARY = 0
-TOP_BOUNDARY = my_constants.WINDOW_HEIGHT / 2.0 - 100
-
-# How fast the camera pans to the player. 1.0 is instant.
-CAMERA_SPEED = 0.6
 # ==================
 
 
 CAMERA_BOUNDARY = arcade.LRBT(
-    -HORIZONTAL_BOUNDARY,
-    HORIZONTAL_BOUNDARY,
-    -BOTTOM_BOUNDARY,
-    TOP_BOUNDARY,
+    -my_constants.HORIZONTAL_BOUNDARY,
+    my_constants.HORIZONTAL_BOUNDARY,
+    -my_constants.BOTTOM_BOUNDARY,
+    my_constants.TOP_BOUNDARY,
 )
 
 
@@ -186,7 +177,7 @@ class GameView(arcade.View):
         self.camera_sprites.position = arcade.math.lerp_2d(
             self.camera_sprites.position,
             (new_position[0], new_position[1]),
-            CAMERA_SPEED,
+            my_constants.CAMERA_SPEED,
         )
 
     def on_resize(self, width: int, height: int):

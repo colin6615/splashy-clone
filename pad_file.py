@@ -128,7 +128,6 @@ import gameview_file
 my_constants.pad["Input_class"] = Pad
 
 
-
 def spawn_pad(
     x_,
     y_,

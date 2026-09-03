@@ -60,6 +60,7 @@ def spawn(x_input, y_input, **input_dict):
     class_ = input_dict["Input_class"]
     image_path_ = input_dict["image_path"]
     scale_ = input_dict["image_scale"]
+
     # make sprite
     item = class_(image_path_, scale_)
 

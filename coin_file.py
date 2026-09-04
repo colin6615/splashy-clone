@@ -62,13 +62,18 @@ class Coin(item_file.Item):
             for spike in spike_file.Spike.list:
                 spike.remove_from_sprite_lists()
 
-            # if its party time, then align the
-            if gameview_file.GameView.party == True:
-                for pad in pad_file.Pad.list:
-                    pad.center_x = player_file.Player.sprite.center_x
-                for target in target_file.Target.list:
-                    target.center_x = player_file.Player.sprite.center_x
-        if Coin.score > right_bound:
+            # move the pads and target to the player
+            for pad in pad_file.Pad.list:
+                pad.center_x = player_file.Player.sprite.center_x
+            for target in target_file.Target.list:
+                target.center_x = player_file.Player.sprite.center_x
+            for coin in Coin.list:
+                coin.center_x = player_file.Player.sprite.center_x
+        if (
+            Coin.score > right_bound
+            and player_file.Player.sprite.velocity < 0
+            and player_file.Player.sprite.velocity > -1
+        ):
             # reset coin count
             Coin.score = 0
             gameview_file.GameView.party = False

@@ -1,5 +1,7 @@
 """handles gameplay"""
 
+import time
+
 import arcade
 
 import coin_file
@@ -154,6 +156,9 @@ class GameView(arcade.View):
 
         # show the mouse
         self.window.set_mouse_visible(True)
+
+        time.sleep(2.5)
+
         # switch the window to game over screen
         self.window.show_view(game_over_view)
 

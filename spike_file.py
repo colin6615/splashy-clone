@@ -27,10 +27,8 @@ class Spike(item_file.Item):
             player_file.Player.sprite, Spike.list
         )
         if len(Spike.colliding_player_and_spike) > 0:
-            for colliding_sprite in Spike.colliding_player_and_spike:
-                if colliding_sprite in Spike.list:
-                    # kill player
-                    gameview_file.GameView.dead = True
+            # kill player
+            gameview_file.GameView.dead = True
 
 
 def setup():

@@ -64,7 +64,7 @@ target = {
 coin = {
     "image_path": "assets/gold_1.png",
     "image_scale": 0.33,
-    "spawn_rate": 0.2,  # good value: 0.2
+    "spawn_rate": 1,  # good value: 0.2
     "height from pad": 50,
 }
 

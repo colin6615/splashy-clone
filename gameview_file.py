@@ -15,7 +15,6 @@ import target_file
 # NOTE: 0 = no speed change
 # NOTE: starting time_factor is 1, so after the n-th bounce, it updates to time_factor + TIME_FACTOR_CHANGE * N
 
-TIME_FACTOR_PARTY_INCREASE = 6
 
 CAMERA_BOUNDARY = arcade.LRBT(
     -my_constants.HORIZONTAL_BOUNDARY,
@@ -44,21 +43,22 @@ class GameView(arcade.View):
         GameView.score = 0
         GameView.score_factor = 1
 
-        # bounce speed
-        GameView.time_factor_not_party = 1
-        GameView.TIME_FACTOR_CHANGE_MANAGER = {
-            "party": 0,
-            "not_party": my_constants.GRAVITATIONAL_ACCELERATION / 20,
-        }
-        # when it's party, multiply the time_factor
-        GameView.time_factor_party = (
-            GameView.time_factor_not_party * TIME_FACTOR_PARTY_INCREASE
-        )
-        # its not party at the start
-        GameView.time_factor_change = GameView.TIME_FACTOR_CHANGE_MANAGER["not_party"]
+        # --- START: weird party stuff ---
+        # create party/not party values. I could use a state machine for this, but this is pretty much the only state that I'm using
 
+        GameView.time_factor_not_party = 1
+        # when it's party, multiply the time_factor by my_constants.TIME_FACTOR_PARTY_INCREASE
+        GameView.time_factor_party = (
+            GameView.time_factor_not_party * my_constants.TIME_FACTOR_PARTY_INCREASE
+        )
+        # its not party at the start, so set the dynamic, used values to their non-party counterparts
+        GameView.time_factor_change = my_constants.TIME_FACTOR_CHANGE_MANAGER[
+            "not_party"
+        ]
         GameView.time_factor = GameView.time_factor_not_party
-        GameView.party = False
+        # --- END: weird party stuff ---
+
+        # other initial values
         GameView.started = False
         GameView.dead = False
 
@@ -66,7 +66,7 @@ class GameView(arcade.View):
         self.camera_sprites = arcade.Camera2D()
         self.camera_gui = arcade.Camera2D()
 
-        # create sprite lists and other stuff
+        # create SpriteLists and initial values for sprites
         target_file.setup()
         coin_file.setup()
         spike_file.setup()
@@ -98,7 +98,7 @@ class GameView(arcade.View):
         # Select the camera we'll use to draw all our sprites
         self.camera_sprites.use()
 
-        # Draw all the sprites.
+        # Draw sprites.
         player_file.Player.list.draw()
         pad_file.Pad.list.draw()
         target_file.Target.list.draw()
@@ -157,7 +157,7 @@ class GameView(arcade.View):
 
     def on_update(self, delta_time):
         """Movement and game logic. This function calls every game tick"""
-        # update pads and player.
+        # update sprites .
         pad_file.Pad.list.update()
         player_file.update()
         target_file.Target.list.update()

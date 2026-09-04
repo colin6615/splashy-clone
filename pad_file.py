@@ -1,6 +1,6 @@
 """holds the Pad class. Defines the spawn_pad() function.
 
-It also adds the "input class" key to the pad dictionary.
+This file also adds the "input class" key to the pad dictionary.
 
 """
 
@@ -108,7 +108,7 @@ class Pad(item_file.Item):
                 )
 
                 # bounce player
-                player_file.Player.sprite.velocity *= (
+                player_file.Player.sprite.velocity_y *= (
                     -my_constants.BOUNCE_DECAY_CONSTANT
                 )
 

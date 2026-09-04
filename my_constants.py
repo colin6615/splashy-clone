@@ -18,7 +18,7 @@ DRAG_COEFFICIENT = -0.02  # good value = -0.01
 
 # (float) how much energy the player conserves during a bounce.
 # 1 = no energy is lost. The player will bounce back to their original y-position.
-# 0 = all energy is lost on a bounce. The player hits the pad and loses all of their velocity.
+# 0 = all energy is lost on a bounce. The player hits the pad and loses all of their velocity_y.
 BOUNCE_DECAY_CONSTANT = 0.6  # good value = 0.6
 
 # ==================================
@@ -91,7 +91,14 @@ for dictionary in item_dicts:
 pad["x_max"] = WINDOW_WIDTH - pad["width"]
 pad["x_min"] = pad["width"]
 
-
+# ==================================
+# --- IDK ---
+# ==================================
+TIME_FACTOR_PARTY_INCREASE = 6
+TIME_FACTOR_CHANGE_MANAGER = {
+    "party": 0,
+    "not_party": GRAVITATIONAL_ACCELERATION / 20,
+}
 # ==================================
 # --- OTHER ---
 # ==================================

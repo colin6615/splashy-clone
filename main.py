@@ -1,6 +1,5 @@
-"""start the game"""
+"""start the game
 
-"""
 Creates an instance of the window class, which shows up on screen.
 """
 

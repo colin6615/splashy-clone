@@ -1,5 +1,6 @@
 """holds the Coin class and setup() function
-It also adds the "input class" key to the coin dictionary.
+
+This file also adds the "input class" key to the coin dictionary.
 """
 
 import arcade
@@ -39,9 +40,7 @@ class Coin(item_file.Item):
                     Coin.score += 1
 
         # determine if we should be in a coin party! First, calculate how many coins we are at during the end of the coin party
-        UPDATES_PER_PARTY = (
-            1600  # duration of party. value of 40 makes about 10 seconds of party
-        )
+        UPDATES_PER_PARTY = 1600  # this controls the party time
         COINS_PER_UPDATE = (
             0.1  # how many coins are added to the coin count every tick during party.
         )
@@ -52,7 +51,7 @@ class Coin(item_file.Item):
             gameview_file.GameView.party = True
             # set time_factor and time_factor_change to their party modes
             gameview_file.GameView.time_factor_change = (
-                gameview_file.GameView.TIME_FACTOR_CHANGE_MANAGER["party"]
+                my_constants.TIME_FACTOR_CHANGE_MANAGER["party"]
             )
             gameview_file.GameView.time_factor = (
                 gameview_file.GameView.time_factor_party
@@ -72,15 +71,15 @@ class Coin(item_file.Item):
                 coin.center_x = player_file.Player.sprite.center_x
         if (
             Coin.score > right_bound
-            and player_file.Player.sprite.velocity < 0
-            and player_file.Player.sprite.velocity > -1
+            and player_file.Player.sprite.velocity_y < 0
+            and player_file.Player.sprite.velocity_y > -1
         ):
             # reset coin count
             Coin.score = 0
             gameview_file.GameView.party = False
             # set time_factor and time_factor_change to their non_party modes
             gameview_file.GameView.time_factor_change = (
-                gameview_file.GameView.TIME_FACTOR_CHANGE_MANAGER["not_party"]
+                my_constants.TIME_FACTOR_CHANGE_MANAGER["not_party"]
             )
             gameview_file.GameView.time_factor = (
                 gameview_file.GameView.time_factor_not_party
@@ -91,7 +90,7 @@ def setup():
     """Set up the game and initialize the variables."""
     Coin.list = arcade.SpriteList()
     Coin.score = 0
-    Coin.party = False
+    gameview_file.GameView.party = False
 
 
 my_constants.coin["Input_class"] = Coin

@@ -13,7 +13,7 @@ class Player(arcade.Sprite):
         input_path (str): Description of the attribute
         sprite (Sprite): sprite
             Sub-Attributes:
-                velocity (float): velocity in y-direction
+                velocity_y (float): velocity in y-direction
                 center_y (float): y-position of center
         list (SpriteList): holds the sprite.
     """
@@ -33,7 +33,7 @@ def setup():
     # set the sprite's starting values
     Player.sprite.center_x = 256
     Player.sprite.center_y = 0
-    Player.sprite.velocity = 0
+    Player.sprite.velocity_y = 0
 
     # make list and add sprite to list
     Player.list = arcade.SpriteList()
@@ -44,14 +44,14 @@ def update():
     """Movement and game logic"""
 
     # free-fall physics in the y-direciton
-    # must update acceleration every tick because acceleration changes with velocity.
+    # must update acceleration every tick because acceleration changes with velocity_y.
     # define acceleration: a = T * (- g + b * |v|)
     Player.sprite.acceleration = gameview_file.GameView.time_factor * (
         -my_constants.GRAVITATIONAL_ACCELERATION
-        + my_constants.DRAG_COEFFICIENT * abs(Player.sprite.velocity)
+        + my_constants.DRAG_COEFFICIENT * abs(Player.sprite.velocity_y)
     )
 
-    # calculate position and velocity using kinematics
+    # calculate position and velocity_y using kinematics
     if gameview_file.GameView.started == True:
-        Player.sprite.velocity += Player.sprite.acceleration
-        Player.sprite.center_y += Player.sprite.velocity
+        Player.sprite.velocity_y += Player.sprite.acceleration
+        Player.sprite.center_y += Player.sprite.velocity_y

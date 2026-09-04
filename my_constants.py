@@ -8,12 +8,12 @@ WINDOW_HEIGHT = 625
 # --- PHYSICS ----
 # ==================================
 # constant downward acceleration
-# represented by the letter g in physics
+# NOTE: represented by the letter g in physics
 GRAVITATIONAL_ACCELERATION = 1  # good value = .07
 
-# In real life, the drag coefficient usually has a positive value; acceleration's magntiude DECREASES if speed INCREASES. In this game, I made it a negative value so that acceleration's magnitude INCREASES if speed INCREASES
 # decrease DRAG_COEFFICIENT = player hovers over the apex of their jump arc for longer. Player is slower at the top of their bounce.
-# represented by the letter b in physics
+# NOTE: In real life, the drag coefficient usually has a positive value; acceleration's magntiude DECREASES if speed INCREASES. In this game, I made it a negative value so that acceleration's magnitude INCREASES if speed INCREASES
+# NOTE: represented by the letter b in physics
 DRAG_COEFFICIENT = -0.01  # good value = -0.01
 
 # how much energy the player conserves during a bounce.
@@ -22,8 +22,8 @@ DRAG_COEFFICIENT = -0.01  # good value = -0.01
 BOUNCE_DECAY_CONSTANT = 0.6  # good value = 0.6
 
 # speeds up the game after every bounce.
-# 0 = no speed change
-# starting self.time_factor is 1, so after the n-th bounce, it updates to self.time_factor + TIME_FACTOR_CHANGE * N
+# NOTE: 0 = no speed change
+# NOTE: starting self.time_factor is 1, so after the n-th bounce, it updates to self.time_factor + TIME_FACTOR_CHANGE * N
 TIME_FACTOR_CHANGE = 0.01
 
 # ==================================
@@ -45,7 +45,7 @@ pad = {
     # NOTE: good value is 100
     "delta_y": 128,
     # the first 4 starting pads will spawn with x values in between these two bounds
-    # Currently, the bounds enclose the middle one third of the screen
+    # NOTE: Currently, the bounds enclose the middle one third of the screen
     "start_min": int(WINDOW_WIDTH / 3),
     "start_max": int(WINDOW_WIDTH * 2 / 3),
     # Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE pixels underneath a pad.
@@ -59,8 +59,9 @@ target = {
 }
 
 # list of item dictionaries
-item_dicts = [pad, target]
-
+# NOTE: excludes pad
+items_close_to_pad_dicts = [target]
+item_dicts = [target, pad]
 # add sprite width entry to each dictionary
 for dictionary in item_dicts:
     # load texture from image

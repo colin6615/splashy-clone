@@ -143,13 +143,20 @@ def spawn_pad(
     # Retrieved 2026-09-03, License - CC BY-SA 4.0
 
     # 30% of the time, a target spawns
-    percentage_chance = 1  # 30% chance
+    spawn_chance = 0.3  # 30% chance
 
-    if random.random() < percentage_chance:
-        temp = my_constants.pad["width"] / 2 - my_constants.target["width"] / 2
-        left_bound = int(x_ - temp)
-        right_bound = int(x_ + temp)
+    if random.random() < spawn_chance:
+        # calculate spawned item position bounds
+        # if temp length = my_constants.pad["width"] / 2 - my_constants.target["width"] / 2
+        # then: the item lies on the pad. (Item's left edge cannot go further left than the pad's left edge.)
+        # i changed the 2 to a 4 so that the item can hang off the pad a little bit.
+        temp_length = my_constants.pad["width"] / 2 - my_constants.target["width"] / 4
+        left_bound = int(x_ - temp_length)
+        right_bound = int(x_ + temp_length)
+
+        # apply the item position bounds
         target_x = random.randrange(left_bound, right_bound)
+
         # create the target sprite
         spawned_target = item_file.spawn(
             x_input=target_x,

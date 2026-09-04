@@ -1,6 +1,7 @@
-"""holds the pad class and dictionary
+"""holds the Pad class. Defines the spawn_pad() function.
 
-Pad dictionary is only used by the pad class.
+It also adds the "input class" key to the pad dictionary.
+
 """
 
 import random
@@ -126,7 +127,11 @@ def spawn_pad(
 ):
     """
     spawns a pad at the specified coordinates
-    spawns a target on the pad.
+    Each item type has a chance to spawn on said pad (which was created using this function)
+
+    args
+        x_ (int): y-coordinate of center of spawned pad
+        y_ (int): x-coordinate of center of spawned pad
     """
     spawned_pad = item_file.spawn(
         x_input=x_,

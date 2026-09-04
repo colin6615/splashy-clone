@@ -1,4 +1,4 @@
-"""Defines the Item class and spawn function
+"""Defines the Item class and spawn() function
 
 Item is a parent class of Pad, Coin, Target, and Spike. The class doesn't do anything on its own.
 

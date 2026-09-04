@@ -1,9 +1,8 @@
 """handles gameplay"""
 
-import random
-
 import arcade
 
+import coin_file
 import gameover_file
 import my_constants
 import pad_file
@@ -36,8 +35,6 @@ class GameView(arcade.View):
 
     def setup(self):
         """Set up the game and initialize the variables."""
-        # Sprite lists
-        self.coin_list = None
 
         # Reset numbers to their starting values.
         GameView.score = 0
@@ -50,27 +47,12 @@ class GameView(arcade.View):
         self.camera_sprites = arcade.Camera2D()
         self.camera_gui = arcade.Camera2D()
 
-        # spawn player and 2 pads.
-        self.coin_list = arcade.SpriteList()
+        # create sprite lists and other stuff
         target_file.setup()
-        pad_file.Pad.setup()
-
+        coin_file.setup()
         player_file.setup()
-
-        # Create the coins
-        for i in range(my_constants.NUMBER_OF_COINS):
-            # Create the coin instance
-            # Coin image from kenney.nl
-            coin = arcade.Sprite(
-                ":resources:images/items/coinGold.png",
-                scale=my_constants.SPRITE_SCALING_COIN,
-            )
-            # Position the coin.
-            coin.center_x = random.randrange(10, 1000)
-            coin.center_y = random.randrange(10, 1000)
-
-            # Add the coin to the lists
-            self.coin_list.append(coin)
+        # spawn the first 4 pads
+        pad_file.Pad.setup()
 
         self.background_color = arcade.color.AMAZON
 
@@ -100,7 +82,7 @@ class GameView(arcade.View):
         player_file.Player.list.draw()
         pad_file.Pad.list.draw()
         target_file.Target.list.draw()
-        self.coin_list.draw()
+        coin_file.Coin.list.draw()
 
         # Draw the pad that we work to make sure the user stays inside of.
         # This is just for illustration purposes.

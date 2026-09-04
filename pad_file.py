@@ -141,27 +141,26 @@ def spawn_pad(
     # source for next 2 loc:  https://stackoverflow.com/a/3203121
     # Posted by SilentGhost, modified by community. See post 'Timeline' for change history
     # Retrieved 2026-09-03, License - CC BY-SA 4.0
+    for item_type in my_constants.items_close_to_pad_dicts:
+        if random.random() < item_type["spawn_rate"]:
+            # calculate spawned item position bounds
+            # if temp length = my_constants.pad["width"] / 2 - my_constants.target["width"] / 2
+            # then: the item lies on the pad. (Item's left edge cannot go further left than the pad's left edge.)
+            # i changed the 2 to a 4 so that the item can hang off the pad a little bit.
+            temp_length = (
+                my_constants.pad["width"] / 2 - my_constants.target["width"] / 4
+            )
+            left_bound = int(x_ - temp_length)
+            right_bound = int(x_ + temp_length)
 
-    # 30% of the time, a target spawns
-    spawn_chance = 0.3  # 30% chance
+            # apply the item position bounds
+            target_x = random.randrange(left_bound, right_bound)
 
-    if random.random() < spawn_chance:
-        # calculate spawned item position bounds
-        # if temp length = my_constants.pad["width"] / 2 - my_constants.target["width"] / 2
-        # then: the item lies on the pad. (Item's left edge cannot go further left than the pad's left edge.)
-        # i changed the 2 to a 4 so that the item can hang off the pad a little bit.
-        temp_length = my_constants.pad["width"] / 2 - my_constants.target["width"] / 4
-        left_bound = int(x_ - temp_length)
-        right_bound = int(x_ + temp_length)
-
-        # apply the item position bounds
-        target_x = random.randrange(left_bound, right_bound)
-
-        # create the target sprite
-        spawned_target = item_file.spawn(
-            x_input=target_x,
-            y_input=y_,
-            **my_constants.target,
-        )
-        # add target sprite to a list of items close to the pad
-        spawned_pad.items_close_to_pad.append(spawned_target)
+            # create the target sprite
+            spawned_target = item_file.spawn(
+                x_input=target_x,
+                y_input=y_,
+                **my_constants.target,
+            )
+            # add target sprite to a list of items close to the pad
+            spawned_pad.items_close_to_pad.append(spawned_target)

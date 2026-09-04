@@ -1,5 +1,9 @@
 import arcade
 
+# other
+WINDOW_WIDTH = 1147
+WINDOW_HEIGHT = 625
+
 # ==================================
 # --- PHYSICS ----
 # ==================================
@@ -25,22 +29,33 @@ TIME_FACTOR_CHANGE = 0.01
 # ==================================
 # --- item dictionaries ---
 # ==================================
+"""
+Explanations of common dictionary keys:
+image_path : path to sprite image
+image_scale : scales size of image. 
 
+"""
 pad = {
-    "image_path": "assets/green_rectangle.png",  # path to sprite image
-    "image_scale": 0.5,  # scales size of image. should be 0.5
+    "image_path": "assets/green_rectangle.png",
+    "image_scale": 0.5,
     # x-displacement between adjacent pads
     # NOTE: good value is 100
     "delta_x": 200,
     # y-displacement between adjacent pads
     # NOTE: good value is 100
     "delta_y": 128,
+    # the first 4 starting pads will spawn with x values in between these two bounds
+    # Currently, the bounds enclose the middle one third of the screen
+    "start_min": int(WINDOW_WIDTH / 3),
+    "start_max": int(WINDOW_WIDTH * 2 / 3),
+    # Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE pixels underneath a pad.
+    "MIN_PLAYER_PAD_HEIGHT_DIFFERENCE": 0,
 }
-
 
 target = {
     "image_path": "assets/target.png",
     "image_scale": 1,
+    "spawn_rate": 0.3,
 }
 
 # list of item dictionaries
@@ -67,10 +82,6 @@ NUMBER_OF_COINS = 50
 # ==================================
 # --- OTHER ---
 # ==================================
-# other
-WINDOW_WIDTH = 1147
-WINDOW_HEIGHT = 625
-
 # camera
 # If the player moves further than this boundary away from the camera we use a
 # constraint to move the camera

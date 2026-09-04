@@ -13,14 +13,6 @@ import my_constants
 import player_file
 import target_file
 
-# --- Constants ---
-# the first 4 pads will spawn with x values in between these two bounds
-# Currently, the bounds enclose the middle one third of the screen
-STARTING_PADS_LEFT_BOUND = int(my_constants.WINDOW_WIDTH / 3)
-STARTING_PADS_RIGHT_BOUND = int(my_constants.WINDOW_WIDTH * 2 / 3)
-
-# Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE pixels underneath a pad.
-MIN_PLAYER_PAD_HEIGHT_DIFFERENCE = 0
 # ==================
 
 
@@ -43,7 +35,7 @@ class Pad(item_file.Item):
             spawn_pad(
                 # first pads have random x position within the bounds
                 x_=random.randrange(
-                    STARTING_PADS_LEFT_BOUND, STARTING_PADS_RIGHT_BOUND
+                    my_constants.pad["start_min"], my_constants.pad["start_max"]
                 ),
                 y_=y * my_constants.pad["delta_y"],
             )
@@ -53,7 +45,7 @@ class Pad(item_file.Item):
         top_pad = max(Pad.list, key=attrgetter("center_y"))
         if (
             top_pad.center_y - player_file.Player.sprite.center_y
-            > MIN_PLAYER_PAD_HEIGHT_DIFFERENCE
+            > my_constants.pad["MIN_PLAYER_PAD_HEIGHT_DIFFERENCE"]
         ):
             gameview_file.GameView.dead = True
         # whole seciton: if player hits a pad, then bounce player, remove pad, create new pad, and change score
@@ -151,11 +143,12 @@ def spawn_pad(
     # Retrieved 2026-09-03, License - CC BY-SA 4.0
 
     # 30% of the time, a target spawns
-    percentage_chance = 0.3  # 30% chance
+    percentage_chance = 1  # 30% chance
 
     if random.random() < percentage_chance:
-        left_bound = int(x_ - my_constants.pad["width"] / 2)
-        right_bound = int(x_ + my_constants.pad["width"] / 2)
+        temp = my_constants.pad["width"] / 2 - my_constants.target["width"] / 2
+        left_bound = int(x_ - temp)
+        right_bound = int(x_ + temp)
         target_x = random.randrange(left_bound, right_bound)
         # create the target sprite
         spawned_target = item_file.spawn(

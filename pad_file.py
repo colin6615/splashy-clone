@@ -61,8 +61,7 @@ class Pad(item_file.Item):
                     hit_pad, target_file.Target.list
                 )
                 if len(target_pad_collision_list) > 0:
-                    for target_and_pad in target_pad_collision_list:
-                        gameview_file.GameView.score_factor = 1
+                    gameview_file.GameView.score_factor = 1
 
                 # delete items on pad
                 # for each thing in items_close_to_pad, remove it

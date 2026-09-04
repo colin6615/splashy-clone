@@ -106,8 +106,8 @@ TIME_FACTOR_CHANGE_MANAGER = {
 # If the player moves further than this boundary away from the camera we use a
 # constraint to move the camera
 HORIZONTAL_BOUNDARY = WINDOW_WIDTH / 2.0  # float
-BOTTOM_BOUNDARY = 0  # float
-TOP_BOUNDARY = WINDOW_HEIGHT / 2.0 - 100  # float
+BOTTOM_BOUNDARY = -150  # float
+TOP_BOUNDARY = WINDOW_HEIGHT / 2.0 - 25  # float
 
 # (float) How fast the camera pans to the player.
 # NOTE: 1.0 is instant.

@@ -112,14 +112,14 @@ class GameView(arcade.View):
         # Draw the pad that we work to make sure the user stays inside of.
         # This is just for illustration purposes.
         # remove upon release
-        camera_x, camera_y = self.camera_sprites.position
-        arcade.draw_rect_outline(
-            arcade.XYWH(
-                camera_x, camera_y, CAMERA_BOUNDARY.width, CAMERA_BOUNDARY.height
-            ),
-            arcade.color.RED,
-            2,
-        )
+        # camera_x, camera_y = self.camera_sprites.position
+        # arcade.draw_rect_outline(
+        #     arcade.XYWH(
+        #         camera_x, camera_y, CAMERA_BOUNDARY.width, CAMERA_BOUNDARY.height
+        #     ),
+        #     arcade.color.RED,
+        #     2,
+        # )
 
         # Select the (unscrolled) camera for our GUI
         self.camera_gui.use()
@@ -201,12 +201,3 @@ class GameView(arcade.View):
             (new_position[0], new_position[1]),
             my_constants.CAMERA_SPEED,
         )
-
-    def on_resize(self, width: int, height: int):
-        """
-        Resize window
-        Handle the user grabbing the edge and resizing the window.
-        """
-        super().on_resize(width, height)
-        self.camera_sprites.match_window()
-        self.camera_gui.match_window(position=True)

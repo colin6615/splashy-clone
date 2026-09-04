@@ -7,6 +7,7 @@ import gameover_file
 import my_constants
 import pad_file
 import player_file
+import spike_file
 import target_file
 
 # ==================
@@ -50,6 +51,7 @@ class GameView(arcade.View):
         # create sprite lists and other stuff
         target_file.setup()
         coin_file.setup()
+        spike_file.setup()
         player_file.setup()
         # spawn the first 4 pads
         pad_file.Pad.setup()
@@ -83,6 +85,7 @@ class GameView(arcade.View):
         pad_file.Pad.list.draw()
         target_file.Target.list.draw()
         coin_file.Coin.list.draw()
+        spike_file.Spike.list.draw()
 
         # Draw the pad that we work to make sure the user stays inside of.
         # This is just for illustration purposes.
@@ -131,6 +134,7 @@ class GameView(arcade.View):
         player_file.update()
         target_file.Target.list.update()
         coin_file.Coin.list.update()
+        spike_file.Spike.list.update()
 
         # Scroll the screen to the player
         self.scroll_to_player()

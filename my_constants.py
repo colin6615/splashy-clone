@@ -64,14 +64,21 @@ target = {
 coin = {
     "image_path": "assets/gold_1.png",
     "image_scale": 0.33,
-    "spawn_rate": 1,
+    "spawn_rate": 0.2,
     "height from pad": 50,
+}
+
+spike = {
+    "image_path": "assets/spike.png",
+    "image_scale": 1,
+    "spawn_rate": 1,
+    "height from pad": 12,
 }
 
 # list of item dictionaries
 # NOTE: excludes pad
-items_close_to_pad_dicts = [target, coin]
-item_dicts = [target, pad, coin]
+items_close_to_pad_dicts = [target, coin, spike]
+item_dicts = [target, pad, coin, spike]
 # add sprite width entry to each dictionary
 for dictionary in item_dicts:
     # load texture from image

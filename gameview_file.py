@@ -45,16 +45,18 @@ class GameView(arcade.View):
 
         # --- START: weird party stuff ---
         # create party/not party values. I could use a state machine for this, but this is pretty much the only state that I'm using
-
         GameView.time_factor_not_party = 1
+
         # when it's party, multiply the time_factor by my_constants.TIME_FACTOR_PARTY_INCREASE
         GameView.time_factor_party = (
             GameView.time_factor_not_party * my_constants.TIME_FACTOR_PARTY_INCREASE
         )
+
         # its not party at the start, so set the dynamic, used values to their non-party counterparts
         GameView.time_factor_change = my_constants.TIME_FACTOR_CHANGE_MANAGER[
             "not_party"
         ]
+
         GameView.time_factor = GameView.time_factor_not_party
         # --- END: weird party stuff ---
 

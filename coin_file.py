@@ -13,6 +13,21 @@ import player_file
 import spike_file
 import target_file
 
+# First, calculate how many coins are added to the coin count during the party
+COINS_PER_UPDATE = (
+    0.1  # how many coins are added to the coin count every update during party.
+)
+UPDATES_PER_SECOND = 250
+SECONDS_PER_PARTY = 6.5  # party duration in seconds
+COIN_CHANGE_PER_PARTY = (
+    UPDATES_PER_SECOND * SECONDS_PER_PARTY * COINS_PER_UPDATE
+)  # how many coins are added to the coin count during the party
+
+
+COINS_AFTER_PARTY = (
+    my_constants.coin["max"] + COIN_CHANGE_PER_PARTY
+)  # the maximum number of coins during a party. The coin count at the end of the party.
+
 
 class Coin(item_file.Item):
     """
@@ -38,27 +53,20 @@ class Coin(item_file.Item):
 
                     # increase coin score
                     Coin.score += 1
-
-        # determine if we should be in a coin party! First, calculate how many coins we are at during the end of the coin party
-        UPDATES_PER_PARTY = 1600  # this controls the party time
-        COINS_PER_UPDATE = (
-            0.1  # how many coins are added to the coin count every tick during party.
-        )
-        COIN_CHANGE_PER_PARTY = UPDATES_PER_PARTY * COINS_PER_UPDATE
-        right_bound = my_constants.coin["max"] + COIN_CHANGE_PER_PARTY
-
-        if my_constants.coin["max"] <= Coin.score < right_bound:
+        if my_constants.coin["max"] <= Coin.score < COINS_AFTER_PARTY:
+            # change stuff to their party counterparts
             gameview_file.GameView.party = True
-            # set time_factor and time_factor_change to their party modes
             gameview_file.GameView.time_factor_change = (
                 my_constants.TIME_FACTOR_CHANGE_MANAGER["party"]
             )
             gameview_file.GameView.time_factor = (
                 gameview_file.GameView.time_factor_party
             )
+
             # increase coin count
             Coin.score += COINS_PER_UPDATE
-            # remove all spikes
+
+            # remove spikes, so that the player doesn't die
             for spike in spike_file.Spike.list:
                 spike.remove_from_sprite_lists()
 
@@ -69,15 +77,16 @@ class Coin(item_file.Item):
                 target.center_x = player_file.Player.sprite.center_x
             for coin in Coin.list:
                 coin.center_x = player_file.Player.sprite.center_x
-        if (
-            Coin.score > right_bound
-            and player_file.Player.sprite.velocity_y < 0
-            and player_file.Player.sprite.velocity_y > -1
+
+        # if party is over and the player is moving slowly
+        if (Coin.score > COINS_AFTER_PARTY) and (
+            abs(player_file.Player.sprite.velocity_y) < 5
         ):
             # reset coin count
             Coin.score = 0
+
+            # change stuff to their non-party counterparts
             gameview_file.GameView.party = False
-            # set time_factor and time_factor_change to their non_party modes
             gameview_file.GameView.time_factor_change = (
                 my_constants.TIME_FACTOR_CHANGE_MANAGER["not_party"]
             )

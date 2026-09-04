@@ -139,6 +139,7 @@ def spawn_pad(
         y_input=y_,
         **my_constants.pad,  # the item is a pad.
     )
+    Pad.list.append(spawned_pad)
 
     # create a list of everything spawned on this pad AKA the pad created by this call of spawn_pad()
     spawned_pad.items_close_to_pad = arcade.SpriteList()

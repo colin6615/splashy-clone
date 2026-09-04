@@ -37,17 +37,18 @@ class Coin(item_file.Item):
 
                     # increase coin score
                     Coin.score += 1
-        # when the player gets 10 coins:
-        SECONDS_PER_PARTY = (
-            40  # duration of party. value of 40 makes about 10 seconds of party
+
+        # determine if we should be in a coin party! First, calculate how many coins we are at during the end of the coin party
+        UPDATES_PER_PARTY = (
+            230  # duration of party. value of 40 makes about 10 seconds of party
         )
-        COINS_PER_TICK = (
+        COINS_PER_UPDATE = (
             0.1  # how many coins are added to the coin count every tick during party.
         )
-        TICKS_PER_SECOND = 60
-        COIN_CHANGE_PER_PARTY = SECONDS_PER_PARTY * TICKS_PER_SECOND * COINS_PER_TICK
+        COIN_CHANGE_PER_PARTY = UPDATES_PER_PARTY * COINS_PER_UPDATE
         right_bound = my_constants.coin["max"] + COIN_CHANGE_PER_PARTY
-        if (Coin.score >= my_constants.coin["max"]) and (Coin.score <= right_bound):
+
+        if my_constants.coin["max"] >= Coin.score < right_bound:
             gameview_file.GameView.party = True
             # set time_factor and time_factor_change to their party modes
             gameview_file.GameView.time_factor_change = (
@@ -57,7 +58,7 @@ class Coin(item_file.Item):
                 gameview_file.GameView.time_factor_party
             )
             # increase coin count
-            Coin.score += COINS_PER_TICK
+            Coin.score += COINS_PER_UPDATE
             # remove all spikes
             for spike in spike_file.Spike.list:
                 spike.remove_from_sprite_lists()

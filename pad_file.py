@@ -150,11 +150,11 @@ def spawn_pad(
             left_bound = int(x_ - temp_length)
             right_bound = int(x_ + temp_length)
 
+            # apply the item x-position bounds
+            item_x = random.randrange(left_bound, right_bound)
+
             # calculate spawned item's y-position
             item_y = y_ + item_dict["height from pad"]
-
-            # apply the item position bounds
-            item_x = random.randrange(left_bound, right_bound)
 
             # create sprite
             spawned_item = item_file.spawn(

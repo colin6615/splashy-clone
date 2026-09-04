@@ -65,8 +65,9 @@ class Pad(item_file.Item):
 
                 # delete items on pad
                 # for each thing in items_close_to_pad, remove it
-                for pad_item in hit_pad.items_close_to_pad:
-                    pad_item.remove_from_sprite_lists()
+                while len(hit_pad.items_close_to_pad) > 0:
+                    for pad_item_ in hit_pad.items_close_to_pad:
+                        pad_item_.remove_from_sprite_lists()
 
                 # delete the hit pad
                 hit_pad.remove_from_sprite_lists()

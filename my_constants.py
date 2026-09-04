@@ -9,7 +9,7 @@ WINDOW_HEIGHT = 625
 # ==================================
 # (float) constant downward acceleration
 # NOTE: represented by the letter g in physics
-GRAVITATIONAL_ACCELERATION = 1  # good value = .07
+GRAVITATIONAL_ACCELERATION = 0.07  # good value = .07
 
 # (float) decrease DRAG_COEFFICIENT = player hovers over the apex of their jump arc for longer. Player is slower at the top of their bounce.
 # NOTE: In real life, the drag coefficient usually has a positive value; acceleration's magntiude DECREASES if speed INCREASES. In this game, I made it a negative value so that acceleration's magnitude INCREASES if speed INCREASES

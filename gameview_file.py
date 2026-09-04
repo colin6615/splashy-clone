@@ -130,6 +130,7 @@ class GameView(arcade.View):
         pad_file.Pad.list.update()
         player_file.update()
         target_file.Target.list.update()
+        coin_file.Coin.list.update()
 
         # Scroll the screen to the player
         self.scroll_to_player()

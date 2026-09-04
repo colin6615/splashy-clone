@@ -40,7 +40,7 @@ class Coin(item_file.Item):
 
         # determine if we should be in a coin party! First, calculate how many coins we are at during the end of the coin party
         UPDATES_PER_PARTY = (
-            230  # duration of party. value of 40 makes about 10 seconds of party
+            1600  # duration of party. value of 40 makes about 10 seconds of party
         )
         COINS_PER_UPDATE = (
             0.1  # how many coins are added to the coin count every tick during party.
@@ -48,7 +48,7 @@ class Coin(item_file.Item):
         COIN_CHANGE_PER_PARTY = UPDATES_PER_PARTY * COINS_PER_UPDATE
         right_bound = my_constants.coin["max"] + COIN_CHANGE_PER_PARTY
 
-        if my_constants.coin["max"] >= Coin.score < right_bound:
+        if my_constants.coin["max"] <= Coin.score < right_bound:
             gameview_file.GameView.party = True
             # set time_factor and time_factor_change to their party modes
             gameview_file.GameView.time_factor_change = (

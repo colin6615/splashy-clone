@@ -104,7 +104,17 @@ class GameView(arcade.View):
 
         # Draw the score
         score_text = str(GameView.score)
-        arcade.draw_text(score_text, 10, 10, arcade.color.BLACK_BEAN, 20)
+        arcade.draw_text("Score:" + score_text, 10, 10, arcade.color.BLACK_BEAN, 20)
+
+        # Draw the coin score
+        coin_count = str(coin_file.Coin.score)
+        arcade.draw_text(
+            "Coins:" + coin_count,
+            my_constants.WINDOW_WIDTH - 150,
+            10,
+            arcade.color.BLACK_BEAN,
+            20,
+        )
 
         # Instruct the user to start the game by clicking, if they haven't started the game yet.
         if GameView.started == False:

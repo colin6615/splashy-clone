@@ -112,3 +112,6 @@ TOP_BOUNDARY = WINDOW_HEIGHT / 2.0 - 100  # float
 # (float) How fast the camera pans to the player.
 # NOTE: 1.0 is instant.
 CAMERA_SPEED = 0.6
+
+# after the player dies, wait SLEEP_AFTER_DEAD seconds until you let them retry
+SLEEP_AFTER_DEAD = 2

@@ -57,21 +57,21 @@ pad = {
 target = {
     "image_path": "assets/target.png",
     "image_scale": 1,
-    "spawn_rate": 0.3,
+    "spawn_rate": 1,  # good value: 0.3
     "height from pad": 0,
 }
 
 coin = {
     "image_path": "assets/gold_1.png",
     "image_scale": 0.33,
-    "spawn_rate": 0.2,
+    "spawn_rate": 0.2,  # good value: 0.2
     "height from pad": 50,
 }
 
 spike = {
     "image_path": "assets/spike.png",
     "image_scale": 1,
-    "spawn_rate": 0.1,
+    "spawn_rate": 1,  # good value: 0.1
     "height from pad": 12,
 }
 

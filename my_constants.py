@@ -35,6 +35,7 @@ Explanations of common dictionary keys:
     image_scale (float): scales size of image. 
     spawn_rate (float): probablility that the item will spawn on a pad
         spawn_rate = 1 means that the item will spawn on every pad.
+    height from pad (int): difference in y positions of pad and item
 """
 pad = {
     "image_path": "assets/green_rectangle.png",
@@ -57,6 +58,7 @@ target = {
     "image_path": "assets/target.png",
     "image_scale": 1,
     "spawn_rate": 0.3,
+    "height from pad": 0,
 }
 
 # list of item dictionaries

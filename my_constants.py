@@ -9,22 +9,17 @@ WINDOW_HEIGHT = 625
 # ==================================
 # (float) constant downward acceleration
 # NOTE: represented by the letter g in physics
-GRAVITATIONAL_ACCELERATION = 0.07  # good value = .07
+GRAVITATIONAL_ACCELERATION = 0.14  # good value = .07
 
 # (float) decrease DRAG_COEFFICIENT = player hovers over the apex of their jump arc for longer. Player is slower at the top of their bounce.
 # NOTE: In real life, the drag coefficient usually has a positive value; acceleration's magntiude DECREASES if speed INCREASES. In this game, I made it a negative value so that acceleration's magnitude INCREASES if speed INCREASES
 # NOTE: represented by the letter b in physics
-DRAG_COEFFICIENT = -0.01  # good value = -0.01
+DRAG_COEFFICIENT = -0.02  # good value = -0.01
 
 # (float) how much energy the player conserves during a bounce.
 # 1 = no energy is lost. The player will bounce back to their original y-position.
 # 0 = all energy is lost on a bounce. The player hits the pad and loses all of their velocity.
 BOUNCE_DECAY_CONSTANT = 0.6  # good value = 0.6
-
-# (float) speeds up the game after every bounce.
-# NOTE: 0 = no speed change
-# NOTE: starting self.time_factor is 1, so after the n-th bounce, it updates to self.time_factor + TIME_FACTOR_CHANGE * N
-TIME_FACTOR_CHANGE = 0.01
 
 # ==================================
 # --- item dictionaries ---
@@ -67,7 +62,7 @@ coin = {
     "spawn_rate": 1,  # good value: 0.2
     "height from pad": 50,
     # if the user gets over the max number of coins, then they will earn a party!
-    "max": 9,
+    "max": 3,
 }
 
 spike = {

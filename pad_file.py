@@ -113,7 +113,9 @@ class Pad(item_file.Item):
                 )
 
                 # increase time factor and score
-                gameview_file.GameView.time_factor += my_constants.TIME_FACTOR_CHANGE
+                gameview_file.GameView.time_factor += (
+                    gameview_file.GameView.time_factor_change
+                )
                 gameview_file.GameView.score += gameview_file.GameView.score_factor
 
 

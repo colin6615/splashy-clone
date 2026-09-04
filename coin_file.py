@@ -34,6 +34,9 @@ class Coin(item_file.Item):
 
                     # increase coin score
                     Coin.score += 1
+        # when the player gets 10 coins:
+        if Coin.score > my_constants.coin["max"] - 1:
+            print("yippee! coin score is high!")
 
 
 def setup():

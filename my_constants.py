@@ -66,6 +66,8 @@ coin = {
     "image_scale": 0.33,
     "spawn_rate": 1,  # good value: 0.2
     "height from pad": 50,
+    # if the user gets over the max number of coins, then they will earn a party!
+    "max": 9,
 }
 
 spike = {
@@ -94,12 +96,6 @@ for dictionary in item_dicts:
 pad["x_max"] = WINDOW_WIDTH - pad["width"]
 pad["x_min"] = pad["width"]
 
-# ==================================
-# --- COIN ---
-# ==================================
-SPRITE_SCALING = 0.5
-SPRITE_SCALING_COIN = 0.3
-NUMBER_OF_COINS = 50
 
 # ==================================
 # --- OTHER ---

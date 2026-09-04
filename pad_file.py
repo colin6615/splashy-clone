@@ -36,7 +36,7 @@ class Pad(item_file.Item):
             spawn_pad(
                 # first pads have random x position within the bounds
                 x_=random.randrange(
-                    my_constants.pad["start_min"], my_constants.pad["start_max"]
+                    my_constants.pad["start_x_min"], my_constants.pad["start_x_max"]
                 ),
                 y_=y * my_constants.pad["delta_y"],
             )
@@ -74,7 +74,7 @@ class Pad(item_file.Item):
 
                 # ------------ Start of re-position pad
                 #  In this whole section, I teleport hit pad directly below the bottom pad. Then change the hit pad's x-position, slightly
-                # First, randomize pad's x-position, but don't touch the screen's edges
+                # First, randomize pad's x-position, but make sure that we don't touch the screen's edges. I achieve this thorugh the following loc
                 # Boolean variable if we successfully placed the pad.
                 pad_placed_successfully = False
                 # Keep trying until success.
@@ -91,9 +91,10 @@ class Pad(item_file.Item):
                     new_center_x = bottom_pad.center_x + x_change
 
                     # if the pad is not touching the screen's edges, then pad was succesfully placed.
-                    right_edge = my_constants.WINDOW_WIDTH - my_constants.pad["width"]
-                    left_edge = my_constants.pad["width"]
-                    if new_center_x > left_edge and new_center_x < right_edge:
+                    if (
+                        new_center_x > my_constants.pad["x_min"]
+                        and new_center_x < my_constants.pad["x_max"]
+                    ):
                         pad_placed_successfully = True
                 # ------------- after you successfully change the x-position
                 # move pad down
@@ -140,32 +141,53 @@ def spawn_pad(
     )
 
     # create a list of everything spawned on this pad AKA the pad created by this call of spawn_pad()
-    spawned_pad.items_close_to_pad = []
+    spawned_pad.items_close_to_pad = arcade.SpriteList()
 
     # source for next 2 loc:  https://stackoverflow.com/a/3203121
     # Posted by SilentGhost, modified by community. See post 'Timeline' for change history
     # Retrieved 2026-09-03, License - CC BY-SA 4.0
     for item_dict in my_constants.items_close_to_pad_dicts:
         if random.random() < item_dict["spawn_rate"]:
-            # calculate bounds of spawned item's x-position
-            # if temp length = my_constants.pad["width"] / 2 - item_dict["width"] / 2
-            # then: the item lies on the pad. (Item's left edge cannot go further left than the pad's left edge.)
-            # i changed the 2 to a 4 so that the item can hang off the pad a little bit.
-            temp_length = my_constants.pad["width"] / 2 - item_dict["width"] / 4
-            left_bound = int(x_ - temp_length)
-            right_bound = int(x_ + temp_length)
-
-            # apply the item x-position bounds
-            item_x = random.randrange(left_bound, right_bound)
-
             # calculate spawned item's y-position
             item_y = y_ + item_dict["height from pad"]
 
-            # create sprite
-            spawned_item = item_file.spawn(
-                x_input=item_x,
-                y_input=item_y,
-                **item_dict,
-            )
+            # Make sure that the item doesn't overlap with another item
+            # Boolean variable if we successfully placed the item.
+            item_placed_successfully = False
+            # Keep trying until success.
+            while not item_placed_successfully:
+                # calculate bounds of spawned item's x-position
+                # if temp length = my_constants.pad["width"] / 2 - item_dict["width"] / 2
+                # , then the item lies on the pad. Item's left edge cannot go further left than the pad's left edge.
+                # i changed the 2 to a 4 so that the item can hang off the pad a little bit.
+                temp_length = my_constants.pad["width"] / 2 - item_dict["width"] / 4
+                left_bound = int(x_ - temp_length)
+                right_bound = int(x_ + temp_length)
+
+                # generate item's x-position within the bounds
+                item_x = random.randrange(left_bound, right_bound)
+
+                # create sprite
+                spawned_item = item_file.spawn(
+                    x_input=item_x,
+                    y_input=item_y,
+                    **item_dict,
+                )
+                # NOTE: try to make spawn something. return spawned_item as a proposal sprite
+                # NOTE: call item_file.spawn()
+                # check if the item collides with another item.
+                # First, find items that are colliding
+                item_hit_list = arcade.check_for_collision_with_list(
+                    spawned_item, spawned_pad.items_close_to_pad
+                )
+                # if the hit list is empty (no items are colliding), then break out of this while loop
+                if len(item_hit_list) == 0:
+                    item_placed_successfully = True
             # add spawned sprite to a list of items close to the pad
             spawned_pad.items_close_to_pad.append(spawned_item)
+
+            # fetch the item's class
+            class_ = item_dict["Input_class"]
+
+            # add the spawned sprite to its classes spritelist
+            class_.list.append(spawned_item)

@@ -48,8 +48,8 @@ pad = {
     "delta_y": 128,
     # (floats) the first 4 starting pads will spawn with x values in between these two bounds
     # NOTE: Currently, the bounds enclose the middle one third of the screen
-    "start_min": int(WINDOW_WIDTH / 3),
-    "start_max": int(WINDOW_WIDTH * 2 / 3),
+    "start_x_min": int(WINDOW_WIDTH / 3),
+    "start_x_max": int(WINDOW_WIDTH * 2 / 3),
     # (int) Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE pixels underneath a pad.
     "MIN_PLAYER_PAD_HEIGHT_DIFFERENCE": 0,
 }
@@ -71,7 +71,7 @@ coin = {
 spike = {
     "image_path": "assets/spike.png",
     "image_scale": 1,
-    "spawn_rate": 1,
+    "spawn_rate": 0.1,
     "height from pad": 12,
 }
 
@@ -89,6 +89,10 @@ for dictionary in item_dicts:
 
     # sprite width = image width * image scale
     dictionary["width"] = width_height[0] * dictionary["image_scale"]
+
+# add bounds for pads
+pad["x_max"] = WINDOW_WIDTH - pad["width"]
+pad["x_min"] = pad["width"]
 
 # ==================================
 # --- COIN ---

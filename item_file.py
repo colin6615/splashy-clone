@@ -67,10 +67,4 @@ def spawn(x_input, y_input, **input_dict):
     # position the sprite
     item.center_x = x_input
     item.center_y = y_input
-
-    # add item to sprite list.
-    # For example, if the class is Pad, then the sprite list is Pad.list
-    # This is probably bad practice. rewrite, this, later, if needed.
-    class_.list.append(item)
-
     return item

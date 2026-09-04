@@ -127,7 +127,6 @@ def spawn_pad(
     """
     spawns a pad at the specified coordinates
     spawns a target on the pad.
-    the target should have same y-input, but different x_
     """
     spawned_pad = item_file.spawn(
         x_input=x_,
@@ -144,23 +143,21 @@ def spawn_pad(
     for item_type in my_constants.items_close_to_pad_dicts:
         if random.random() < item_type["spawn_rate"]:
             # calculate spawned item position bounds
-            # if temp length = my_constants.pad["width"] / 2 - my_constants.target["width"] / 2
+            # if temp length = my_constants.pad["width"] / 2 - item_type["width"] / 2
             # then: the item lies on the pad. (Item's left edge cannot go further left than the pad's left edge.)
             # i changed the 2 to a 4 so that the item can hang off the pad a little bit.
-            temp_length = (
-                my_constants.pad["width"] / 2 - my_constants.target["width"] / 4
-            )
+            temp_length = my_constants.pad["width"] / 2 - item_type["width"] / 4
             left_bound = int(x_ - temp_length)
             right_bound = int(x_ + temp_length)
 
             # apply the item position bounds
-            target_x = random.randrange(left_bound, right_bound)
+            item_x = random.randrange(left_bound, right_bound)
 
-            # create the target sprite
-            spawned_target = item_file.spawn(
-                x_input=target_x,
+            # create sprite
+            spawned_item = item_file.spawn(
+                x_input=item_x,
                 y_input=y_,
-                **my_constants.target,
+                **item_type,
             )
-            # add target sprite to a list of items close to the pad
-            spawned_pad.items_close_to_pad.append(spawned_target)
+            # add spawned sprite to a list of items close to the pad
+            spawned_pad.items_close_to_pad.append(spawned_item)

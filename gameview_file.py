@@ -99,38 +99,40 @@ class GameView(arcade.View):
         # This command has to happen before we start drawing
         self.clear()
 
-        # Select the camera we'll use to draw all our sprites
-        self.camera_sprites.use()
-
-        # Draw sprites.
-        player_file.Player.list.draw()
-        pad_file.Pad.list.draw()
-        target_file.Target.list.draw()
-        coin_file.Coin.list.draw()
-        spike_file.Spike.list.draw()
-
         # Select the (unscrolled) camera for our GUI
         self.camera_gui.use()
 
         # Draw the score
-        score_text = f"{GameView.score} + {GameView.score_factor}"
+        score_text = str(GameView.score)
+        str(GameView.score)
         arcade.draw_text(
             score_text,
             my_constants.WINDOW_WIDTH / 2,
             my_constants.WINDOW_HEIGHT - 40,
             arcade.color.BLACK_BEAN,
-            font_size=25,
+            font_size=35,
+            anchor_x="center",
+        )
+
+        # Draw the score factor
+        score_factor_text = f"X {GameView.score_factor}"
+        arcade.draw_text(
+            score_factor_text,
+            my_constants.WINDOW_WIDTH / 2,
+            my_constants.WINDOW_HEIGHT * 0.4,
+            arcade.color.WHITE,
+            font_size=35,
             anchor_x="center",
         )
 
         # Draw the coin score
         coin_count = str(coin_file.Coin.score)
         arcade.draw_text(
-            "Coins:" + coin_count,
+            "Coins: " + coin_count,
             my_constants.WINDOW_WIDTH - 150,
-            10,
-            arcade.color.BLACK_BEAN,
-            20,
+            30,
+            arcade.color.GOLD,
+            font_size=25,
         )
 
         # Instruct the user to start the game by clicking, if they haven't started the game yet.
@@ -143,6 +145,16 @@ class GameView(arcade.View):
                 font_size=24,
                 anchor_x="center",
             )
+
+        # Select the camera we'll use to draw all our sprites
+        self.camera_sprites.use()
+
+        # Draw sprites.
+        player_file.Player.list.draw()
+        pad_file.Pad.list.draw()
+        target_file.Target.list.draw()
+        coin_file.Coin.list.draw()
+        spike_file.Spike.list.draw()
 
     def game_over_function(self):
         """Stop gameplay. Switch to game over screen."""

@@ -57,12 +57,7 @@ class Coin(item_file.Item):
         if my_constants.coin["max"] <= Coin.score < COINS_AFTER_PARTY:
             # change stuff to their party counterparts
             gameview_file.GameView.party = True
-            gameview_file.GameView.time_factor_change = (
-                my_constants.TIME_FACTOR_CHANGE_MANAGER["party"]
-            )
-            gameview_file.GameView.time_factor = (
-                gameview_file.GameView.time_factor_party
-            )
+            gameview_file.GameView.hype = my_constants.TIME_FACTOR_PARTY_INCREASE
 
             # increase coin count
             Coin.score += COINS_PER_UPDATE
@@ -87,13 +82,8 @@ class Coin(item_file.Item):
             Coin.score = 0
 
             # change stuff to their non-party counterparts
+            gameview_file.GameView.hype = 1
             gameview_file.GameView.party = False
-            gameview_file.GameView.time_factor_change = (
-                my_constants.TIME_FACTOR_CHANGE_MANAGER["not_party"]
-            )
-            gameview_file.GameView.time_factor = (
-                gameview_file.GameView.time_factor_not_party
-            )
 
 
 def setup():

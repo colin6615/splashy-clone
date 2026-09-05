@@ -12,12 +12,6 @@ import player_file
 import spike_file
 import target_file
 
-# ==================
-# time_factor_change speeds up the game after every bounce.
-# NOTE: 0 = no speed change
-# NOTE: starting time_factor is 1, so after the n-th bounce, it updates to time_factor + TIME_FACTOR_CHANGE * N
-
-
 CAMERA_BOUNDARY = arcade.LRBT(
     -my_constants.HORIZONTAL_BOUNDARY,
     my_constants.HORIZONTAL_BOUNDARY,
@@ -45,22 +39,9 @@ class GameView(arcade.View):
         GameView.score = 0
         GameView.score_factor = 1
 
-        # --- START: weird party stuff ---
-        # create party/not party values. I could use a state machine for this, but this is pretty much the only state that I'm using
-        GameView.time_factor_not_party = 1
-
-        # when it's party, multiply the time_factor by my_constants.TIME_FACTOR_PARTY_INCREASE
-        GameView.time_factor_party = (
-            GameView.time_factor_not_party * my_constants.TIME_FACTOR_PARTY_INCREASE
-        )
-
-        # its not party at the start, so set the dynamic, used values to their non-party counterparts
-        GameView.time_factor_change = my_constants.TIME_FACTOR_CHANGE_MANAGER[
-            "not_party"
-        ]
-
-        GameView.time_factor = GameView.time_factor_not_party
-        # --- END: weird party stuff ---
+        # I should use a state machine for this.
+        # this value is high during a party. 1 otherwise
+        GameView.hype = 1
 
         # other initial values
         GameView.started = False
@@ -155,6 +136,9 @@ class GameView(arcade.View):
         target_file.Target.list.draw()
         coin_file.Coin.list.draw()
         spike_file.Spike.list.draw()
+
+        # Select the (unscrolled) camera for our GUI
+        self.camera_gui.use()
 
     def game_over_function(self):
         """Stop gameplay. Switch to game over screen."""

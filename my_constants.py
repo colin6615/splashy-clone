@@ -94,11 +94,12 @@ pad["x_min"] = pad["width"]
 # ==================================
 # --- IDK ---
 # ==================================
+# during a party, the TIME_FACTOR is multipled by TIME_FACTOR_PARTY_INCREASE, which makes gravity really strong.
 TIME_FACTOR_PARTY_INCREASE = 6
-TIME_FACTOR_CHANGE_MANAGER = {
-    "party": 0,
-    "not_party": GRAVITATIONAL_ACCELERATION / 20,
-}
+# ==================
+# time_factor_change speeds up the game after every bounce.
+# NOTE: 0 = no speed change
+# NOTE: starting TIME_FACTOR is 1, so after the n-th bounce, it updates to TIME_FACTOR + TIME_FACTOR_CHANGE * N
 # ==================================
 # --- OTHER ---
 # ==================================

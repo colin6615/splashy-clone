@@ -113,8 +113,15 @@ class GameView(arcade.View):
         self.camera_gui.use()
 
         # Draw the score
-        score_text = str(GameView.score)
-        arcade.draw_text("Score:" + score_text, 10, 10, arcade.color.BLACK_BEAN, 20)
+        score_text = f"{GameView.score} + {GameView.score_factor}"
+        arcade.draw_text(
+            score_text,
+            my_constants.WINDOW_WIDTH / 2,
+            my_constants.WINDOW_HEIGHT - 40,
+            arcade.color.BLACK_BEAN,
+            font_size=25,
+            anchor_x="center",
+        )
 
         # Draw the coin score
         coin_count = str(coin_file.Coin.score)

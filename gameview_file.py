@@ -109,18 +109,6 @@ class GameView(arcade.View):
         coin_file.Coin.list.draw()
         spike_file.Spike.list.draw()
 
-        # Draw the pad that we work to make sure the user stays inside of.
-        # This is just for illustration purposes.
-        # remove upon release
-        # camera_x, camera_y = self.camera_sprites.position
-        # arcade.draw_rect_outline(
-        #     arcade.XYWH(
-        #         camera_x, camera_y, CAMERA_BOUNDARY.width, CAMERA_BOUNDARY.height
-        #     ),
-        #     arcade.color.RED,
-        #     2,
-        # )
-
         # Select the (unscrolled) camera for our GUI
         self.camera_gui.use()
 

@@ -53,6 +53,7 @@ class Coin(item_file.Item):
 
                     # increase coin score
                     Coin.score += 1
+        # if the coin count is in the party range, then:
         if my_constants.coin["max"] <= Coin.score < COINS_AFTER_PARTY:
             # change stuff to their party counterparts
             gameview_file.GameView.party = True
@@ -78,7 +79,7 @@ class Coin(item_file.Item):
             for coin in Coin.list:
                 coin.center_x = player_file.Player.sprite.center_x
 
-        # if party is over and the player is moving slowly
+        # if coin count is greater than COINS_AFTER_PARTY and the player is moving slowly, then deactivate party
         if (Coin.score > COINS_AFTER_PARTY) and (
             abs(player_file.Player.sprite.velocity_y) < 5
         ):

@@ -40,7 +40,6 @@ class Pad(item_file.Item):
                 ),
                 y_=y * my_constants.pad["delta_y"],
             )
-        Pad.total = 1
 
     def _update(self, delta_time):
         # kill the player if they go below the top pad
@@ -57,10 +56,6 @@ class Pad(item_file.Item):
         )
         if len(self.hit_list) > 0:
             for hit_pad in self.hit_list:
-                # bounce player
-                player_file.Player.sprite.velocity_y *= (
-                    -my_constants.BOUNCE_DECAY_CONSTANT
-                )
                 # if the pad is touching a target, then reset score factor
                 target_pad_collision_list = arcade.check_for_collision_with_list(
                     hit_pad, target_file.Target.list
@@ -112,8 +107,15 @@ class Pad(item_file.Item):
                     y_=new_center_y,
                 )
 
-                # increase pad count and score
-                Pad.total += 1
+                # bounce player
+                player_file.Player.sprite.velocity_y *= (
+                    -my_constants.BOUNCE_DECAY_CONSTANT
+                )
+
+                # increase time factor and score
+                gameview_file.GameView.time_factor += (
+                    gameview_file.GameView.time_factor_change
+                )
                 gameview_file.GameView.score += gameview_file.GameView.score_factor
 
 

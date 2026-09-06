@@ -112,10 +112,8 @@ class Pad(item_file.Item):
                     -my_constants.BOUNCE_DECAY_CONSTANT
                 )
 
-                # increase time factor and score
-                gameview_file.GameView.time_factor += (
-                    gameview_file.GameView.time_factor_change
-                )
+                # increase pad count and score
+                Pad.total += 1
                 gameview_file.GameView.score += gameview_file.GameView.score_factor
 
 

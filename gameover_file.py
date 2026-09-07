@@ -48,7 +48,7 @@ class GameOverView(arcade.View):
             anchor_x="center",
         )
         arcade.draw_text(
-            "Click to restart",
+            my_constants.instruction_text,
             x=my_constants.WINDOW_WIDTH / 2,
             y=300,
             color=arcade.color.WHITE,
@@ -78,3 +78,8 @@ class GameOverView(arcade.View):
         game_view = gameview_file.GameView()
         game_view.setup()
         self.window.show_view(game_view)
+
+    def on_key_press(self, key, modifiers):
+        """if user presses escape, then close the window"""
+        if key == arcade.key.ESCAPE:
+            arcade.close_window()

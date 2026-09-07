@@ -17,4 +17,6 @@ def asymptotic_function(x, max_y, x_at_half_y):
     denominator = x + x_at_half_y
     y = 1 + numerator / denominator
     return y
+
+
 bounce_count = 0

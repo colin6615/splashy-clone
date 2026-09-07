@@ -125,7 +125,7 @@ class GameView(arcade.View):
         # Instruct the user to start the game by clicking, if they haven't started the game yet.
         if GameView.started == False:
             arcade.draw_text(
-                "Left click to start",
+                my_constants.instruction_text,
                 x=my_constants.WINDOW_WIDTH / 2,
                 y=my_constants.WINDOW_WIDTH / 4,
                 color=arcade.color.WHITE,
@@ -161,3 +161,8 @@ class GameView(arcade.View):
         # if player is dead, then go to game end screen
         if GameView.dead == True:
             GameView.game_over_function(self)
+
+    def on_key_press(self, key, modifiers):
+        """if user presses escape, then close the window"""
+        if key == arcade.key.ESCAPE:
+            arcade.close_window()

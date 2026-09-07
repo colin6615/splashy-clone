@@ -76,7 +76,7 @@ def update():
     g = my_constants.GRAVITATIONAL_ACCELERATION
     b = my_constants.DRAG_COEFFICIENT
 
-    Player.sprite.acceleration = -g + b * abs(v) * game_speed
+    Player.sprite.acceleration = (-g + b * abs(v)) * game_speed
 
     # calculate position and velocity_y using kinematics
     if gameview_file.GameView.started == True:

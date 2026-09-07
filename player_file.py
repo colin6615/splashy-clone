@@ -2,7 +2,6 @@
 
 import arcade
 
-import function_file
 import gameview_file
 import my_constants
 
@@ -49,10 +48,7 @@ def update():
     # define acceleration: a = game_speed * (- g + b * |v|)
     # speeds up the game over time
     game_speed = (
-        gameview_file.GameView.game_speed_factor
-        * function_file.asymptotic_function(
-            x=function_file.bounce_count, max_y=6, x_at_half_y=80
-        )
+        gameview_file.GameView.game_speed_factor * my_constants.game_speed_function
     )
     v = Player.sprite.velocity_y
     g = my_constants.GRAVITATIONAL_ACCELERATION

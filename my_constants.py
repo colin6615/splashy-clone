@@ -61,7 +61,7 @@ target = {
 coin = {
     "image_path": "assets/gold_1.png",
     "image_scale": 0.33,
-    "spawn_rate": 1,  # good value: 0.2
+    "spawn_rate": 0.2,  # good value: 0.2
     "height from pad": 50,
     # if the user gets over the max number of coins, then they will earn a party!
     "max": 3,
@@ -100,6 +100,9 @@ pad["x_min"] = pad["width"]
 # --- IDK ---
 # ==================================
 game_speed_factor_party = 6
+game_speed_function = function_file.asymptotic_function(
+    x=function_file.bounce_count, max_y=6, x_at_half_y=80
+)
 # ==================================
 # --- OTHER ---
 # ==================================

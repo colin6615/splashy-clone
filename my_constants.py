@@ -1,5 +1,7 @@
 import arcade
 
+import function_file
+
 # other
 WINDOW_WIDTH = 1147
 WINDOW_HEIGHT = 625
@@ -68,7 +70,10 @@ coin = {
 spike = {
     "image_path": "assets/spike.png",
     "image_scale": 1,
-    "spawn_rate": 0.1,  # good value: 0.1
+    "spawn_rate": function_file.asymptotic_function(
+        x=function_file.bounce_count, max_y=1.5, x_at_half_y=50
+    )
+    * 0.1,  # goes from 0.1 to 0.1 * max_y
     "height from pad": 12,
 }
 

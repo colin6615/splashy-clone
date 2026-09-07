@@ -2,30 +2,9 @@
 
 import arcade
 
+import function_file
 import gameview_file
 import my_constants
-import pad_file
-
-
-def asymptotic_function(x, max_y, x_at_half_y):
-    """
-    inputs 3 numbers and outputs 1 number.
-
-    Args:
-        x (float): input variable
-        max_y (float): maximum output
-            reached at infinity
-            asymptotic_function(x = infinity) = max_y
-        x_at_half_y (float): At this x value, output is  (sort of) halfway maxed out.
-            asymptotic_function(x = x_at_half_y) = [(max_y - 1) / 2] + 1
-    Returns:
-        output (float)
-    """
-
-    numerator = (max_y - 1) * x
-    denominator = x + x_at_half_y
-    y = 1 + numerator / denominator
-    return y
 
 
 class Player(arcade.Sprite):
@@ -69,8 +48,11 @@ def update():
     # must update acceleration every tick because acceleration changes with velocity_y.
     # define acceleration: a = game_speed * (- g + b * |v|)
     # speeds up the game over time
-    game_speed = gameview_file.GameView.game_speed_factor * asymptotic_function(
-        x=pad_file.Pad.total, max_y=6, x_at_half_y=80
+    game_speed = (
+        gameview_file.GameView.game_speed_factor
+        * function_file.asymptotic_function(
+            x=function_file.bounce_count, max_y=6, x_at_half_y=80
+        )
     )
     v = Player.sprite.velocity_y
     g = my_constants.GRAVITATIONAL_ACCELERATION

@@ -9,6 +9,7 @@ from operator import attrgetter
 
 import arcade
 
+import function_file
 import item_file
 import my_constants
 import player_file
@@ -30,7 +31,7 @@ class Pad(item_file.Item):
     def setup():
         """create sprite list and spawn the first pads"""
         Pad.list = arcade.SpriteList()
-        Pad.total = 0
+        function_file.bounce_count = 0
         # spawn the first 4 pads
         for y in range(-4, 0):
             spawn_pad(
@@ -107,7 +108,7 @@ class Pad(item_file.Item):
                     )
 
                     # increase pad count and score
-                    Pad.total += 1
+                    function_file.bounce_count += 1
                     gameview_file.GameView.score += gameview_file.GameView.score_factor
         # kill the player if they go below the top pad
         top_pad = max(Pad.list, key=attrgetter("center_y"))

@@ -42,13 +42,6 @@ class Pad(item_file.Item):
             )
 
     def _update(self, delta_time):
-        # kill the player if they go below the top pad
-        top_pad = max(Pad.list, key=attrgetter("center_y"))
-        if (
-            top_pad.center_y - player_file.Player.sprite.center_y
-            > my_constants.pad["MIN_PLAYER_PAD_HEIGHT_DIFFERENCE"]
-        ):
-            gameview_file.GameView.dead = True
         # whole seciton: if player hits a pad, then bounce player, remove pad, create new pad, and change score
         # next few lines: if player hits a pad, then:
         self.hit_list = arcade.check_for_collision_with_list(
@@ -115,6 +108,13 @@ class Pad(item_file.Item):
                 # increase pad count and score
                 Pad.total += 1
                 gameview_file.GameView.score += gameview_file.GameView.score_factor
+        # kill the player if they go below the top pad
+        top_pad = max(Pad.list, key=attrgetter("center_y"))
+        if (
+            top_pad.center_y - player_file.Player.sprite.center_y
+            > my_constants.pad["MIN_PLAYER_PAD_HEIGHT_DIFFERENCE"]
+        ):
+            gameview_file.GameView.dead = True
 
 
 import gameview_file

@@ -57,7 +57,9 @@ class Coin(item_file.Item):
         if my_constants.coin["max"] <= Coin.score < COINS_AFTER_PARTY:
             # change stuff to their party counterparts
             gameview_file.GameView.party = True
-            gameview_file.GameView.hype = my_constants.TIME_FACTOR_PARTY_INCREASE
+            gameview_file.GameView.game_speed_factor = (
+                my_constants.game_speed_factor_party
+            )
 
             # increase coin count
             Coin.score += COINS_PER_UPDATE
@@ -83,6 +85,7 @@ class Coin(item_file.Item):
 
             # change stuff to their non-party counterparts
             gameview_file.GameView.party = False
+            gameview_file.GameView.game_speed_factor = 1
 
 
 def setup():
@@ -90,7 +93,7 @@ def setup():
     Coin.list = arcade.SpriteList()
     Coin.score = 0
     gameview_file.GameView.party = False
-    gameview_file.GameView.hype = 1
+    gameview_file.GameView.game_speed_factor = 1
 
 
 my_constants.coin["Input_class"] = Coin

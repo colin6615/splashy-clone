@@ -69,7 +69,7 @@ def update():
     # must update acceleration every tick because acceleration changes with velocity_y.
     # define acceleration: a = game_speed * (- g + b * |v|)
     # speeds up the game over time
-    game_speed = gameview_file.GameView.hype * asymptotic_function(
+    game_speed = gameview_file.GameView.game_speed_factor * asymptotic_function(
         pad_file.Pad.total, 6, 80
     )
     v = Player.sprite.velocity_y

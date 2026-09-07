@@ -157,8 +157,8 @@ class GameView(arcade.View):
     def on_update(self, delta_time):
         """Movement and game logic. This function calls every game tick"""
         # update sprites .
-        pad_file.Pad.list.update()
         player_file.update()
+        pad_file.Pad.list.update()
         target_file.Target.list.update()
         coin_file.Coin.list.update()
         spike_file.Spike.list.update()

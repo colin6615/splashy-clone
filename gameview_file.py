@@ -4,6 +4,7 @@ import time
 
 import arcade
 
+import camera_file
 import gameover_file
 import items.coin_file
 import items.pad_file
@@ -16,14 +17,6 @@ import player_file
 # time_factor_change speeds up the game after every bounce.
 # NOTE: 0 = no speed change
 # NOTE: starting time_factor is 1, so after the n-th bounce, it updates to time_factor + TIME_FACTOR_CHANGE * N
-
-
-CAMERA_BOUNDARY = arcade.LRBT(
-    -my_constants.HORIZONTAL_BOUNDARY,
-    my_constants.HORIZONTAL_BOUNDARY,
-    -my_constants.BOTTOM_BOUNDARY,
-    my_constants.TOP_BOUNDARY,
-)
 
 
 class GameView(arcade.View):
@@ -49,9 +42,7 @@ class GameView(arcade.View):
         GameView.started = False
         GameView.dead = False
 
-        # camera stuff
-        self.camera_sprites = arcade.Camera2D()
-        self.camera_gui = arcade.Camera2D()
+        camera_file.my_camera.setup(self)
 
         # create SpriteLists and initial values for sprites
         items.target_file.Target.setup()
@@ -118,6 +109,7 @@ class GameView(arcade.View):
         items.coin_file.Coin.list.draw()
         items.spike_file.Spike.list.draw()
 
+        # Select the (unscrolled) camera for our GUI
         self.camera_gui.use()
 
         # Draw the coin score
@@ -164,32 +156,8 @@ class GameView(arcade.View):
         items.spike_file.Spike.list.update()
 
         # Scroll the screen to the player
-        self.scroll_to_player()
+        camera_file.my_camera.scroll_to_player(self)
 
         # if player is dead, then go to game end screen
         if GameView.dead == True:
             GameView.game_over_function(self)
-
-    def scroll_to_player(self):
-        """
-        Scroll the window to the player.
-        This method will attempt to keep the player at least VIEWPORT_MARGIN
-        pixels away from the edge.
-
-        if CAMERA_SPEED is 1, the camera will immediately move to the desired position.
-        Anything between 0 and 1 will have the camera move to the location with a smoother
-        pan.
-        """
-
-        # --- Manage Scrolling ---
-        new_position = arcade.camera.grips.constrain_boundary_xy(
-            self.camera_sprites.view_data,
-            CAMERA_BOUNDARY,
-            player_file.Player.sprite.position,
-        )
-
-        self.camera_sprites.position = arcade.math.lerp_2d(
-            self.camera_sprites.position,
-            (new_position[0], new_position[1]),
-            my_constants.CAMERA_SPEED,
-        )

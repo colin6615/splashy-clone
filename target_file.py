@@ -35,10 +35,12 @@ class Target(item_file.Item):
                     # increase score multiplier
                     gameview_file.GameView.score_factor += 1
 
+                    # play sound
+                    arcade.play_sound(my_constants.target["sound"])
 
-def setup():
-    """Set up the game and initialize the variables."""
-    Target.list = arcade.SpriteList()
+    def setup():
+        """Set up the game and initialize the variables."""
+        Target.list = arcade.SpriteList()
 
 
 my_constants.target["Input_class"] = Target

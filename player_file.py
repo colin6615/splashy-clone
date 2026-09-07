@@ -22,41 +22,39 @@ class Player(arcade.Sprite):
         """Call the parent class (Sprite) constructor"""
         super().__init__(filename, sprite_scaling)
 
+    def setup():
+        """Make the sprite and list"""
+        Player.sprite = arcade.Sprite(
+            ":resources:images/animated_characters/female_person/femalePerson_idle.png",
+            scale=0.4,
+        )
 
-def setup():
-    """Make the sprite and list"""
-    Player.sprite = arcade.Sprite(
-        ":resources:images/animated_characters/female_person/femalePerson_idle.png",
-        scale=0.4,
-    )
+        # set the sprite's starting values
+        Player.sprite.center_x = 256
+        Player.sprite.center_y = 0
+        Player.sprite.velocity_y = 0
 
-    # set the sprite's starting values
-    Player.sprite.center_x = 256
-    Player.sprite.center_y = 0
-    Player.sprite.velocity_y = 0
+        # make list and add sprite to list
+        Player.list = arcade.SpriteList()
+        Player.list.append(Player.sprite)
 
-    # make list and add sprite to list
-    Player.list = arcade.SpriteList()
-    Player.list.append(Player.sprite)
+    def update():
+        """Movement and game logic"""
 
+        # free-fall physics in the y-direciton
+        # must update acceleration every tick because acceleration changes with velocity_y.
+        # define acceleration: a = game_speed * (- g + b * |v|)
+        # speeds up the game over time
+        game_speed = (
+            gameview_file.GameView.game_speed_factor * my_constants.game_speed_function
+        )
+        v = Player.sprite.velocity_y
+        g = my_constants.GRAVITATIONAL_ACCELERATION
+        b = my_constants.DRAG_COEFFICIENT
 
-def update():
-    """Movement and game logic"""
+        Player.sprite.acceleration = (-g + b * abs(v)) * game_speed
 
-    # free-fall physics in the y-direciton
-    # must update acceleration every tick because acceleration changes with velocity_y.
-    # define acceleration: a = game_speed * (- g + b * |v|)
-    # speeds up the game over time
-    game_speed = (
-        gameview_file.GameView.game_speed_factor * my_constants.game_speed_function
-    )
-    v = Player.sprite.velocity_y
-    g = my_constants.GRAVITATIONAL_ACCELERATION
-    b = my_constants.DRAG_COEFFICIENT
-
-    Player.sprite.acceleration = (-g + b * abs(v)) * game_speed
-
-    # calculate position and velocity_y using kinematics
-    if gameview_file.GameView.started == True:
-        Player.sprite.velocity_y += Player.sprite.acceleration
-        Player.sprite.center_y += Player.sprite.velocity_y
+        # calculate position and velocity_y using kinematics
+        if gameview_file.GameView.started == True:
+            Player.sprite.velocity_y += Player.sprite.acceleration
+            Player.sprite.center_y += Player.sprite.velocity_y

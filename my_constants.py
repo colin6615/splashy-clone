@@ -33,6 +33,9 @@ Explanations of common dictionary keys:
     spawn_rate (float): probablility that the item will spawn on a pad
         spawn_rate = 1 means that the item will spawn on every pad.
     height from pad (int): difference in y positions of pad and item
+    sound (Sound): playable sound
+        .wav works
+        .ogg doesn't work
 """
 pad = {
     "name": "pad",
@@ -49,13 +52,15 @@ pad = {
     "start_x_max": int(WINDOW_WIDTH * 2 / 3),
     # (int) Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE pixels underneath a pad.
     "MIN_PLAYER_PAD_HEIGHT_DIFFERENCE": 0,
+    "sound": arcade.load_sound(":resources:/sounds/coin1.wav"),
 }
 
 target = {
     "name": "target",
     "image_scale": 1,
     "spawn_rate": 0.3,  # good value: 0.3
-    "height from pad": 0,
+    "height from pad": 3,
+    "sound": arcade.load_sound(":resources:/sounds/coin2.wav"),
 }
 
 coin = {
@@ -65,6 +70,7 @@ coin = {
     "height from pad": 50,
     # if the user gets over the max number of coins, then they will earn a party!
     "max": 3,
+    "sound": arcade.load_sound(":resources:/sounds/coin3.wav"),
 }
 
 spike = {
@@ -121,12 +127,6 @@ for dictionary in [target, pad, coin, spike]:
 
     # sprite width = image width * image scale
     dictionary["width"] = width_height[0] * dictionary["image_scale"]
-
-# load sounds
-# # NOTE: excludes spike
-# for dictionary in [target, pad, coin]:
-#     sound_path = f"assets/{dictionary['name']}.ogg"
-#     dictionary["sound"] = arcade.load_sound(sound_path)
 
 # add bounds for pads
 pad["x_max"] = WINDOW_WIDTH - pad["width"]

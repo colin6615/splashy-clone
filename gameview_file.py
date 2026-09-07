@@ -54,10 +54,10 @@ class GameView(arcade.View):
         self.camera_gui = arcade.Camera2D()
 
         # create SpriteLists and initial values for sprites
-        target_file.setup()
-        coin_file.setup()
-        spike_file.setup()
-        player_file.setup()
+        target_file.Target.setup()
+        coin_file.Coin.setup()
+        spike_file.Spike.setup()
+        player_file.Player.setup()
         # spawn the first 4 pads
         pad_file.Pad.setup()
 
@@ -157,7 +157,7 @@ class GameView(arcade.View):
     def on_update(self, delta_time):
         """Movement and game logic. This function calls every game tick"""
         # update sprites .
-        player_file.update()
+        player_file.Player.update()
         pad_file.Pad.list.update()
         target_file.Target.list.update()
         coin_file.Coin.list.update()

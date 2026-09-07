@@ -30,10 +30,9 @@ class Spike(item_file.Item):
             # kill player
             gameview_file.GameView.dead = True
 
-
-def setup():
-    """Set up the game and initialize the variables."""
-    Spike.list = arcade.SpriteList()
+    def setup():
+        """Set up the game and initialize the variables."""
+        Spike.list = arcade.SpriteList()
 
 
 my_constants.spike["Input_class"] = Spike

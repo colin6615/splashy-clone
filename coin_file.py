@@ -49,7 +49,14 @@ class Coin(item_file.Item):
             for colliding_sprite in Coin.colliding_player_and_coin:
                 # remove coin from sprite list to make sure that player interacts with coin once
                 if colliding_sprite in Coin.list:
+                    # kill the coin sprite
                     colliding_sprite.remove_from_sprite_lists()
+
+                    # play coin sound if a coin sound is not already playing. this way, multiple coin sounds cannot play at once. only 1 coin sound can play at a time.
+                    if not Coin.coin_sound_player or not Coin.coin_sound_player.playing:
+                        Coin.coin_sound_player = arcade.play_sound(
+                            my_constants.coin["sound"]
+                        )
 
                     # increase coin score
                     Coin.score += 1
@@ -87,13 +94,13 @@ class Coin(item_file.Item):
             gameview_file.GameView.party = False
             gameview_file.GameView.game_speed_factor = 1
 
-
-def setup():
-    """Set up the game and initialize the variables."""
-    Coin.list = arcade.SpriteList()
-    Coin.score = 0
-    gameview_file.GameView.party = False
-    gameview_file.GameView.game_speed_factor = 1
+    def setup():
+        """Set up the game and initialize the variables."""
+        Coin.list = arcade.SpriteList()
+        Coin.score = 0
+        gameview_file.GameView.party = False
+        gameview_file.GameView.game_speed_factor = 1
+        Coin.coin_sound_player = None
 
 
 my_constants.coin["Input_class"] = Coin

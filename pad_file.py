@@ -107,9 +107,12 @@ class Pad(item_file.Item):
                         y_=new_center_y,
                     )
 
-                    # increase pad count and score
+                    # increase bounce count and score
                     function_file.bounce_count += 1
                     gameview_file.GameView.score += gameview_file.GameView.score_factor
+
+                    # play sound
+                    arcade.play_sound(my_constants.pad["sound"])
         # kill the player if they go below the top pad
         top_pad = max(Pad.list, key=attrgetter("center_y"))
         if (

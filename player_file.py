@@ -70,7 +70,7 @@ def update():
     # define acceleration: a = game_speed * (- g + b * |v|)
     # speeds up the game over time
     game_speed = gameview_file.GameView.game_speed_factor * asymptotic_function(
-        pad_file.Pad.total, 6, 80
+        x=pad_file.Pad.total, max_y=6, x_at_half_y=80
     )
     v = Player.sprite.velocity_y
     g = my_constants.GRAVITATIONAL_ACCELERATION

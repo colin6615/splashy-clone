@@ -30,7 +30,7 @@ class Pad(item_file.Item):
     def setup():
         """create sprite list and spawn the first pads"""
         Pad.list = arcade.SpriteList()
-
+        Pad.total = 0
         # spawn the first 4 pads
         for y in range(-4, 0):
             spawn_pad(

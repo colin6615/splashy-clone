@@ -4,13 +4,13 @@ import time
 
 import arcade
 
-import coin_file
 import gameover_file
+import items.coin_file
+import items.pad_file
+import items.spike_file
+import items.target_file
 import my_constants
-import pad_file
 import player_file
-import spike_file
-import target_file
 
 # ==================
 # time_factor_change speeds up the game after every bounce.
@@ -54,12 +54,12 @@ class GameView(arcade.View):
         self.camera_gui = arcade.Camera2D()
 
         # create SpriteLists and initial values for sprites
-        target_file.Target.setup()
-        coin_file.Coin.setup()
-        spike_file.Spike.setup()
+        items.target_file.Target.setup()
+        items.coin_file.Coin.setup()
+        items.spike_file.Spike.setup()
         player_file.Player.setup()
         # spawn the first 4 pads
-        pad_file.Pad.setup()
+        items.pad_file.Pad.setup()
 
         self.background_color = arcade.color.AMAZON
 
@@ -113,15 +113,15 @@ class GameView(arcade.View):
 
         # Draw sprites.
         player_file.Player.list.draw()
-        pad_file.Pad.list.draw()
-        target_file.Target.list.draw()
-        coin_file.Coin.list.draw()
-        spike_file.Spike.list.draw()
+        items.pad_file.Pad.list.draw()
+        items.target_file.Target.list.draw()
+        items.coin_file.Coin.list.draw()
+        items.spike_file.Spike.list.draw()
 
         self.camera_gui.use()
 
         # Draw the coin score
-        coin_count = str(coin_file.Coin.score)
+        coin_count = str(items.coin_file.Coin.score)
         arcade.draw_text(
             "Coins: " + coin_count,
             my_constants.WINDOW_WIDTH - 150,
@@ -148,8 +148,7 @@ class GameView(arcade.View):
 
         # show the mouse
         self.window.set_mouse_visible(True)
-        arcade.play_sound(
-                            my_constants.death_sound)
+        arcade.play_sound(my_constants.death_sound)
         time.sleep(my_constants.SLEEP_AFTER_DEAD)
 
         # switch the window to game over screen
@@ -159,10 +158,10 @@ class GameView(arcade.View):
         """Movement and game logic. This function calls every game tick"""
         # update sprites .
         player_file.Player.update()
-        pad_file.Pad.list.update()
-        target_file.Target.list.update()
-        coin_file.Coin.list.update()
-        spike_file.Spike.list.update()
+        items.pad_file.Pad.list.update()
+        items.target_file.Target.list.update()
+        items.coin_file.Coin.list.update()
+        items.spike_file.Spike.list.update()
 
         # Scroll the screen to the player
         self.scroll_to_player()

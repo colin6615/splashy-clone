@@ -6,12 +6,12 @@ This file also adds the "input class" key to the coin dictionary.
 import arcade
 
 import gameview_file
-import item_file
+import items.item_file
+import items.pad_file
+import items.spike_file
+import items.target_file
 import my_constants
-import pad_file
 import player_file
-import spike_file
-import target_file
 
 # First, calculate how many coins are added to the coin count during the party
 COINS_PER_UPDATE = (
@@ -29,7 +29,7 @@ COINS_AFTER_PARTY = (
 )  # the maximum number of coins during a party. The coin count at the end of the party.
 
 
-class Coin(item_file.Item):
+class Coin(items.item_file.Item):
     """
     If player hits a coin, then the coin count increases and the coin dissapears
 
@@ -76,13 +76,13 @@ class Coin(item_file.Item):
                 Coin.coin_sound_player = arcade.play_sound(my_constants.coin["sound"])
 
             # remove spikes, so that the player doesn't die
-            for spike in spike_file.Spike.list:
+            for spike in items.spike_file.Spike.list:
                 spike.remove_from_sprite_lists()
 
             # move the pads and target to the player
-            for pad in pad_file.Pad.list:
+            for pad in items.pad_file.Pad.list:
                 pad.center_x = player_file.Player.sprite.center_x
-            for target in target_file.Target.list:
+            for target in items.target_file.Target.list:
                 target.center_x = player_file.Player.sprite.center_x
             for coin in Coin.list:
                 coin.center_x = player_file.Player.sprite.center_x

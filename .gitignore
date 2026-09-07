@@ -4,6 +4,7 @@
 # ignore high score tracking files, so that other users don't share my highscore.
 highscore.txt
 score.txt.db
+test.py
 
 # ==================
 # github's stuff:

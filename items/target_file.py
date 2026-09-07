@@ -5,12 +5,12 @@ It also adds the "input class" key to the target dictionary.
 
 import arcade
 
-import item_file
+import items.item_file
 import my_constants
 import player_file
 
 
-class Target(item_file.Item):
+class Target(items.item_file.Item):
     """
     If player hits a target, then the score multipler increases and the target dissapears.
 

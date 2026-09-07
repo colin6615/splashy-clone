@@ -10,15 +10,15 @@ from operator import attrgetter
 import arcade
 
 import function_file
-import item_file
+import items.item_file
+import items.target_file
 import my_constants
 import player_file
-import target_file
 
 # ==================
 
 
-class Pad(item_file.Item):
+class Pad(items.item_file.Item):
     """
     If player hits a pad, then the player bounces and the pad respawns below them.
 
@@ -58,7 +58,7 @@ class Pad(item_file.Item):
 
                     # if the pad is touching a target, then reset score factor
                     target_pad_collision_list = arcade.check_for_collision_with_list(
-                        hit_pad, target_file.Target.list
+                        hit_pad, items.target_file.Target.list
                     )
                     if len(target_pad_collision_list) > 0:
                         gameview_file.GameView.score_factor = 1
@@ -139,7 +139,7 @@ def spawn_pad(
         x_ (int): y-coordinate of center of spawned pad
         y_ (int): x-coordinate of center of spawned pad
     """
-    spawned_pad = item_file.spawn(
+    spawned_pad = items.item_file.spawn(
         x_input=x_,
         y_input=y_,
         **my_constants.pad,  # the item is a pad.
@@ -174,7 +174,7 @@ def spawn_pad(
                 item_x = random.randrange(left_bound, right_bound)
 
                 # create sprite
-                spawned_item = item_file.spawn(
+                spawned_item = items.item_file.spawn(
                     x_input=item_x,
                     y_input=item_y,
                     **item_dict,

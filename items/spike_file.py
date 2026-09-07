@@ -6,12 +6,12 @@ It also adds the "input class" key to the spike dictionary.
 import arcade
 
 import gameview_file
-import item_file
+import items.item_file
 import my_constants
 import player_file
 
 
-class Spike(item_file.Item):
+class Spike(items.item_file.Item):
     """
     If player hits a spike, then the spike count increases and the spike dissapears
 

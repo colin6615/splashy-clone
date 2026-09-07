@@ -45,23 +45,6 @@ class GameView(arcade.View):
         GameView.score = 0
         GameView.score_factor = 1
 
-        # --- START: weird party stuff ---
-        # create party/not party values. I could use a state machine for this, but this is pretty much the only state that I'm using
-        GameView.time_factor_not_party = 1
-
-        # when it's party, multiply the time_factor by my_constants.TIME_FACTOR_PARTY_INCREASE
-        GameView.time_factor_party = (
-            GameView.time_factor_not_party * my_constants.TIME_FACTOR_PARTY_INCREASE
-        )
-
-        # its not party at the start, so set the dynamic, used values to their non-party counterparts
-        GameView.time_factor_change = my_constants.TIME_FACTOR_CHANGE_MANAGER[
-            "not_party"
-        ]
-
-        GameView.time_factor = GameView.time_factor_not_party
-        # --- END: weird party stuff ---
-
         # other initial values
         GameView.started = False
         GameView.dead = False
@@ -125,6 +108,18 @@ class GameView(arcade.View):
             anchor_x="center",
         )
 
+        # Select the camera we'll use to draw all our sprites
+        self.camera_sprites.use()
+
+        # Draw sprites.
+        player_file.Player.list.draw()
+        pad_file.Pad.list.draw()
+        target_file.Target.list.draw()
+        coin_file.Coin.list.draw()
+        spike_file.Spike.list.draw()
+
+        self.camera_gui.use()
+
         # Draw the coin score
         coin_count = str(coin_file.Coin.score)
         arcade.draw_text(
@@ -145,16 +140,6 @@ class GameView(arcade.View):
                 font_size=24,
                 anchor_x="center",
             )
-
-        # Select the camera we'll use to draw all our sprites
-        self.camera_sprites.use()
-
-        # Draw sprites.
-        player_file.Player.list.draw()
-        pad_file.Pad.list.draw()
-        target_file.Target.list.draw()
-        coin_file.Coin.list.draw()
-        spike_file.Spike.list.draw()
 
     def game_over_function(self):
         """Stop gameplay. Switch to game over screen."""

@@ -95,10 +95,6 @@ pad["x_min"] = pad["width"]
 # --- IDK ---
 # ==================================
 TIME_FACTOR_PARTY_INCREASE = 6
-TIME_FACTOR_CHANGE_MANAGER = {
-    "party": 0,
-    "not_party": GRAVITATIONAL_ACCELERATION / 20,
-}
 # ==================================
 # --- OTHER ---
 # ==================================

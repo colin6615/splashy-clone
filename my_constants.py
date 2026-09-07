@@ -35,7 +35,7 @@ Explanations of common dictionary keys:
     height from pad (int): difference in y positions of pad and item
 """
 pad = {
-    "image_path": "assets/pad.png",
+    "name": "pad",
     "image_scale": 0.5,
     # (int) x-displacement between adjacent pads
     # NOTE: good value is 100
@@ -52,14 +52,14 @@ pad = {
 }
 
 target = {
-    "image_path": "assets/target.png",
+    "name": "target",
     "image_scale": 1,
     "spawn_rate": 0.3,  # good value: 0.3
     "height from pad": 0,
 }
 
 coin = {
-    "image_path": "assets/coin.png",
+    "name": "coin",
     "image_scale": 0.33,
     "spawn_rate": 1,  # good value: 0.2
     "height from pad": 50,
@@ -68,7 +68,7 @@ coin = {
 }
 
 spike = {
-    "image_path": "assets/spike.png",
+    "name": "spike",
     "image_scale": 1,
     "spawn_rate": function_file.asymptotic_function(
         x=function_file.bounce_count, max_y=1.5, x_at_half_y=50
@@ -77,24 +77,6 @@ spike = {
     "height from pad": 12,
 }
 
-# list of item dictionaries
-# NOTE: excludes pad
-items_close_to_pad_dicts = [target, coin, spike]
-item_dicts = [target, pad, coin, spike]
-# add sprite width entry to each dictionary
-for dictionary in item_dicts:
-    # load texture from image
-    texture = arcade.load_texture(dictionary["image_path"])
-
-    # get width_height tuple
-    width_height = texture.size
-
-    # sprite width = image width * image scale
-    dictionary["width"] = width_height[0] * dictionary["image_scale"]
-
-# add bounds for pads
-pad["x_max"] = WINDOW_WIDTH - pad["width"]
-pad["x_min"] = pad["width"]
 
 # ==================================
 # --- IDK ---
@@ -119,3 +101,33 @@ CAMERA_SPEED = 0.6
 
 # after the player dies, wait SLEEP_AFTER_DEAD seconds until you let them retry
 SLEEP_AFTER_DEAD = 2
+# ================================
+# load stuff into dictionary
+# ==============================
+
+# list of item dictionaries
+# NOTE: excludes pad
+items_close_to_pad_dicts = [target, coin, spike]
+
+# add sprite width & sound to each dictionary
+# NOTE: includes pad
+for dictionary in [target, pad, coin, spike]:
+    # load texture from image
+    dictionary["image_path"] = f"assets/{dictionary['name']}.png"
+    texture = arcade.load_texture(dictionary["image_path"])
+
+    # get width_height tuple
+    width_height = texture.size
+
+    # sprite width = image width * image scale
+    dictionary["width"] = width_height[0] * dictionary["image_scale"]
+
+# load sounds
+# # NOTE: excludes spike
+# for dictionary in [target, pad, coin]:
+#     sound_path = f"assets/{dictionary['name']}.ogg"
+#     dictionary["sound"] = arcade.load_sound(sound_path)
+
+# add bounds for pads
+pad["x_max"] = WINDOW_WIDTH - pad["width"]
+pad["x_min"] = pad["width"]

@@ -34,7 +34,6 @@ class GameView(arcade.View):
     def setup(self):
         """Set up the game and initialize the variables."""
 
-        # Reset numbers to their starting values.
         GameView.score = 0
         GameView.score_factor = 1
 

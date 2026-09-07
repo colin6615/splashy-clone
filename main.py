@@ -26,7 +26,6 @@ def main():
 
     # put gameplay in the window instance
     window.show_view(gameview)
-
     arcade.run()
 
 

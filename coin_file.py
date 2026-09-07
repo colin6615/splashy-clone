@@ -78,7 +78,7 @@ class Coin(item_file.Item):
 
         # if coin count is greater than COINS_AFTER_PARTY and the player is moving slowly, then deactivate party
         if (Coin.score > COINS_AFTER_PARTY) and (
-            abs(player_file.Player.sprite.velocity_y) < 5
+            abs(player_file.Player.sprite.velocity_y) < 2.5
         ):
             # reset coin count
             Coin.score = 0

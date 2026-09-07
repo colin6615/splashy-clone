@@ -1,3 +1,13 @@
+# ==================
+# my stuff
+# ==================
+# ignore high score tracking files, so that other users don't share my highscore.
+highscore.txt
+score.txt.db
+
+# ==================
+# github's stuff:
+# ==================
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

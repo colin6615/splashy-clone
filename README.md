@@ -2,7 +2,6 @@
 * To improve my Python coding skills, I minimized my usage of AI to write or analyze Python code in this repository.
 
 # Credits
-* Built using the [Python Arcade Library](https://arcade.academy/)
 * Some of my code is adapted from examples in the textbook [*Arcade Academy - Learn Python*](https://learn.arcade.academy/) by Paul Craven.
 * Game design and mechanics inspired by *Splashy* by Voodoo.
 * I used some graphic and audio assets from [Kenney.nl](https://kenney.nl/)
@@ -18,4 +17,4 @@ source venv/bin/activate
 git clone https://github.com/colin6615/my_arcade_stuff.git
 pip install arcade==3.3.3
 ```
-Execute the python files!
+Execute ```main.py```

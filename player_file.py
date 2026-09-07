@@ -4,6 +4,7 @@ import arcade
 
 import gameview_file
 import my_constants
+import pad_file
 
 
 def asymptotic_function(x, max_y, x_at_half_y):
@@ -66,19 +67,16 @@ def update():
 
     # free-fall physics in the y-direciton
     # must update acceleration every tick because acceleration changes with velocity_y.
-    # define acceleration: a = tau * (- g + b * |v|)
+    # define acceleration: a = game_speed * (- g + b * |v|)
     # speeds up the game over time
-    """
-    Player.game_speed = gameview_file.GameView.hype * asymptotic_function( 
+    game_speed = gameview_file.GameView.hype * asymptotic_function(
         pad_file.Pad.total, 6, 80
     )
-    tau = Player.game_speed
-    """
     v = Player.sprite.velocity_y
     g = my_constants.GRAVITATIONAL_ACCELERATION
     b = my_constants.DRAG_COEFFICIENT
 
-    Player.sprite.acceleration = -g + b * abs(v)  # * tau
+    Player.sprite.acceleration = -g + b * abs(v) * game_speed
 
     # calculate position and velocity_y using kinematics
     if gameview_file.GameView.started == True:

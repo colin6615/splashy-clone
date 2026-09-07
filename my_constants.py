@@ -35,7 +35,7 @@ Explanations of common dictionary keys:
     height from pad (int): difference in y positions of pad and item
 """
 pad = {
-    "image_path": "assets/green_rectangle.png",
+    "image_path": "assets/pad.png",
     "image_scale": 0.5,
     # (int) x-displacement between adjacent pads
     # NOTE: good value is 100
@@ -59,9 +59,9 @@ target = {
 }
 
 coin = {
-    "image_path": "assets/gold_1.png",
+    "image_path": "assets/coin.png",
     "image_scale": 0.33,
-    "spawn_rate": 0.2,  # good value: 0.2
+    "spawn_rate": 1,  # good value: 0.2
     "height from pad": 50,
     # if the user gets over the max number of coins, then they will earn a party!
     "max": 3,

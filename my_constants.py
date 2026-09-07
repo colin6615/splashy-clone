@@ -106,7 +106,9 @@ TOP_BOUNDARY = WINDOW_HEIGHT / 2.0 - 25  # float
 CAMERA_SPEED = 0.6
 
 # after the player dies, wait SLEEP_AFTER_DEAD seconds until you let them retry
-SLEEP_AFTER_DEAD = 2
+SLEEP_AFTER_DEAD = 1.5  # upon release: make it 1.5 instead of zero.
+
+death_sound = arcade.load_sound(":resources:/sounds/coin4.wav")
 # ================================
 # load stuff into dictionary
 # ==============================

@@ -20,7 +20,7 @@ class Item(arcade.Sprite):
     """
 
     # make it so the random numbers generated in this class are the same in every run of the game.
-    # remove upon release
+    # upon release: remove.
     random.seed(10)
 
     def __init__(self, filename, sprite_scaling):

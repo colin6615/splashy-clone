@@ -71,6 +71,10 @@ class Coin(item_file.Item):
             # increase coin count
             Coin.score += COINS_PER_UPDATE
 
+            # play coin sound. same deal as before, where only 1 coin sound can play at once.
+            if not Coin.coin_sound_player or not Coin.coin_sound_player.playing:
+                Coin.coin_sound_player = arcade.play_sound(my_constants.coin["sound"])
+
             # remove spikes, so that the player doesn't die
             for spike in spike_file.Spike.list:
                 spike.remove_from_sprite_lists()

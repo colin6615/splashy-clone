@@ -148,7 +148,8 @@ class GameView(arcade.View):
 
         # show the mouse
         self.window.set_mouse_visible(True)
-
+        arcade.play_sound(
+                            my_constants.death_sound)
         time.sleep(my_constants.SLEEP_AFTER_DEAD)
 
         # switch the window to game over screen

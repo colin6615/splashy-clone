@@ -18,8 +18,7 @@ def main():
     window = arcade.Window(
         my_constants.WINDOW_WIDTH,
         my_constants.WINDOW_HEIGHT,
-        WINDOW_TITLE,
-        fullscreen=True,
+        WINDOW_TITLE
     )
     # start the gameplay
     gameview = gameview_file.GameView()

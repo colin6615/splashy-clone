@@ -167,6 +167,7 @@ class GameView(arcade.View, camera_file.my_camera):
         """if user presses escape, then close the window"""
         if key == arcade.key.ESCAPE:
             arcade.close_window()
+        camera_file._on_key_press(self, key, modifiers)
 
     # idk if we need this. i don't even know what it does
     # def on_resize(self, width: int, height: int):

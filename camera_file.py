@@ -13,9 +13,12 @@ CAMERA_BOUNDARY = arcade.LRBT(
 
 class my_camera:
     def setup(self):
-
         # camera stuff
-        self.camera_sprites = arcade.Camera2D()
+        self.camera_sprites = arcade.Camera2D(
+            position=(0, 0),
+            projection=arcade.types.LRBT(left=0, right=my_constants.WINDOW_WIDTH, bottom=0, top=my_constants.WINDOW_HEIGHT),
+            viewport=self.window.rect
+        )
         self.camera_gui = arcade.Camera2D()
 
     def scroll_to_player(self):
@@ -41,3 +44,29 @@ class my_camera:
             (new_position[0], new_position[1]),
             my_constants.CAMERA_SPEED,
         )
+
+    def _on_key_press(self, key, modifiers):
+        """Called whenever a key is pressed. """
+        if key == arcade.key.F:
+            # User hits f. Flip between full and not full screen.
+            self.window.set_fullscreen(not self.window.fullscreen)
+
+            # Get the window coordinates. Match viewport to window coordinates
+            # so there is a one-to-one mapping.
+            self.camera.viewport = self.window.rect
+            self.camera.projection = arcade.LRBT(0.0, self.width, 0.0, self.height)
+
+        if key == arcade.key.S:
+            # User hits s. Flip between full and not full screen.
+            self.window.set_fullscreen(not self.window.fullscreen)
+
+            # Instead of a one-to-one mapping, stretch/squash window to match the
+            # constants. This does NOT respect aspect ratio. You'd need to
+            # do a bit of math for that.
+            self.camera.projection = arcade.types.LRBT(
+                left=0,
+                right=my_constants.WINDOW_WIDTH,
+                bottom=0,
+                top=my_constants.WINDOW_HEIGHT,
+            )
+            self.camera.viewport = self.window.rect

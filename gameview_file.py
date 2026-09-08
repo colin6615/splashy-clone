@@ -10,6 +10,7 @@ import items.coin_file
 import items.pad_file
 import items.spike_file
 import items.target_file
+import main
 import my_constants
 import player_file
 
@@ -33,6 +34,8 @@ class GameView(arcade.View):
 
     def setup(self):
         """Set up the game and initialize the variables."""
+        width, height = main.window.get_size()
+        print(width)
 
         # Reset numbers to their starting values.
         GameView.score = 0
@@ -166,3 +169,12 @@ class GameView(arcade.View):
         """if user presses escape, then close the window"""
         if key == arcade.key.ESCAPE:
             arcade.close_window()
+
+    def on_resize(self, width: int, height: int):
+        """
+        Resize window
+        Handle the user grabbing the edge and resizing the window.
+        """
+        super().on_resize(width, height)
+        self.camera_sprites.match_window()
+        self.camera_gui.match_window(position=True)

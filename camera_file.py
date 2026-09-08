@@ -13,10 +13,10 @@ CAMERA_BOUNDARY = arcade.LRBT(
 
 class my_camera:
     def setup(self):
+
         # camera stuff
         self.camera_sprites = arcade.Camera2D()
         self.camera_gui = arcade.Camera2D()
-
 
     def scroll_to_player(self):
         """

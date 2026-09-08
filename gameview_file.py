@@ -20,7 +20,7 @@ import player_file
 # NOTE: starting time_factor is 1, so after the n-th bounce, it updates to time_factor + TIME_FACTOR_CHANGE * N
 
 
-class GameView(arcade.View):
+class GameView(arcade.View, camera_file.my_camera):
     """
     If the player isn't dead, and the game has already started, then this file runs. The user can have 'fun' playing the game.
 
@@ -34,8 +34,6 @@ class GameView(arcade.View):
 
     def setup(self):
         """Set up the game and initialize the variables."""
-        width, height = main.window.get_size()
-        print(width)
 
         # Reset numbers to their starting values.
         GameView.score = 0
@@ -170,11 +168,12 @@ class GameView(arcade.View):
         if key == arcade.key.ESCAPE:
             arcade.close_window()
 
-    def on_resize(self, width: int, height: int):
-        """
-        Resize window
-        Handle the user grabbing the edge and resizing the window.
-        """
-        super().on_resize(width, height)
-        self.camera_sprites.match_window()
-        self.camera_gui.match_window(position=True)
+    # idk if we need this. i don't even know what it does
+    # def on_resize(self, width: int, height: int):
+    #     """
+    #     Resize window
+    #     Handle the user grabbing the edge and resizing the window.
+    #     """
+    #     super().on_resize(width, height)
+    #     self.camera_sprites.match_window()
+    #     self.camera_gui.match_window(position=True)

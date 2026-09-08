@@ -3,15 +3,14 @@ import arcade
 import function_file
 
 # other
-WINDOW_WIDTH = 1147
-WINDOW_HEIGHT = 625
-
+WINDOW_WIDTH = 700
+WINDOW_HEIGHT = 400
 # ==================================
 # --- PHYSICS ----
 # ==================================
 # (float) constant downward acceleration
 # NOTE: represented by the letter g in physics
-GRAVITATIONAL_ACCELERATION = 0.07  # 0.14
+GRAVITATIONAL_ACCELERATION = 0.14  # 0.14
 
 # (float) decrease DRAG_COEFFICIENT = player hovers over the apex of their jump arc for longer. Player is slower at the top of their bounce.
 # NOTE: In real life, the drag coefficient usually has a positive value; acceleration's magntiude DECREASES if speed INCREASES. In this game, I made it a negative value so that acceleration's magnitude INCREASES if speed INCREASES
@@ -21,7 +20,7 @@ DRAG_COEFFICIENT = 0  # -0.01
 # (float) how much energy the player conserves during a bounce.
 # 1 = no energy is lost. The player will bounce back to their original y-position.
 # 0 = all energy is lost on a bounce. The player hits the pad and loses all of their velocity_y.
-BOUNCE_DECAY_CONSTANT = 0.6  # good value = 0.6
+BOUNCE_DECAY_CONSTANT = 1.5  # good value = 0.6
 
 # ==================================
 # --- item dictionaries ---

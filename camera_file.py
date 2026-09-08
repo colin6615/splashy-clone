@@ -3,15 +3,11 @@ import arcade
 import my_constants
 import player_file
 
-CAMERA_BOUNDARY = arcade.LRBT(
-    -my_constants.HORIZONTAL_BOUNDARY,
-    my_constants.HORIZONTAL_BOUNDARY,
-    -my_constants.BOTTOM_BOUNDARY,
-    my_constants.TOP_BOUNDARY,
-)
 
 
-class my_camera:
+
+class My_camera:
+    width = 100
     def setup(self):
         # camera stuff
         self.camera_sprites = arcade.Camera2D(
@@ -19,7 +15,18 @@ class my_camera:
             projection=arcade.types.LRBT(left=0, right=my_constants.WINDOW_WIDTH, bottom=0, top=my_constants.WINDOW_HEIGHT),
             viewport=self.window.rect
         )
-        self.camera_gui = arcade.Camera2D()
+        self.camera_gui = arcade.Camera2D(            position=(0, 0),
+            projection=arcade.types.LRBT(left=0, right=my_constants.WINDOW_WIDTH, bottom=0, top=my_constants.WINDOW_HEIGHT),
+            viewport=self.window.rect
+        )
+        self.camera_boundary = arcade.LRBT(
+            -2000,
+            2000,
+            my_constants.WINDOW_HEIGHT * 0.68,  
+            my_constants.WINDOW_HEIGHT * 0.86, # this must be greater than the number above
+        )
+
+        My_camera.width = self.width
 
     def scroll_to_player(self):
         """
@@ -31,11 +38,10 @@ class my_camera:
         Anything between 0 and 1 will have the camera move to the location with a smoother
         pan.
         """
-
         # --- Manage Scrolling ---
         new_position = arcade.camera.grips.constrain_boundary_xy(
             self.camera_sprites.view_data,
-            CAMERA_BOUNDARY,
+            self.camera_boundary,
             player_file.Player.sprite.position,
         )
 
@@ -53,8 +59,10 @@ class my_camera:
 
             # Get the window coordinates. Match viewport to window coordinates
             # so there is a one-to-one mapping.
-            self.camera.viewport = self.window.rect
-            self.camera.projection = arcade.LRBT(0.0, self.width, 0.0, self.height)
+            self.camera_sprites.viewport = self.window.rect
+            self.camera_sprites.projection = arcade.LRBT(0.0, self.width, 0.0, self.height)
+
+
 
         if key == arcade.key.S:
             # User hits s. Flip between full and not full screen.
@@ -63,10 +71,19 @@ class my_camera:
             # Instead of a one-to-one mapping, stretch/squash window to match the
             # constants. This does NOT respect aspect ratio. You'd need to
             # do a bit of math for that.
-            self.camera.projection = arcade.types.LRBT(
+            self.camera_sprites.projection = arcade.types.LRBT(
                 left=0,
                 right=my_constants.WINDOW_WIDTH,
                 bottom=0,
                 top=my_constants.WINDOW_HEIGHT,
             )
-            self.camera.viewport = self.window.rect
+            self.camera_sprites.viewport = self.window.rect
+
+            self.camera_gui.projection = arcade.types.LRBT(
+                left=0,
+                right=my_constants.WINDOW_WIDTH,
+                bottom=0,
+                top=my_constants.WINDOW_HEIGHT,
+            )
+            self.camera_gui.viewport = self.window.rect
+            My_camera.width = self.width

@@ -30,6 +30,20 @@ class Pad(items.item_file.Item):
 
     def setup():
         """create sprite list and spawn the first pads"""
+        # add bounds for pads
+        my_constants.pad["x_max"] = (
+            my_constants.WINDOW_WIDTH - my_constants.pad["width"]
+        )
+        my_constants.pad["x_min"] = my_constants.pad["width"]
+
+        # list of item dictionaries used later.
+        # NOTE: excludes pad
+        Pad.items_close_to_pad_dicts = [
+            my_constants.target,
+            my_constants.coin,
+            my_constants.spike,
+        ]
+
         Pad.list = arcade.SpriteList()
         function_file.bounce_count = 0
         # spawn the first 4 pads
@@ -42,7 +56,7 @@ class Pad(items.item_file.Item):
                 y_=y * my_constants.pad["delta_y"],
             )
 
-    def _update(self, delta_time):
+    def update(self, delta_time):
         # whole seciton: if player hits a pad, then bounce player, remove pad, create new pad, and change score
         # next few lines: if player hits a pad, then:
         self.hit_list = arcade.check_for_collision_with_list(
@@ -152,7 +166,7 @@ def spawn_pad(
     # source for next 2 loc:  https://stackoverflow.com/a/3203121
     # Posted by SilentGhost, modified by community. See post 'Timeline' for change history
     # Retrieved 2026-09-03, License - CC BY-SA 4.0
-    for item_dict in my_constants.items_close_to_pad_dicts:
+    for item_dict in Pad.items_close_to_pad_dicts:
         if random.random() < item_dict["spawn_rate"]:
             # calculate spawned item's y-position
             item_y = y_ + item_dict["height from pad"]

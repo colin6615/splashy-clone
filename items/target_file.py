@@ -20,7 +20,7 @@ class Target(items.item_file.Item):
     Instance Attributes:
     """
 
-    def _update(self, delta_time):
+    def update(self, delta_time):
         """If the player hits a target, then increase the score multiplier and delete the target"""
         # next few lines: if player hits pad, then for each colliding target:
         Target.colliding_player_and_target = arcade.check_for_collision_with_list(

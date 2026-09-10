@@ -39,7 +39,7 @@ class Coin(items.item_file.Item):
     Instance Attributes:
     """
 
-    def _update(self, delta_time):
+    def update(self, delta_time):
         """If the player hits a coin, then increase the score multiplier and delete the coin"""
         # next few lines: if player hits coin, then for each colliding coin:
         Coin.colliding_player_and_coin = arcade.check_for_collision_with_list(

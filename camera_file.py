@@ -87,9 +87,11 @@ class My_camera:
             # User hits s. Flip between full and not full screen.
             self.window.set_fullscreen(not self.window.fullscreen)
 
-            # Instead of a one-to-one mapping, stretch/squash window to match the
-            # constants. This does NOT respect aspect ratio. You'd need to
-            # do a bit of math for that.
+            # update window width to match aspect ratio
+            aspect_ratio = self.width / self.height
+            my_constants.WINDOW_WIDTH = my_constants.WINDOW_HEIGHT * aspect_ratio
+
+            # stretch the sprites and gui
             self.camera_sprites.projection = arcade.types.LRBT(
                 left=0,
                 right=my_constants.WINDOW_WIDTH,
@@ -103,6 +105,7 @@ class My_camera:
                 top=my_constants.WINDOW_HEIGHT,
             )
 
+            # update viewports.
             self.camera_sprites.viewport = self.window.rect
 
             self.camera_gui.viewport = self.window.rect

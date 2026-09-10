@@ -21,7 +21,7 @@ class Spike(items.item_file.Item):
     Instance Attributes:
     """
 
-    def _update(self, delta_time):
+    def update(self, delta_time):
         """if player hits spike, then kill the player"""
         Spike.colliding_player_and_spike = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Spike.list

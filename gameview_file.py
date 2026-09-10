@@ -33,6 +33,23 @@ class GameView(arcade.View):
 
     def setup(self):
         """Set up the game and initialize the variables."""
+        # add sprite width & sound to each dictionary
+        # NOTE: includes pad
+        for dictionary in [
+            my_constants.target,
+            my_constants.pad,
+            my_constants.coin,
+            my_constants.spike,
+        ]:
+            # load texture from image
+            dictionary["image_path"] = f"assets/{dictionary['name']}.png"
+            texture = arcade.load_texture(dictionary["image_path"])
+
+            # get width_height tuple
+            width_height = texture.size
+
+            # sprite width = image width * image scale
+            dictionary["width"] = width_height[0] * dictionary["image_scale"]
 
         # Reset numbers to their starting values.
         GameView.score = 0

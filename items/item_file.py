@@ -2,7 +2,7 @@
 
 Item is a parent class of Pad, Coin, Target, and Spike. The class doesn't do anything on its own.
 
-Item has update() and _update(), which are general and specific update functions, respectively. _update() is overridden by Item's children, so _update() is different for every child. update(), however, is the same for every child.
+Item has update() andupdate(), which are general and specific update functions, respectively.update() is overridden by Item's children, soupdate() is different for every child. update(), however, is the same for every child.
 
 The spawn() function creates a sprite and adds it to a sprite list.
 """
@@ -29,18 +29,6 @@ class Item(arcade.Sprite):
 
         self.center_x = 0
         self.center_y = 0
-
-    def _update(self, delta_time):  # **kwargs
-        """Child update Code
-        Children (of the Item class) will overide this to inserrt their specific code"""
-
-    def update(self, delta_time):  # **kwargs
-        """Parent's update code
-        Every child (of the Item class) will run this general update code"""
-        # Run general item stuff
-
-        # Call the child's specific logic
-        self._update(delta_time)  # **kwargs
 
 
 def spawn(x_input, y_input, **input_dict):

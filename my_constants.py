@@ -3,8 +3,10 @@ import arcade
 import function_file
 
 # other
-WINDOW_WIDTH = 700
-WINDOW_HEIGHT = 400
+# aspect ratio = 1.7
+WINDOW_WIDTH = 1836  # = height * aspect ratio
+WINDOW_HEIGHT = 1080
+
 # ==================================
 # --- PHYSICS ----
 # ==================================
@@ -20,7 +22,7 @@ DRAG_COEFFICIENT = 0  # -0.01
 # (float) how much energy the player conserves during a bounce.
 # 1 = no energy is lost. The player will bounce back to their original y-position.
 # 0 = all energy is lost on a bounce. The player hits the pad and loses all of their velocity_y.
-BOUNCE_DECAY_CONSTANT = 1.5  # good value = 0.6
+BOUNCE_DECAY_CONSTANT = 0.5  # good value = 0.6
 
 # ==================================
 # --- item dictionaries ---
@@ -38,7 +40,7 @@ Explanations of common dictionary keys:
 """
 pad = {
     "name": "pad",
-    "image_scale": 0.5,
+    "image_scale": 2,
     # (int) x-displacement between adjacent pads
     # NOTE: good value is 100
     "delta_x": 200,
@@ -56,7 +58,7 @@ pad = {
 
 target = {
     "name": "target",
-    "image_scale": 1,
+    "image_scale": 4,
     "spawn_rate": 0.3,  # good value: 0.3
     "height from pad": 3,
     "sound": arcade.load_sound(":resources:/sounds/coin2.wav"),
@@ -64,7 +66,7 @@ target = {
 
 coin = {
     "name": "coin",
-    "image_scale": 0.33,
+    "image_scale": 1,
     "spawn_rate": 1,  # good value: 0.2
     "height from pad": 50,
     # if the user gets over the max number of coins, then they will earn a party!
@@ -74,7 +76,7 @@ coin = {
 
 spike = {
     "name": "spike",
-    "image_scale": 1,
+    "image_scale": 4,
     "spawn_rate": function_file.asymptotic_function(
         x=function_file.bounce_count, max_y=1.5, x_at_half_y=50
     )
@@ -110,27 +112,4 @@ SLEEP_AFTER_DEAD = 1.5  # upon release: make it 1.5 instead of zero.
 death_sound = arcade.load_sound(":resources:/sounds/coin4.wav")
 
 instruction_text = "Left click = start, Esc = close, F = fullscreen"
-# ================================
-# load stuff into dictionary
-# ==============================
 
-# list of item dictionaries
-# NOTE: excludes pad
-items_close_to_pad_dicts = [target, coin, spike]
-
-# add sprite width & sound to each dictionary
-# NOTE: includes pad
-for dictionary in [target, pad, coin, spike]:
-    # load texture from image
-    dictionary["image_path"] = f"assets/{dictionary['name']}.png"
-    texture = arcade.load_texture(dictionary["image_path"])
-
-    # get width_height tuple
-    width_height = texture.size
-
-    # sprite width = image width * image scale
-    dictionary["width"] = width_height[0] * dictionary["image_scale"]
-
-# add bounds for pads
-pad["x_max"] = WINDOW_WIDTH - pad["width"]
-pad["x_min"] = pad["width"]

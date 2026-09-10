@@ -84,6 +84,10 @@ spike = {
     "height from pad": 12,
 }
 
+player = {
+    "name": "player",
+    "image_scale": 2,
+}
 
 # ==================================
 # --- IDK ---
@@ -112,4 +116,3 @@ SLEEP_AFTER_DEAD = 1.5  # upon release: make it 1.5 instead of zero.
 death_sound = arcade.load_sound(":resources:/sounds/coin4.wav")
 
 instruction_text = "Left click = start, Esc = close, F = fullscreen"
-

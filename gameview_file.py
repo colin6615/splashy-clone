@@ -40,6 +40,7 @@ class GameView(arcade.View):
             my_constants.pad,
             my_constants.coin,
             my_constants.spike,
+            my_constants.player,
         ]:
             # load texture from image
             dictionary["image_path"] = f"assets/{dictionary['name']}.png"

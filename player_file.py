@@ -3,10 +3,11 @@
 import arcade
 
 import gameview_file
+import items.item_file
 import my_constants
 
 
-class Player(arcade.Sprite):
+class Player(items.item_file.Item):
     """Creates player and handles free-fall physics
 
     Attributes:
@@ -18,20 +19,13 @@ class Player(arcade.Sprite):
         list (SpriteList): holds the sprite.
     """
 
-    def __init__(self, filename, sprite_scaling):
-        """Call the parent class (Sprite) constructor"""
-        super().__init__(filename, sprite_scaling)
-
     def setup():
         """Make the sprite and list"""
-        Player.sprite = arcade.Sprite(
-            ":resources:images/animated_characters/female_person/femalePerson_idle.png",
-            scale=0.4,
+        Player.sprite = items.item_file.spawn(
+            x_input=256, y_input=0, **my_constants.player
         )
 
         # set the sprite's starting values
-        Player.sprite.center_x = 256
-        Player.sprite.center_y = 0
         Player.sprite.velocity_y = 0
 
         # make list and add sprite to list
@@ -58,3 +52,6 @@ class Player(arcade.Sprite):
         if gameview_file.GameView.started == True:
             Player.sprite.velocity_y += Player.sprite.acceleration
             Player.sprite.center_y += Player.sprite.velocity_y
+
+
+my_constants.player["Input_class"] = Player

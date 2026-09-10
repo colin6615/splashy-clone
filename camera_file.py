@@ -1,3 +1,5 @@
+"""placeholder."""
+
 import arcade
 
 import my_constants
@@ -8,7 +10,8 @@ class My_camera:
     width = 100
 
     def setup(self):
-        # camera stuff
+        """make the cameras. Create camera width as class variable."""
+        # make the camerea for the sprites.
         self.camera_sprites = arcade.Camera2D(
             position=(0, 0),
             projection=arcade.types.LRBT(
@@ -19,6 +22,7 @@ class My_camera:
             ),
             viewport=self.window.rect,
         )
+        # make camera for the gui
         self.camera_gui = arcade.Camera2D(
             position=(0, 0),
             projection=arcade.types.LRBT(
@@ -29,14 +33,18 @@ class My_camera:
             ),
             viewport=self.window.rect,
         )
+
+        # make a boundary for camera scrolling. It's difficult for the player, but not the background objects, to move past this boundary. If the player moves past this boundary, then the camera moves with the player.
+        # top boundary must be greater than the bottom boundary, or else it looks weird
+        # top boundary > bottom boundary
         self.camera_boundary = arcade.LRBT(
             -2000,
             2000,
-            my_constants.WINDOW_HEIGHT * 0.68,
-            my_constants.WINDOW_HEIGHT
-            * 0.86,  # this must be greater than the number above
+            my_constants.WINDOW_HEIGHT * 0.68,  # bottom boundary
+            my_constants.WINDOW_HEIGHT * 0.86,  # Top boundary
         )
 
+        # set the camera width to a class variable so that other classes can use it.
         My_camera.width = self.width
 
     def scroll_to_player(self):
@@ -72,7 +80,7 @@ class My_camera:
             # so there is a one-to-one mapping.
             self.camera_sprites.viewport = self.window.rect
             self.camera_sprites.projection = arcade.LRBT(
-                0.0, self.width, 0.0, self.height
+                0.0, my_constants.WINDOW_WIDTH, 0.0, my_constants.WINDOW_HEIGHT
             )
 
         if key == arcade.key.F:
@@ -97,7 +105,6 @@ class My_camera:
 
             self.camera_sprites.viewport = self.window.rect
 
-
             self.camera_gui.viewport = self.window.rect
-            
+
             My_camera.width = self.width

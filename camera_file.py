@@ -45,7 +45,7 @@ class My_camera:
         )
 
         # set the camera width to a class variable so that other classes can use it.
-        My_camera.width = self.width
+        My_camera.WINDOW_WIDTH = self.width
 
     def scroll_to_player(self):
         """
@@ -71,27 +71,17 @@ class My_camera:
         )
 
     def _on_key_press(self, key, modifiers):
-        """Called whenever a key is pressed."""
-        if key == arcade.key.L:
-            # User hits f. Flip between full and not full screen.
-            self.window.set_fullscreen(not self.window.fullscreen)
-
-            # Get the window coordinates. Match viewport to window coordinates
-            # so there is a one-to-one mapping.
-            self.camera_sprites.viewport = self.window.rect
-            self.camera_sprites.projection = arcade.LRBT(
-                0.0, self.width, 0.0, self.height
-            )
+        """toggle fullscreen when you press F."""
 
         if key == arcade.key.F:
-            # User hits s. Flip between full and not full screen.
+            # Flip between full and not full screen.
             self.window.set_fullscreen(not self.window.fullscreen)
 
-            # update window width to match aspect ratio
-            aspect_ratio = self.width / self.height
-            my_constants.WINDOW_WIDTH = my_constants.WINDOW_HEIGHT * aspect_ratio
+            # update window width to match the user's aspect ratio. Ex: some people might have 16:9 sized screens.
+            USERS_ASPECT_RATIO = self.width / self.height
+            my_constants.WINDOW_WIDTH = my_constants.WINDOW_HEIGHT * USERS_ASPECT_RATIO
 
-            # stretch the sprites and gui
+            # Write procjections. This controls sprite and gui size relative to the window
             self.camera_sprites.projection = arcade.types.LRBT(
                 left=0,
                 right=my_constants.WINDOW_WIDTH,
@@ -105,9 +95,9 @@ class My_camera:
                 top=my_constants.WINDOW_HEIGHT,
             )
 
-            # update viewports.
+            # write viewports. This controls the projections' size relative to the screen.
             self.camera_sprites.viewport = self.window.rect
 
             self.camera_gui.viewport = self.window.rect
 
-            My_camera.width = self.width
+            My_camera.WINDOW_WIDTH = self.width

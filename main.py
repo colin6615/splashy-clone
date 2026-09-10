@@ -13,7 +13,7 @@ WINDOW_TITLE = "Splashy Clone"
 def main():
 
     # make instance of window class
-    window = arcade.Window(700, 400, WINDOW_TITLE, fullscreen=False)
+    window = arcade.Window(950, 550, WINDOW_TITLE, fullscreen=False)
     # start the gameplay
     gameview = gameview_file.GameView()
     gameview.setup()

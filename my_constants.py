@@ -2,9 +2,11 @@ import arcade
 
 import function_file
 
-# other
-# aspect ratio = 1.7
-WINDOW_WIDTH = 1836  # = height * aspect ratio
+# HEIGHT and WIDTH
+# FIXED ASPECT RATIO = 1.7
+# This aspect ratio is the same for all users.
+# WIDTH = HEIGHT * (FIXED ASPECT RATIO)
+WINDOW_WIDTH = 1836  # =
 WINDOW_HEIGHT = 1080
 
 # ==================================
@@ -40,7 +42,7 @@ Explanations of common dictionary keys:
 """
 pad = {
     "name": "pad",
-    "image_scale": 2,
+    "image_scale": 1.5,
     # (int) x-displacement between adjacent pads
     # NOTE: good value is 100
     "delta_x": 200,
@@ -86,7 +88,7 @@ spike = {
 
 player = {
     "name": "player",
-    "image_scale": 2,
+    "image_scale": 3,
 }
 
 # ==================================

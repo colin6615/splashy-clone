@@ -82,7 +82,7 @@ class GameView(arcade.View):
     def on_mouse_motion(self, x, y, dx, dy):
         """move the player's x-position with mouse"""
         # account for projection of screen (change screen size)
-        scaling_factor = my_constants.WINDOW_WIDTH / camera_file.My_camera.width
+        scaling_factor = my_constants.WINDOW_WIDTH / camera_file.My_camera.WINDOW_WIDTH
 
         # move player to mouse
         player_file.Player.sprite.center_x = x * scaling_factor

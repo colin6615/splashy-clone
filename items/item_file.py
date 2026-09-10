@@ -49,7 +49,8 @@ def spawn(x_input, y_input, **input_dict):
     image_path_ = input_dict["image_path"]
     scale_ = input_dict["image_scale"]
 
-    # make sprite
+    # make sprite. load texture.
+    # this works because class_ is a grandchild of the Sprite class.
     item = class_(image_path_, scale_)
 
     # position the sprite

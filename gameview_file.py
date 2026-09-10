@@ -141,7 +141,7 @@ class GameView(arcade.View):
                 arcade.draw_text(
                     my_constants.instruction_text,
                     x=my_constants.WINDOW_WIDTH / 2,
-                    y=my_constants.WINDOW_WIDTH / 4,
+                    y=my_constants.WINDOW_HEIGHT * 3 / 4,
                     color=arcade.color.WHITE,
                     font_size=24,
                     anchor_x="center",
@@ -177,7 +177,10 @@ class GameView(arcade.View):
             GameView.game_over_function(self)
 
     def on_key_press(self, key, modifiers):
-        """if user presses escape, then close the window"""
+        """preform actions using keybinds"""
+        # Escape key closes window
         if key == arcade.key.ESCAPE:
             arcade.close_window()
+
+        # F key toggles fullscreen
         camera_file.My_camera._on_key_press(self, key, modifiers)

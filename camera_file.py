@@ -4,26 +4,37 @@ import my_constants
 import player_file
 
 
-
-
 class My_camera:
     width = 100
+
     def setup(self):
         # camera stuff
         self.camera_sprites = arcade.Camera2D(
             position=(0, 0),
-            projection=arcade.types.LRBT(left=0, right=my_constants.WINDOW_WIDTH, bottom=0, top=my_constants.WINDOW_HEIGHT),
-            viewport=self.window.rect
+            projection=arcade.types.LRBT(
+                left=0,
+                right=my_constants.WINDOW_WIDTH,
+                bottom=0,
+                top=my_constants.WINDOW_HEIGHT,
+            ),
+            viewport=self.window.rect,
         )
-        self.camera_gui = arcade.Camera2D(            position=(0, 0),
-            projection=arcade.types.LRBT(left=0, right=my_constants.WINDOW_WIDTH, bottom=0, top=my_constants.WINDOW_HEIGHT),
-            viewport=self.window.rect
+        self.camera_gui = arcade.Camera2D(
+            position=(0, 0),
+            projection=arcade.types.LRBT(
+                left=0,
+                right=my_constants.WINDOW_WIDTH,
+                bottom=0,
+                top=my_constants.WINDOW_HEIGHT,
+            ),
+            viewport=self.window.rect,
         )
         self.camera_boundary = arcade.LRBT(
             -2000,
             2000,
-            my_constants.WINDOW_HEIGHT * 0.68,  
-            my_constants.WINDOW_HEIGHT * 0.86, # this must be greater than the number above
+            my_constants.WINDOW_HEIGHT * 0.68,
+            my_constants.WINDOW_HEIGHT
+            * 0.86,  # this must be greater than the number above
         )
 
         My_camera.width = self.width
@@ -52,19 +63,19 @@ class My_camera:
         )
 
     def _on_key_press(self, key, modifiers):
-        """Called whenever a key is pressed. """
-        if key == arcade.key.F:
+        """Called whenever a key is pressed."""
+        if key == arcade.key.L:
             # User hits f. Flip between full and not full screen.
             self.window.set_fullscreen(not self.window.fullscreen)
 
             # Get the window coordinates. Match viewport to window coordinates
             # so there is a one-to-one mapping.
             self.camera_sprites.viewport = self.window.rect
-            self.camera_sprites.projection = arcade.LRBT(0.0, self.width, 0.0, self.height)
+            self.camera_sprites.projection = arcade.LRBT(
+                0.0, self.width, 0.0, self.height
+            )
 
-
-
-        if key == arcade.key.S:
+        if key == arcade.key.F:
             # User hits s. Flip between full and not full screen.
             self.window.set_fullscreen(not self.window.fullscreen)
 
@@ -77,13 +88,16 @@ class My_camera:
                 bottom=0,
                 top=my_constants.WINDOW_HEIGHT,
             )
-            self.camera_sprites.viewport = self.window.rect
-
             self.camera_gui.projection = arcade.types.LRBT(
                 left=0,
                 right=my_constants.WINDOW_WIDTH,
                 bottom=0,
                 top=my_constants.WINDOW_HEIGHT,
             )
+
+            self.camera_sprites.viewport = self.window.rect
+
+
             self.camera_gui.viewport = self.window.rect
+            
             My_camera.width = self.width

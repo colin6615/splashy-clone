@@ -109,7 +109,7 @@ SLEEP_AFTER_DEAD = 1.5  # upon release: make it 1.5 instead of zero.
 
 death_sound = arcade.load_sound(":resources:/sounds/coin4.wav")
 
-instruction_text = "Left click to start\n Esc to close"
+instruction_text = "Left click = start, Esc = close, F = fullscreen"
 # ================================
 # load stuff into dictionary
 # ==============================

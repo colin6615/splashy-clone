@@ -10,7 +10,6 @@ import items.coin_file
 import items.pad_file
 import items.spike_file
 import items.target_file
-import main
 import my_constants
 import player_file
 
@@ -35,7 +34,6 @@ class GameView(arcade.View):
     def setup(self):
         """Set up the game and initialize the variables."""
 
-        
         # Reset numbers to their starting values.
         GameView.score = 0
         GameView.score_factor = 1
@@ -70,8 +68,6 @@ class GameView(arcade.View):
 
         # move player to mouse
         player_file.Player.sprite.center_x = x * scaling_factor
-
-        
 
     def on_draw(self):
         """
@@ -130,19 +126,16 @@ class GameView(arcade.View):
                 font_size=25,
             )
 
-
             # remove upon release
             # Draw the player position for debugging purposes
             arcade.draw_text(
-                'y: {:.2f}'.format(int(player_file.Player.sprite.center_y)),
-
+                f"y: {int(player_file.Player.sprite.center_y):.2f}",
                 150,
                 30,
                 arcade.color.GOLD,
                 font_size=25,
             )
 
-            
             # Instruct the user to start the game by clicking, if they haven't started the game yet.
             if GameView.started == False:
                 arcade.draw_text(
@@ -188,4 +181,3 @@ class GameView(arcade.View):
         if key == arcade.key.ESCAPE:
             arcade.close_window()
         camera_file.My_camera._on_key_press(self, key, modifiers)
-    

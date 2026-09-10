@@ -41,7 +41,7 @@ class GameOverView(arcade.View):
 
         arcade.draw_text(
             "Game Over",
-            x=my_constants.WINDOW_WIDTH / 2,
+            x=gameview_file.GameView.internal_width / 2,
             y=400,
             color=arcade.color.WHITE,
             font_size=54,
@@ -49,7 +49,7 @@ class GameOverView(arcade.View):
         )
         arcade.draw_text(
             my_constants.instruction_text,
-            x=my_constants.WINDOW_WIDTH / 2,
+            x=gameview_file.GameView.internal_width / 2,
             y=300,
             color=arcade.color.WHITE,
             font_size=24,
@@ -58,7 +58,7 @@ class GameOverView(arcade.View):
 
         arcade.draw_text(
             f"Previous Score: {gameview_file.GameView.score}",
-            x=my_constants.WINDOW_WIDTH / 2,
+            x=gameview_file.GameView.internal_width / 2,
             y=200,
             color=arcade.color.WHITE,
             font_size=24,
@@ -66,7 +66,7 @@ class GameOverView(arcade.View):
         )
         arcade.draw_text(
             f"High Score: {self.high_score_variable}",
-            x=my_constants.WINDOW_WIDTH / 2,
+            x=gameview_file.GameView.internal_width / 2,
             y=100,
             color=arcade.color.WHITE,
             font_size=24,

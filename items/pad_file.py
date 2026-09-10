@@ -9,6 +9,7 @@ from operator import attrgetter
 
 import arcade
 
+import camera_file
 import function_file
 import items.item_file
 import items.target_file
@@ -32,7 +33,7 @@ class Pad(items.item_file.Item):
         """create sprite list and spawn the first pads"""
         # add bounds for pads
         my_constants.pad["x_max"] = (
-            my_constants.WINDOW_WIDTH - my_constants.pad["width"]
+            gameview_file.GameView.internal_width - my_constants.pad["width"]
         )
         my_constants.pad["x_min"] = my_constants.pad["width"]
 

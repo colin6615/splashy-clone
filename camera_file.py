@@ -2,23 +2,26 @@
 
 import arcade
 
-import my_constants
+import gameview_file
 import player_file
+
+# (float) How fast the camera pans to the player.
+# NOTE: 1.0 is instant.
+CAMERA_SPEED = 0.6
 
 
 class My_camera:
-    width = 100
-
     def setup(self):
         """make the cameras. Create camera width as class variable."""
+
         # make the camerea for the sprites.
         self.camera_sprites = arcade.Camera2D(
             position=(0, 0),
             projection=arcade.types.LRBT(
                 left=0,
-                right=my_constants.WINDOW_WIDTH,
+                right=gameview_file.GameView.internal_width,
                 bottom=0,
-                top=my_constants.WINDOW_HEIGHT,
+                top=gameview_file.GameView.INERNAL_HEIGHT,
             ),
             viewport=self.window.rect,
         )
@@ -27,9 +30,9 @@ class My_camera:
             position=(0, 0),
             projection=arcade.types.LRBT(
                 left=0,
-                right=my_constants.WINDOW_WIDTH,
+                right=gameview_file.GameView.internal_width,
                 bottom=0,
-                top=my_constants.WINDOW_HEIGHT,
+                top=gameview_file.GameView.INERNAL_HEIGHT,
             ),
             viewport=self.window.rect,
         )
@@ -40,12 +43,9 @@ class My_camera:
         self.camera_boundary = arcade.LRBT(
             -2000,
             2000,
-            my_constants.WINDOW_HEIGHT * 0.68,  # bottom boundary
-            my_constants.WINDOW_HEIGHT * 0.86,  # Top boundary
+            gameview_file.GameView.INERNAL_HEIGHT * 0.68,  # bottom boundary
+            gameview_file.GameView.INERNAL_HEIGHT * 0.86,  # Top boundary
         )
-
-        # set the camera width to a class variable so that other classes can use it.
-        My_camera.WINDOW_WIDTH = self.width
 
     def scroll_to_player(self):
         """
@@ -67,7 +67,7 @@ class My_camera:
         self.camera_sprites.position = arcade.math.lerp_2d(
             self.camera_sprites.position,
             (new_position[0], new_position[1]),
-            my_constants.CAMERA_SPEED,
+            CAMERA_SPEED,
         )
 
     def _on_key_press(self, key, modifiers):
@@ -79,20 +79,22 @@ class My_camera:
 
             # update window width to match the user's aspect ratio. Ex: some people might have 16:9 sized screens.
             USERS_ASPECT_RATIO = self.width / self.height
-            my_constants.WINDOW_WIDTH = my_constants.WINDOW_HEIGHT * USERS_ASPECT_RATIO
+            gameview_file.GameView.internal_width = (
+                gameview_file.GameView.INERNAL_HEIGHT * USERS_ASPECT_RATIO
+            )
 
             # Write procjections. This controls sprite and gui size relative to the window
             self.camera_sprites.projection = arcade.types.LRBT(
                 left=0,
-                right=my_constants.WINDOW_WIDTH,
+                right=gameview_file.GameView.internal_width,
                 bottom=0,
-                top=my_constants.WINDOW_HEIGHT,
+                top=gameview_file.GameView.INERNAL_HEIGHT,
             )
             self.camera_gui.projection = arcade.types.LRBT(
                 left=0,
-                right=my_constants.WINDOW_WIDTH,
+                right=gameview_file.GameView.internal_width,
                 bottom=0,
-                top=my_constants.WINDOW_HEIGHT,
+                top=gameview_file.GameView.INERNAL_HEIGHT,
             )
 
             # write viewports. This controls the projections' size relative to the screen.
@@ -100,4 +102,4 @@ class My_camera:
 
             self.camera_gui.viewport = self.window.rect
 
-            My_camera.WINDOW_WIDTH = self.width
+            My_camera.viewport_width = self.width

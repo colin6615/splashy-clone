@@ -1,13 +1,7 @@
 import arcade
 
 import function_file
-
-# HEIGHT and WIDTH
-# FIXED ASPECT RATIO = 1.7
-# This aspect ratio is the same for all users.
-# WIDTH = HEIGHT * (FIXED ASPECT RATIO)
-WINDOW_WIDTH = 1836  # =
-WINDOW_HEIGHT = 1080
+import gameview_file
 
 # ==================================
 # --- PHYSICS ----
@@ -51,8 +45,8 @@ pad = {
     "delta_y": 128,
     # (floats) the first 4 starting pads will spawn with x values in between these two bounds
     # NOTE: Currently, the bounds enclose the middle one third of the screen
-    "start_x_min": int(WINDOW_WIDTH / 3),
-    "start_x_max": int(WINDOW_WIDTH * 2 / 3),
+    "start_x_min": int(gameview_file.GameView.internal_width / 3),
+    "start_x_max": int(gameview_file.GameView.internal_width * 2 / 3),
     # (int) Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE pixels underneath a pad.
     "MIN_PLAYER_PAD_HEIGHT_DIFFERENCE": 0,
     "sound": arcade.load_sound(":resources:/sounds/coin1.wav"),
@@ -104,13 +98,10 @@ game_speed_function = function_file.asymptotic_function(
 # camera
 # If the player moves further than this boundary away from the camera we use a
 # constraint to move the camera
-HORIZONTAL_BOUNDARY = WINDOW_WIDTH / 2.0  # float
+HORIZONTAL_BOUNDARY = gameview_file.GameView.internal_width / 2.0  # float
 BOTTOM_BOUNDARY = -150  # float
-TOP_BOUNDARY = WINDOW_HEIGHT / 2.0 - 25  # float
+TOP_BOUNDARY = gameview_file.GameView.INERNAL_HEIGHT / 2.0 - 25  # float
 
-# (float) How fast the camera pans to the player.
-# NOTE: 1.0 is instant.
-CAMERA_SPEED = 0.6
 
 # after the player dies, wait SLEEP_AFTER_DEAD seconds until you let them retry
 SLEEP_AFTER_DEAD = 1.5  # upon release: make it 1.5 instead of zero.

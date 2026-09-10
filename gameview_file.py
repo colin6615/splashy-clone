@@ -4,15 +4,6 @@ import time
 
 import arcade
 
-import camera_file
-import gameover_file
-import items.coin_file
-import items.pad_file
-import items.spike_file
-import items.target_file
-import my_constants
-import player_file
-
 # ==================
 # time_factor_change speeds up the game after every bounce.
 # NOTE: 0 = no speed change
@@ -31,8 +22,18 @@ class GameView(arcade.View):
         dead (bool): Is the player dead?
     """
 
+    # Height and width of the game's internal canvas.
+    # DEFAULT ASPECT RATIO = 1.7
+    # This aspect ratio is the same for all users.
+    # when not in fullscreen, this is the screen resolution
+    # WIDTH = height * (DEFAULT ASPECT RATIO)
+    internal_width = 1836
+    INERNAL_HEIGHT = 1080
+
     def setup(self):
         """Set up the game and initialize the variables."""
+        camera_file.My_camera.setup(self)
+
         # add sprite width & sound to each dictionary
         # NOTE: includes pad
         for dictionary in [
@@ -60,8 +61,6 @@ class GameView(arcade.View):
         GameView.started = False
         GameView.dead = False
 
-        camera_file.My_camera.setup(self)
-
         # create SpriteLists and initial values for sprites
         items.target_file.Target.setup()
         items.coin_file.Coin.setup()
@@ -82,7 +81,7 @@ class GameView(arcade.View):
     def on_mouse_motion(self, x, y, dx, dy):
         """move the player's x-position with mouse"""
         # account for projection of screen (change screen size)
-        scaling_factor = my_constants.WINDOW_WIDTH / camera_file.My_camera.WINDOW_WIDTH
+        scaling_factor = GameView.internal_width / camera_file.My_camera.viewport_width
 
         # move player to mouse
         player_file.Player.sprite.center_x = x * scaling_factor
@@ -103,8 +102,8 @@ class GameView(arcade.View):
             str(GameView.score)
             arcade.draw_text(
                 score_text,
-                my_constants.WINDOW_WIDTH / 2,
-                my_constants.WINDOW_HEIGHT - 50,
+                GameView.internal_width / 2,
+                GameView.internal_width - 50,
                 arcade.color.BLACK_BEAN,
                 font_size=35,
                 anchor_x="center",
@@ -114,8 +113,8 @@ class GameView(arcade.View):
             score_factor_text = f"X {GameView.score_factor}"
             arcade.draw_text(
                 score_factor_text,
-                my_constants.WINDOW_WIDTH / 2,
-                my_constants.WINDOW_HEIGHT * 0.4,
+                GameView.internal_width / 2,
+                GameView.internal_width * 0.4,
                 arcade.color.WHITE,
                 font_size=35,
                 anchor_x="center",
@@ -138,7 +137,7 @@ class GameView(arcade.View):
             coin_count = str(items.coin_file.Coin.score)
             arcade.draw_text(
                 "Coins: " + coin_count,
-                my_constants.WINDOW_WIDTH - 150,
+                GameView.internal_width - 150,
                 30,
                 arcade.color.GOLD,
                 font_size=25,
@@ -158,8 +157,8 @@ class GameView(arcade.View):
             if GameView.started == False:
                 arcade.draw_text(
                     my_constants.instruction_text,
-                    x=my_constants.WINDOW_WIDTH / 2,
-                    y=my_constants.WINDOW_HEIGHT * 3 / 4,
+                    x=GameView.internal_width / 2,
+                    y=GameView.INERNAL_HEIGHT * 3 / 4,
                     color=arcade.color.WHITE,
                     font_size=24,
                     anchor_x="center",
@@ -202,3 +201,14 @@ class GameView(arcade.View):
 
         # F key toggles fullscreen
         camera_file.My_camera._on_key_press(self, key, modifiers)
+
+
+# circumvent circular import error by placing imports below, rather than above, the class
+import camera_file
+import gameover_file
+import items.coin_file
+import items.pad_file
+import items.spike_file
+import items.target_file
+import my_constants
+import player_file

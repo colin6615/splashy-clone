@@ -80,7 +80,7 @@ class My_camera:
             # so there is a one-to-one mapping.
             self.camera_sprites.viewport = self.window.rect
             self.camera_sprites.projection = arcade.LRBT(
-                0.0, my_constants.WINDOW_WIDTH, 0.0, my_constants.WINDOW_HEIGHT
+                0.0, self.width, 0.0, self.height
             )
 
         if key == arcade.key.F:

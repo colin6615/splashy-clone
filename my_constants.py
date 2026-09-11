@@ -66,8 +66,9 @@ coin = {
     "spawn_rate": 0.7,  # good value: 0.2
     "height from pad": 50,
     # if the user gets over the max number of coins, then they will earn a party!
-    "max": 5,
+    "party_count": 5,
     "sound": arcade.load_sound(":resources:/sounds/coin3.wav"),
+    "seconds_per_party": 6.5,
 }
 
 spike = {

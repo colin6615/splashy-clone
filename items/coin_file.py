@@ -17,9 +17,6 @@ import items.target_file
 import my_constants
 import player_file
 
-# party duration in seconds
-SECONDS_PER_PARTY = 6.5
-
 
 # ================================
 # Party functions
@@ -27,13 +24,12 @@ SECONDS_PER_PARTY = 6.5
 # during a coin party, coin sounds play constantly. I don't want multiple coin sounds to play at once, so I created this function.
 # note that I don't use this sort of function for other sounds because other sounds don't play constantly.
 def coin_sound():
-    """play coins sound if coin sound is not already playing. Only 1 coin sound can play at a time."""
+    """play coins sound if coin sound is not already playing"""
     if not Coin.coin_sound_player or not Coin.coin_sound_player.playing:
         Coin.coin_sound_player = arcade.play_sound(my_constants.coin["sound"])
 
 
 def party_finish_true():
-    """sets a bool to True"""
     Coin.party_finish = True
 
 
@@ -49,11 +45,14 @@ class Coin(items.item_file.Item):
     def setup():
         """Set up the game and initialize the variables."""
         Coin.party_finish = False
+        Coin.coin_sound_player = None
+        # values at start of game
         Coin.list = arcade.SpriteList()
         Coin.collected_count = 0
+
+        # non-party values
         gameview_file.GameView.party = False
         gameview_file.GameView.game_speed_factor = 1
-        Coin.coin_sound_player = None
 
     def update(self, delta_time):
         """Triggers coin party or collects coins, if needed.
@@ -69,19 +68,16 @@ class Coin(items.item_file.Item):
         )
         for colliding_sprite in colliding_player_and_coin:
             if colliding_sprite in Coin.list:
-                # remove coin from sprite list to make sure that player interacts with coin once
+                # remove coin from sprite list
+                # reason: ensures that player interacts with each coin once
                 colliding_sprite.remove_from_sprite_lists()
 
                 coin_sound()
-
-                # increase coin count
                 Coin.collected_count += 1
 
-        # if the coin count is too high, then activate a party.
-        # this "if" statement is true one tick per party.
-        #   true at the start of the party
-        #   false during a party. false without a party.
-        if my_constants.coin["max"] <= Coin.collected_count:
+        # if the coin count is greater than the coin party count, then:
+        # this "if" statement is only true, at the start of a party, for one update-tick.
+        if my_constants.coin["party_count"] <= Coin.collected_count:
             # activate party mode
             gameview_file.GameView.party = True
 
@@ -93,17 +89,21 @@ class Coin(items.item_file.Item):
             # reset coin count
             Coin.collected_count = 0
 
-            # deactivate party mode after a while
+            # finish the party after a while.
+            # set party_finish to true after the party duration, seconds_per_party
             #   Source - https://stackoverflow.com/a/44666336
             #   Posted by Aaron Hall, modified by community. See post 'Timeline' for change history
             #   Retrieved 2026-09-10, License - CC BY-SA 4.0
-            party_deactivation_timer = Timer(SECONDS_PER_PARTY, party_finish_true)
-            # later: can i remove args=None, kwargs=None? can move this above
+            # create the timer, which runs party_finish_true() after "seconds_per_party" seconds have passed.
+            party_deactivation_timer = Timer(
+                my_constants.coin["seconds_per_party"], party_finish_true
+            )
+            # start the timer
             party_deactivation_timer.start()
 
-        # if party mode is activated, then run this code once per tick
-        # this code runs continously during a party.
+        # this code runs once per tick, during a party
         if gameview_file.GameView.party == True:
+            # play coin sound
             coin_sound()
 
             # remove spikes, so that the player doesn't die
@@ -111,14 +111,13 @@ class Coin(items.item_file.Item):
                 spike.remove_from_sprite_lists()
 
             # move the pads, targets, and coins to the player
-            for item in (
+            for sprite_list in [
                 items.pad_file.Pad.list,
                 items.target_file.Target.list,
                 Coin.list,
-            ):
-                item.center_x = player_file.Player.sprite.center_x
-            for item in items.pad_file.Pad.list:
-                item.center_x = player_file.Player.sprite.center_x
+            ]:
+                for item in sprite_list:
+                    item.center_x = player_file.Player.sprite.center_x
 
         # if coin count is greater than COINS_AFTER_PARTY and the player is moving slowly, then deactivate party
         player_move_slow = abs(player_file.Player.sprite.velocity_y) < 2.5

@@ -45,7 +45,7 @@ pad = {
     # NOTE: Currently, the bounds enclose the middle one third of the screen
     "start_x_min": int(gameview_file.GameView.internal_width / 4),
     "start_x_max": int(gameview_file.GameView.internal_width * 3 / 4),
-    "sound": arcade.load_sound(":resources:/sounds/coin1.wav"),
+    "sound": arcade.load_sound("assets/pad.wav"),
 }
 
 target = {
@@ -53,7 +53,7 @@ target = {
     "image_scale": 1,
     "spawn_rate": 0.25,
     "height from pad": 25,
-    "sound": arcade.load_sound(":resources:/sounds/coin2.wav"),
+    "sound": arcade.load_sound("assets/target.wav"),
 }
 
 coin = {
@@ -63,7 +63,7 @@ coin = {
     "height from pad": 150,
     # if the user gets over the max number of coins, then they will earn a party!
     "party_count": 12,
-    "sound": arcade.load_sound(":resources:/sounds/coin3.wav"),
+    "sound": arcade.load_sound("assets/coin.wav"),
     "seconds_per_party": 6.5,
 }
 
@@ -89,7 +89,7 @@ game_speed_factor_party = 2
 # ==================================
 
 
-death_sound = arcade.load_sound(":resources:/sounds/coin4.wav")
+death_sound = arcade.load_sound("assets/death.wav")
 
 instruction_text = "Left click = start, Esc = close, F = fullscreen"
 

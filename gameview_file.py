@@ -81,6 +81,8 @@ class GameView(arcade.View):
             print(
                 f"{dictionary['name']}. width:{dictionary['width']}. height: {dictionary['height']}"
             )
+        # load sounds
+        
 
         GameView.score = 0
         GameView.score_factor = 1

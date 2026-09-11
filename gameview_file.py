@@ -118,7 +118,7 @@ class GameView(arcade.View):
                 anchor_x="center",
             ).draw()
 
-            # Select the camera we'll use to draw all our sprites
+            # Select the camera we'll use to draw all our sprites. The sprites will appear in front of the gui we just drew (in previous loc)
             self.camera_sprites.use()
 
             # Draw sprites.
@@ -128,19 +128,9 @@ class GameView(arcade.View):
             items.coin_file.Coin.list.draw()
             items.spike_file.Spike.list.draw()
 
-            # Select the (unscrolled) camera for our GUI
+            # Select the (unscrolled) camera for our GUI. The next gui will appear in the very front; other stuff won't block it.
             self.camera_gui.use()
 
-            # remove upon release
-            # Draw the coin score
-            # coin_count = str(items.coin_file.Coin.collected_count)
-            # arcade.draw_text(
-            #     "Coins: " + coin_count,
-            #     GameView.internal_width - 150,
-            #     30,
-            #     arcade.color.GOLD,
-            #     font_size=35,
-            # )
             # Instruct the user to start the game by clicking, if they haven't started the game yet.
             if GameView.started == False:
                 arcade.Text(

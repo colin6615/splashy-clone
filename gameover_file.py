@@ -36,42 +36,35 @@ class GameOverView(arcade.View):
     def on_draw(self):
         self.clear()
         """
-        Draw text on the screen. 
+        Draws text in a 1x4 array
         """
+        # set y-postion of the top text
+        text_y = int(self.height * 0.75)
 
-        arcade.draw_text(
-            "Game Over",
-            x=gameview_file.GameView.internal_width / 2,
-            y=400,
-            color=arcade.color.WHITE,
-            font_size=54,
-            anchor_x="center",
-        )
-        arcade.draw_text(
-            my_constants.instruction_text,
-            x=gameview_file.GameView.internal_width / 2,
-            y=300,
-            color=arcade.color.WHITE,
-            font_size=24,
-            anchor_x="center",
-        )
+        # write text
+        previous_score_text = f"Previous Score: {gameview_file.GameView.score}"
+        high_score_text = f"High Score: {self.high_score_variable}"
 
-        arcade.draw_text(
-            f"Previous Score: {gameview_file.GameView.score}",
-            x=gameview_file.GameView.internal_width / 2,
-            y=200,
-            color=arcade.color.WHITE,
-            font_size=24,
-            anchor_x="center",
-        )
-        arcade.draw_text(
-            f"High Score: {self.high_score_variable}",
-            x=gameview_file.GameView.internal_width / 2,
-            y=100,
-            color=arcade.color.WHITE,
-            font_size=24,
-            anchor_x="center",
-        )
+        # create dictionaries to loop over. These dictionaries contain the text font and content
+        game_over = {"text": "Game Over", "font_size": 54}
+        instruction = {"text": my_constants.instruction_text, "font_size": 24}
+        previous_score = {"text": previous_score_text, "font_size": 24}
+        high_score = {"text": high_score_text, "font_size": 24}
+        text_dicts = [game_over, instruction, previous_score, high_score]
+
+        # draw the text from the dictionaries
+        for dict in text_dicts:
+            arcade.Text(
+                dict["text"],
+                x=int(self.width / 2),
+                y=text_y,
+                color=arcade.color.WHITE,
+                font_size=dict["font_size"],
+                anchor_x="center",
+            ).draw()
+
+            # make each text box lower than the last. This way, the text boxes don't overlap each other
+            text_y -= 100
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         """Restart the game upon click"""

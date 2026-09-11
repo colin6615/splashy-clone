@@ -51,7 +51,6 @@ class GameView(arcade.View):
             # sprite width = image width * image scale
             dictionary["width"] = width_height[0] * dictionary["image_scale"]
 
-        # Reset numbers to their starting values.
         GameView.score = 0
         GameView.score_factor = 1
 

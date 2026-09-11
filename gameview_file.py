@@ -198,6 +198,7 @@ class GameView(arcade.View):
         # Escape key closes window
         if key == arcade.key.ESCAPE:
             arcade.close_window()
+            arcade.close_window()
 
         # F key toggles fullscreen
         camera_file.My_camera._on_key_press(self, key, modifiers)
@@ -208,7 +209,7 @@ import camera_file
 import gameover_file
 import items.coin_file
 import items.pad_file
+import items.player_file as player_file
 import items.spike_file
 import items.target_file
 import my_constants
-import items.player_file as player_file

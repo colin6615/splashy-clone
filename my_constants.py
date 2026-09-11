@@ -63,10 +63,10 @@ target = {
 coin = {
     "name": "coin",
     "image_scale": 1,
-    "spawn_rate": 1,  # good value: 0.2
+    "spawn_rate": 0.7,  # good value: 0.2
     "height from pad": 50,
     # if the user gets over the max number of coins, then they will earn a party!
-    "max": 3,
+    "max": 5,
     "sound": arcade.load_sound(":resources:/sounds/coin3.wav"),
 }
 

@@ -104,7 +104,8 @@ TOP_BOUNDARY = gameview_file.GameView.INERNAL_HEIGHT / 2.0 - 25  # float
 
 
 # after the player dies, wait SLEEP_AFTER_DEAD seconds until you let them retry
-SLEEP_AFTER_DEAD = 1.5  # upon release: make it 1.5 instead of zero.
+# remove upon release
+# SLEEP_AFTER_DEAD = 1.5
 
 death_sound = arcade.load_sound(":resources:/sounds/coin4.wav")
 

@@ -1,7 +1,5 @@
 """handles gameplay"""
 
-import time
-
 import arcade
 
 # ==================
@@ -134,7 +132,7 @@ class GameView(arcade.View):
             self.camera_gui.use()
 
             # Draw the coin score
-            coin_count = str(items.coin_file.Coin.score)
+            coin_count = str(items.coin_file.Coin.collected_count)
             arcade.draw_text(
                 "Coins: " + coin_count,
                 GameView.internal_width - 150,
@@ -172,13 +170,16 @@ class GameView(arcade.View):
         # show the mouse
         self.window.set_mouse_visible(True)
         arcade.play_sound(my_constants.death_sound)
-        time.sleep(my_constants.SLEEP_AFTER_DEAD)
+        # time.sleep(my_constants.SLEEP_AFTER_DEAD)
 
         # switch the window to game over screen
         self.window.show_view(game_over_view)
 
     def on_update(self, delta_time):
-        """Movement and game logic. This function calls every game tick"""
+        """Movement and game logic. This function calls every game tick
+        Args:
+            delta_time (int): framerate in hertz. how many times per second that the game updates.
+        """
         # update sprites .
         player_file.Player.update()
         items.pad_file.Pad.list.update()

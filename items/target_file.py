@@ -21,22 +21,24 @@ class Target(items.item_file.Item):
     """
 
     def update(self, delta_time):
-        """If the player hits a target, then increase the score multiplier and delete the target"""
+        """
+        Args:
+            delta_time (int): framerate in hertz. how many times per second that the game updates.
+        If the player hits a target, then increase the score multiplier and delete the target"""
         # next few lines: if player hits pad, then for each colliding target:
         Target.colliding_player_and_target = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Target.list
         )
-        if len(Target.colliding_player_and_target) > 0:
-            for colliding_sprite in Target.colliding_player_and_target:
-                # remove target from sprite list to make sure that player interacts with target once
-                if colliding_sprite in Target.list:
-                    colliding_sprite.remove_from_sprite_lists()
+        for colliding_sprite in Target.colliding_player_and_target:
+            # remove target from sprite list to make sure that player interacts with target once
+            if colliding_sprite in Target.list:
+                colliding_sprite.remove_from_sprite_lists()
 
-                    # increase score multiplier
-                    gameview_file.GameView.score_factor += 1
+                # increase score multiplier
+                gameview_file.GameView.score_factor += 1
 
-                    # play sound
-                    arcade.play_sound(my_constants.target["sound"])
+                # play sound
+                arcade.play_sound(my_constants.target["sound"])
 
     def setup():
         """Set up the game and initialize the variables."""

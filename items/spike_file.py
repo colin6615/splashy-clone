@@ -22,7 +22,10 @@ class Spike(items.item_file.Item):
     """
 
     def update(self, delta_time):
-        """if player hits spike, then kill the player"""
+        """
+        Args:
+            delta_time (int): framerate in hertz. how many times per second that the game updates.
+        if player hits spike, then kill the player"""
         Spike.colliding_player_and_spike = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Spike.list
         )

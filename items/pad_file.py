@@ -9,7 +9,6 @@ from operator import attrgetter
 
 import arcade
 
-import camera_file
 import function_file
 import items.item_file
 import items.target_file
@@ -33,9 +32,9 @@ class Pad(items.item_file.Item):
         """create sprite list and spawn the first pads"""
         # add bounds for pads
         my_constants.pad["x_max"] = (
-            gameview_file.GameView.internal_width - my_constants.pad["width"]
+            gameview_file.GameView.internal_width - my_constants.pad["width"] / 2
         )
-        my_constants.pad["x_min"] = my_constants.pad["width"]
+        my_constants.pad["x_min"] = my_constants.pad["width"] / 2
 
         # list of item dictionaries used later.
         # NOTE: excludes pad
@@ -58,82 +57,98 @@ class Pad(items.item_file.Item):
             )
 
     def update(self, delta_time):
+        """
+        Args:
+            delta_time (int): framerate in hertz. how many times per second that the game updates.
+        """
         # whole seciton: if player hits a pad, then bounce player, remove pad, create new pad, and change score
         # next few lines: if player hits a pad, then:
         self.hit_list = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Pad.list
         )
-        if len(self.hit_list) > 0:
-            for hit_pad in self.hit_list:
-                if hit_pad in Pad.list:
-                    # bounce player
-                    player_file.Player.sprite.velocity_y *= (
-                        -my_constants.BOUNCE_DECAY_CONSTANT
+        for hit_pad in self.hit_list:
+            if hit_pad in Pad.list:
+                # bounce player
+                player_file.Player.sprite.velocity_y *= (
+                    -my_constants.BOUNCE_DECAY_CONSTANT
+                )
+
+                # if the pad is touching a target, then reset score factor
+                target_pad_collision_list = arcade.check_for_collision_with_list(
+                    hit_pad, items.target_file.Target.list
+                )
+                if len(target_pad_collision_list) > 0:
+                    gameview_file.GameView.score_factor = 1
+
+                # delete items on pad
+                # for each thing in items_close_to_pad, remove it
+                while len(hit_pad.items_close_to_pad) > 0:
+                    for pad_item_ in hit_pad.items_close_to_pad:
+                        pad_item_.remove_from_sprite_lists()
+
+                # delete the hit pad
+                hit_pad.remove_from_sprite_lists()
+
+                # ------------ Start of re-position pad
+                #  In this whole section, I teleport hit pad directly below the bottom pad. Then change the hit pad's x-position, slightly
+                # First, randomize pad's x-position, but make sure that we don't touch the screen's edges. I achieve this thorugh the following loc
+                # Boolean variable if we successfully placed the pad.
+                pad_placed_successfully = False
+                # Keep trying until success.
+
+                # get bottom pad
+                bottom_pad = min(Pad.list, key=attrgetter("center_y"))
+                while not pad_placed_successfully:
+                    # ----------------- Change this pad's x-position to the bottom pad, and then add a random number to this.
+                    # generate random number to add later
+                    x_change = random.randrange(
+                        -my_constants.pad["delta_x"], my_constants.pad["delta_x"]
                     )
+                    # add random number to bottom pad's x-position. Equate its value to the hit pad's x-position
+                    new_center_x = bottom_pad.center_x + x_change
 
-                    # if the pad is touching a target, then reset score factor
-                    target_pad_collision_list = arcade.check_for_collision_with_list(
-                        hit_pad, items.target_file.Target.list
-                    )
-                    if len(target_pad_collision_list) > 0:
-                        gameview_file.GameView.score_factor = 1
+                    # if the pad is not touching the screen's edges, then pad was succesfully placed.
+                    if (
+                        new_center_x > my_constants.pad["x_min"]
+                        and new_center_x < my_constants.pad["x_max"]
+                    ):
+                        pad_placed_successfully = True
+                # ------------- after you successfully change the x-position
+                # move pad down
+                new_center_y = bottom_pad.center_y - my_constants.pad["delta_y"]
+                # ------------------- End of re-position pad
 
-                    # delete items on pad
-                    # for each thing in items_close_to_pad, remove it
-                    while len(hit_pad.items_close_to_pad) > 0:
-                        for pad_item_ in hit_pad.items_close_to_pad:
-                            pad_item_.remove_from_sprite_lists()
+                # create new pad
+                spawn_pad(
+                    x_=new_center_x,
+                    y_=new_center_y,
+                )
 
-                    # delete the hit pad
-                    hit_pad.remove_from_sprite_lists()
+                # increase bounce count and score
+                function_file.bounce_count += 1
+                gameview_file.GameView.score += gameview_file.GameView.score_factor
 
-                    # ------------ Start of re-position pad
-                    #  In this whole section, I teleport hit pad directly below the bottom pad. Then change the hit pad's x-position, slightly
-                    # First, randomize pad's x-position, but make sure that we don't touch the screen's edges. I achieve this thorugh the following loc
-                    # Boolean variable if we successfully placed the pad.
-                    pad_placed_successfully = False
-                    # Keep trying until success.
-
-                    # get bottom pad
-                    bottom_pad = min(Pad.list, key=attrgetter("center_y"))
-                    while not pad_placed_successfully:
-                        # ----------------- Change this pad's x-position to the bottom pad, and then add a random number to this.
-                        # generate random number to add later
-                        x_change = random.randrange(
-                            -my_constants.pad["delta_x"], my_constants.pad["delta_x"]
-                        )
-                        # add random number to bottom pad's x-position. Equate its value to the hit pad's x-position
-                        new_center_x = bottom_pad.center_x + x_change
-
-                        # if the pad is not touching the screen's edges, then pad was succesfully placed.
-                        if (
-                            new_center_x > my_constants.pad["x_min"]
-                            and new_center_x < my_constants.pad["x_max"]
-                        ):
-                            pad_placed_successfully = True
-                    # ------------- after you successfully change the x-position
-                    # move pad down
-                    new_center_y = bottom_pad.center_y - my_constants.pad["delta_y"]
-                    # ------------------- End of re-position pad
-
-                    # create new pad
-                    spawn_pad(
-                        x_=new_center_x,
-                        y_=new_center_y,
-                    )
-
-                    # increase bounce count and score
-                    function_file.bounce_count += 1
-                    gameview_file.GameView.score += gameview_file.GameView.score_factor
-
-                    # play sound
-                    arcade.play_sound(my_constants.pad["sound"])
-        # kill the player if they go below the top pad
+                # play sound
+                arcade.play_sound(my_constants.pad["sound"])
+        # kill the player if they go below the top pad, outside of a party.
+        # find top pad
         top_pad = max(Pad.list, key=attrgetter("center_y"))
-        if (
+
+        # get height difference between pad and player
+        player_pad_height_difference = (
             top_pad.center_y - player_file.Player.sprite.center_y
+        )
+        # figure out if player is below top pad.
+        player_goes_below_top_pad = (
+            player_pad_height_difference
             > my_constants.pad["MIN_PLAYER_PAD_HEIGHT_DIFFERENCE"]
-        ):
+        )
+
+        # determine if its a party
+        no_party = not gameview_file.GameView.party
+
+        # kill the player if both conditions are satisfied
+        if player_goes_below_top_pad and no_party:
             gameview_file.GameView.dead = True
 
 

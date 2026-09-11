@@ -46,6 +46,7 @@ class My_camera:
             gameview_file.GameView.INERNAL_HEIGHT * 0.68,  # bottom boundary
             gameview_file.GameView.INERNAL_HEIGHT * 0.86,  # Top boundary
         )
+        My_camera.viewport_width = self.width
 
     def scroll_to_player(self):
         """

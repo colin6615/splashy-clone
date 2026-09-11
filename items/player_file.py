@@ -40,7 +40,8 @@ class Player(items.item_file.Item):
         # define acceleration: a = game_speed * (- g + b * |v|)
         # speeds up the game over time
         game_speed = (
-            gameview_file.GameView.game_speed_factor * my_constants.game_speed_function
+            gameview_file.GameView.game_speed_factor
+            * gameview_file.GameView.game_speed_function
         )
         v = Player.sprite.velocity_y
         g = my_constants.GRAVITATIONAL_ACCELERATION

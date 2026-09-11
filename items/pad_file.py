@@ -43,7 +43,6 @@ class Pad(items.item_file.Item):
         my_constants.pad["x_min"] = int(my_constants.pad["width"] / 2)
 
         Pad.list = arcade.SpriteList()
-        function_file.bounce_count = 0
         # spawn the first 4 pads
         for y in range(-4, 0):
             spawn_pad(
@@ -53,6 +52,7 @@ class Pad(items.item_file.Item):
                 ),
                 y_=y * my_constants.pad["delta_y"],
             )
+        gameview_file.GameView.update_game_speed()
 
     def update(self, delta_time):
         """
@@ -114,8 +114,11 @@ class Pad(items.item_file.Item):
                 )
 
                 # increase bounce count and score
-                function_file.bounce_count += 1
+                gameview_file.GameView.bounce_count += 1
                 gameview_file.GameView.score += gameview_file.GameView.score_factor
+
+                # refresh values that change with bounce
+                gameview_file.GameView.update_game_speed()
 
                 # play sound
                 arcade.play_sound(my_constants.pad["sound"])
@@ -138,13 +141,10 @@ class Pad(items.item_file.Item):
             top_pad.center_y - player_file.Player.sprite.center_y
         )
         # figure out if player is below top pad.
-        player_goes_below_top_pad = (
-            player_pad_height_difference
-            > my_constants.pad["MIN_PLAYER_PAD_HEIGHT_DIFFERENCE"]
-        )
+        player_goes_slightly_below_top_pad = player_pad_height_difference > 0
 
-        # kill the player if condition is satisfied
-        if player_goes_below_top_pad:
+        # kill the player if they go below the top pad
+        if player_goes_slightly_below_top_pad:
             gameview_file.GameView.dead = True
 
 

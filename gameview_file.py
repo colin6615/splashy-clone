@@ -20,6 +20,26 @@ class GameView(arcade.View):
         dead (bool): Is the player dead?
     """
 
+    def asymptotic_function(x, max_y, x_at_half_y):
+        """
+        inputs 3 numbers and outputs 1 number.
+
+        Args:
+            x (float): input variable
+            max_y (float): maximum output
+                reached at infinity
+                asymptotic_function(x = infinity) = max_y
+            x_at_half_y (float): At this x value, output is  (sort of) halfway maxed out.
+                asymptotic_function(x = x_at_half_y) = [(max_y - 1) / 2] + 1
+        Returns:
+            output (float)
+        """
+
+        numerator = (max_y - 1) * x
+        denominator = x + x_at_half_y
+        y = 1 + numerator / denominator
+        return y
+
     # Height and width of the game's internal canvas.
     # DEFAULT ASPECT RATIO = 1.7
     # This aspect ratio is the same for all users.
@@ -28,8 +48,14 @@ class GameView(arcade.View):
     internal_width = 1836
     INERNAL_HEIGHT = 1080
 
+    def update_game_speed():
+        GameView.game_speed_function = GameView.asymptotic_function(
+            x=GameView.bounce_count, max_y=2.5, x_at_half_y=36
+        )
+
     def setup(self):
         """Set up the game and initialize the variables."""
+        GameView.bounce_count = 0
 
         camera_file.My_camera.setup(self)
 
@@ -58,13 +84,14 @@ class GameView(arcade.View):
         # other initial values
         GameView.started = False
         GameView.dead = False
+        GameView.bounce_count = 0
 
         # create SpriteLists and initial values for sprites
         items.target_file.Target.setup()
         items.coin_file.Coin.setup()
         items.spike_file.Spike.setup()
         items.player_file.Player.setup()
-        # spawn the first 4 pads
+        # spawn the first 4 pads. this setup must come last.
         items.pad_file.Pad.setup()
 
         self.background_color = arcade.color.AMAZON
@@ -161,10 +188,10 @@ class GameView(arcade.View):
         """
         # update sprites .
         items.player_file.Player.update()
+        items.spike_file.Spike.list.update()
         items.target_file.Target.list.update()
         items.pad_file.Pad.list.update()
         items.coin_file.Coin.list.update()
-        items.spike_file.Spike.list.update()
 
         # Scroll the screen to the player
         camera_file.My_camera.scroll_to_player(self)
@@ -185,6 +212,7 @@ class GameView(arcade.View):
 
 # circumvent circular import error by placing imports below, rather than above, the class
 import camera_file
+import function_file
 import gameover_file
 import items.coin_file
 import items.pad_file

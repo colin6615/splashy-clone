@@ -8,12 +8,12 @@ import gameview_file
 # ==================================
 # (float) constant downward acceleration
 # NOTE: represented by the letter g in physics
-GRAVITATIONAL_ACCELERATION = 0.4
+GRAVITATIONAL_ACCELERATION = 0.1
 
 # (float) decrease DRAG_COEFFICIENT = player hovers over the apex of their jump arc for longer. Player is slower at the top of their bounce.
 # NOTE: In real life, the drag coefficient usually has a positive value; acceleration's magntiude DECREASES if speed INCREASES. In this game, I made it a negative value so that acceleration's magnitude INCREASES if speed INCREASES
 # NOTE: represented by the letter b in physics
-DRAG_COEFFICIENT = -0.03
+DRAG_COEFFICIENT = -0.12
 
 # (float) how much energy the player conserves during a bounce.
 # 1 = no energy is lost. The player will bounce back to their original y-position.
@@ -46,8 +46,6 @@ pad = {
     # NOTE: Currently, the bounds enclose the middle one third of the screen
     "start_x_min": int(gameview_file.GameView.internal_width / 4),
     "start_x_max": int(gameview_file.GameView.internal_width * 3 / 4),
-    # (int) Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE pixels underneath a pad.
-    "MIN_PLAYER_PAD_HEIGHT_DIFFERENCE": 0,
     "sound": arcade.load_sound(":resources:/sounds/coin1.wav"),
 }
 
@@ -73,10 +71,7 @@ coin = {
 spike = {
     "name": "spike",
     "image_scale": 2,
-    "spawn_rate": function_file.asymptotic_function(
-        x=function_file.bounce_count, max_y=1.5, x_at_half_y=50
-    )
-    * 0.07,  # goes from 0.7 to 0.7 * max_y
+    "spawn_rate": 0.15,
     "height from pad": 30,
 }
 
@@ -88,10 +83,8 @@ player = {
 # ==================================
 # --- IDK ---
 # ==================================
-game_speed_factor_party = 4.5
-game_speed_function = function_file.asymptotic_function(
-    x=function_file.bounce_count, max_y=4.5, x_at_half_y=80
-)
+game_speed_factor_party = 2
+
 # ==================================
 # --- OTHER ---
 # ==================================
@@ -101,7 +94,8 @@ death_sound = arcade.load_sound(":resources:/sounds/coin4.wav")
 
 instruction_text = "Left click = start, Esc = close, F = fullscreen"
 
-"""Remove triple quotes, except when testing on dev branch.
+# if testing on dev branch, then remove hashtags below this line.
+"""
 coin["spawn_rate"] = 1
 coin["party_count"] = 4
 """

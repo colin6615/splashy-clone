@@ -98,25 +98,25 @@ class GameView(arcade.View):
             # Draw the score
             score_text = str(GameView.score)
             str(GameView.score)
-            arcade.draw_text(
+            arcade.Text(
                 score_text,
-                GameView.internal_width / 2,
-                GameView.INERNAL_HEIGHT * 0.92,
-                arcade.color.BLACK_BEAN,
+                x=GameView.internal_width / 2,
+                y=GameView.INERNAL_HEIGHT * 0.92,
+                color=arcade.color.BLACK_BEAN,
                 font_size=45,
                 anchor_x="center",
-            )
+            ).draw()
 
             # Draw the score factor
             score_factor_text = f"X {GameView.score_factor}"
-            arcade.draw_text(
+            arcade.Text(
                 score_factor_text,
-                GameView.internal_width / 2,
-                GameView.INERNAL_HEIGHT * 0.42,
-                arcade.color.WHITE,
+                x=GameView.internal_width / 2,
+                y=GameView.INERNAL_HEIGHT * 0.42,
+                color=arcade.color.WHITE,
                 font_size=75,
                 anchor_x="center",
-            )
+            ).draw()
 
             # Select the camera we'll use to draw all our sprites
             self.camera_sprites.use()
@@ -143,14 +143,14 @@ class GameView(arcade.View):
             # )
             # Instruct the user to start the game by clicking, if they haven't started the game yet.
             if GameView.started == False:
-                arcade.draw_text(
+                arcade.Text(
                     my_constants.instruction_text,
                     x=GameView.internal_width / 2,
                     y=GameView.INERNAL_HEIGHT * 3 / 4,
-                    color=arcade.color.WHITE,
-                    font_size=24,
+                    color=arcade.color.COOL_BLACK,
+                    font_size=45,
                     anchor_x="center",
-                )
+                ).draw()
 
     def game_over_function(self):
         """Stop gameplay. Switch to game over screen."""

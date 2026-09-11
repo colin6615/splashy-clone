@@ -2,7 +2,7 @@
 
 Item is a parent class of Pad, Coin, Target, and Spike. The class doesn't do anything on its own.
 
-Item has update() andupdate(), which are general and specific update functions, respectively.update() is overridden by Item's children, soupdate() is different for every child. update(), however, is the same for every child.
+I refer to Item's children as "items." These items are sprites that the player can interact with
 
 The spawn() function creates a sprite and adds it to a sprite list.
 """
@@ -33,7 +33,7 @@ class Item(arcade.Sprite):
 
 def spawn(x_input, y_input, **input_dict):
     """
-    spawns an item at specified coordinates. Adds item to sprite list.
+    spawns an item at specified coordinates
 
     Args:
         x_input (float): the x-position of the center of the spawned item.
@@ -43,17 +43,23 @@ def spawn(x_input, y_input, **input_dict):
         Input_class (class): the sprite's class.
         image_path (string): file directory of sprite image
         image_scale (float): changes size of sprite
+
+    returns:
+        the spawned item
     """
     # Make dummy variables to improve code readability. This is probably bad practice. rewrite, this, later, if needed.
+    image_path = input_dict["image_path"]
+    image_scale = input_dict["image_scale"]
+
+    # the Input_class key is defined at the bottom of coin_file, pad_file, target_file, and spike_file
     class_ = input_dict["Input_class"]
-    image_path_ = input_dict["image_path"]
-    scale_ = input_dict["image_scale"]
 
     # make sprite. load texture.
     # this works because class_ is a grandchild of the Sprite class.
-    item = class_(image_path_, scale_)
+    item = class_(image_path, image_scale)
 
     # position the sprite
     item.center_x = x_input
     item.center_y = y_input
+
     return item

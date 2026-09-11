@@ -63,7 +63,7 @@ class GameView(arcade.View):
         items.target_file.Target.setup()
         items.coin_file.Coin.setup()
         items.spike_file.Spike.setup()
-        player_file.Player.setup()
+        items.player_file.Player.setup()
         # spawn the first 4 pads
         items.pad_file.Pad.setup()
 
@@ -82,7 +82,7 @@ class GameView(arcade.View):
         scaling_factor = GameView.internal_width / camera_file.My_camera.viewport_width
 
         # move player to mouse
-        player_file.Player.sprite.center_x = x * scaling_factor
+        items.player_file.Player.sprite.center_x = x * scaling_factor
 
     def on_draw(self):
         """
@@ -122,7 +122,7 @@ class GameView(arcade.View):
             self.camera_sprites.use()
 
             # Draw sprites.
-            player_file.Player.list.draw()
+            items.player_file.Player.list.draw()
             items.pad_file.Pad.list.draw()
             items.target_file.Target.list.draw()
             items.coin_file.Coin.list.draw()
@@ -144,7 +144,7 @@ class GameView(arcade.View):
             # remove upon release
             # Draw the player position for debugging purposes
             arcade.draw_text(
-                f"y: {int(player_file.Player.sprite.center_y):.2f}",
+                f"y: {int(items.player_file.Player.sprite.center_y):.2f}",
                 150,
                 30,
                 arcade.color.GOLD,
@@ -181,7 +181,7 @@ class GameView(arcade.View):
             delta_time (int): framerate in hertz. how many times per second that the game updates.
         """
         # update sprites .
-        player_file.Player.update()
+        items.player_file.Player.update()
         items.pad_file.Pad.list.update()
         items.target_file.Target.list.update()
         items.coin_file.Coin.list.update()
@@ -212,4 +212,4 @@ import items.pad_file
 import items.spike_file
 import items.target_file
 import my_constants
-import player_file
+import items.player_file as player_file

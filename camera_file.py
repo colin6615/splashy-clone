@@ -3,7 +3,7 @@
 import arcade
 
 import gameview_file
-import player_file
+from items import player_file
 
 # (float) How fast the camera pans to the player.
 # NOTE: 1.0 is instant.

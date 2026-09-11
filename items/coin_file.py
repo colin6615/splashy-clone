@@ -2,7 +2,7 @@
 
 This file also adds the "input class" key to the coin dictionary.
 
-Coins are items that the player can interact with.
+Coins are a colletable item. After collecting enough coins, a coin party triggers. During a coin party, the game speeds up, and the user can't die.
 """
 
 from threading import Timer
@@ -15,7 +15,7 @@ import items.pad_file
 import items.spike_file
 import items.target_file
 import my_constants
-import player_file
+import items.player_file as player_file
 
 
 # ================================
@@ -75,10 +75,8 @@ class Coin(items.item_file.Item):
                 coin_sound()
                 Coin.collected_count += 1
 
-        # if the coin count is greater than the coin party count, then:
         # this "if" statement is only true, at the start of a party, for one update-tick.
         if my_constants.coin["party_count"] <= Coin.collected_count:
-            # activate party mode
             gameview_file.GameView.party = True
 
             # increase game speed
@@ -86,24 +84,22 @@ class Coin(items.item_file.Item):
                 my_constants.game_speed_factor_party
             )
 
-            # reset coin count
             Coin.collected_count = 0
 
             # finish the party after a while.
-            # set party_finish to true after the party duration, seconds_per_party
+            # this timer runs party_finish_true() after "seconds_per_party" seconds have passed.
+
             #   Source - https://stackoverflow.com/a/44666336
             #   Posted by Aaron Hall, modified by community. See post 'Timeline' for change history
             #   Retrieved 2026-09-10, License - CC BY-SA 4.0
-            # create the timer, which runs party_finish_true() after "seconds_per_party" seconds have passed.
+
             party_deactivation_timer = Timer(
                 my_constants.coin["seconds_per_party"], party_finish_true
             )
-            # start the timer
             party_deactivation_timer.start()
 
         # this code runs once per tick, during a party
         if gameview_file.GameView.party == True:
-            # play coin sound
             coin_sound()
 
             # remove spikes, so that the player doesn't die
@@ -119,13 +115,14 @@ class Coin(items.item_file.Item):
                 for item in sprite_list:
                     item.center_x = player_file.Player.sprite.center_x
 
-        # if coin count is greater than COINS_AFTER_PARTY and the player is moving slowly, then deactivate party
+        # stop the party if the player is moving slow and party_finish is True.
+        # This prevents this scenario:
+        # player is moving fast. stop the party. -> player retains fast speed
         player_move_slow = abs(player_file.Player.sprite.velocity_y) < 2.5
         if Coin.party_finish == True and player_move_slow == True:
+            # revert to non-party values
             gameview_file.GameView.party = False
             Coin.party_finish = False
-
-            # reset game speed
             gameview_file.GameView.game_speed_factor = 1
 
 

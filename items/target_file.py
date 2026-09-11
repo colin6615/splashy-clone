@@ -7,7 +7,7 @@ import arcade
 
 import items.item_file
 import my_constants
-import player_file
+import items.player_file as player_file
 
 
 class Target(items.item_file.Item):

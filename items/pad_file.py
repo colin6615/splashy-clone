@@ -11,11 +11,17 @@ import arcade
 
 import function_file
 import items.item_file
+import items.player_file as player_file
 import items.target_file
 import my_constants
-import player_file
 
-# ==================
+# list of item dictionaries used later.
+# NOTE: excludes pad
+items_close_to_pad_dicts = [
+    my_constants.target,
+    my_constants.coin,
+    my_constants.spike,
+]
 
 
 class Pad(items.item_file.Item):
@@ -35,14 +41,6 @@ class Pad(items.item_file.Item):
             gameview_file.GameView.internal_width - my_constants.pad["width"] / 2
         )
         my_constants.pad["x_min"] = my_constants.pad["width"] / 2
-
-        # list of item dictionaries used later.
-        # NOTE: excludes pad
-        Pad.items_close_to_pad_dicts = [
-            my_constants.target,
-            my_constants.coin,
-            my_constants.spike,
-        ]
 
         Pad.list = arcade.SpriteList()
         function_file.bounce_count = 0
@@ -182,7 +180,7 @@ def spawn_pad(
     # source for next 2 loc:  https://stackoverflow.com/a/3203121
     # Posted by SilentGhost, modified by community. See post 'Timeline' for change history
     # Retrieved 2026-09-03, License - CC BY-SA 4.0
-    for item_dict in Pad.items_close_to_pad_dicts:
+    for item_dict in items_close_to_pad_dicts:
         if random.random() < item_dict["spawn_rate"]:
             # calculate spawned item's y-position
             item_y = y_ + item_dict["height from pad"]

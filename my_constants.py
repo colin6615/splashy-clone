@@ -1,6 +1,5 @@
 import arcade
 
-import function_file
 import gameview_file
 
 # ==================================

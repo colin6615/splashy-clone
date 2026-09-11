@@ -77,6 +77,10 @@ class GameView(arcade.View):
 
             # sprite width = image width * image scale
             dictionary["width"] = width_height[0] * dictionary["image_scale"]
+            dictionary["height"] = width_height[1] * dictionary["image_scale"]
+            print(
+                f"{dictionary['name']}. width:{dictionary['width']}. height: {dictionary['height']}"
+            )
 
         GameView.score = 0
         GameView.score_factor = 1
@@ -212,7 +216,6 @@ class GameView(arcade.View):
 
 # circumvent circular import error by placing imports below, rather than above, the class
 import camera_file
-import function_file
 import gameover_file
 import items.coin_file
 import items.pad_file

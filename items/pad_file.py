@@ -9,7 +9,6 @@ from operator import attrgetter
 
 import arcade
 
-import function_file
 import items.item_file
 import items.player_file as player_file
 import items.target_file

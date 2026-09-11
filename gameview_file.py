@@ -30,6 +30,7 @@ class GameView(arcade.View):
 
     def setup(self):
         """Set up the game and initialize the variables."""
+
         camera_file.My_camera.setup(self)
 
         # add sprite width & sound to each dictionary
@@ -100,9 +101,9 @@ class GameView(arcade.View):
             arcade.draw_text(
                 score_text,
                 GameView.internal_width / 2,
-                GameView.internal_width - 50,
+                GameView.INERNAL_HEIGHT * 0.92,
                 arcade.color.BLACK_BEAN,
-                font_size=35,
+                font_size=45,
                 anchor_x="center",
             )
 
@@ -111,9 +112,9 @@ class GameView(arcade.View):
             arcade.draw_text(
                 score_factor_text,
                 GameView.internal_width / 2,
-                GameView.internal_width * 0.4,
+                GameView.INERNAL_HEIGHT * 0.42,
                 arcade.color.WHITE,
-                font_size=35,
+                font_size=75,
                 anchor_x="center",
             )
 
@@ -130,26 +131,16 @@ class GameView(arcade.View):
             # Select the (unscrolled) camera for our GUI
             self.camera_gui.use()
 
-            # Draw the coin score
-            coin_count = str(items.coin_file.Coin.collected_count)
-            arcade.draw_text(
-                "Coins: " + coin_count,
-                GameView.internal_width - 150,
-                30,
-                arcade.color.GOLD,
-                font_size=25,
-            )
-
             # remove upon release
-            # Draw the player position for debugging purposes
-            arcade.draw_text(
-                f"y: {int(items.player_file.Player.sprite.center_y):.2f}",
-                150,
-                30,
-                arcade.color.GOLD,
-                font_size=25,
-            )
-
+            # Draw the coin score
+            # coin_count = str(items.coin_file.Coin.collected_count)
+            # arcade.draw_text(
+            #     "Coins: " + coin_count,
+            #     GameView.internal_width - 150,
+            #     30,
+            #     arcade.color.GOLD,
+            #     font_size=35,
+            # )
             # Instruct the user to start the game by clicking, if they haven't started the game yet.
             if GameView.started == False:
                 arcade.draw_text(
@@ -169,7 +160,6 @@ class GameView(arcade.View):
         # show the mouse
         self.window.set_mouse_visible(True)
         arcade.play_sound(my_constants.death_sound)
-        # time.sleep(my_constants.SLEEP_AFTER_DEAD)
 
         # switch the window to game over screen
         self.window.show_view(game_over_view)
@@ -181,8 +171,8 @@ class GameView(arcade.View):
         """
         # update sprites .
         items.player_file.Player.update()
-        items.pad_file.Pad.list.update()
         items.target_file.Target.list.update()
+        items.pad_file.Pad.list.update()
         items.coin_file.Coin.list.update()
         items.spike_file.Spike.list.update()
 
@@ -197,7 +187,6 @@ class GameView(arcade.View):
         """preform actions using keybinds"""
         # Escape key closes window
         if key == arcade.key.ESCAPE:
-            arcade.close_window()
             arcade.close_window()
 
         # F key toggles fullscreen

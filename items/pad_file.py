@@ -37,10 +37,10 @@ class Pad(items.item_file.Item):
     def setup():
         """create sprite list and spawn the first pads"""
         # add bounds for pads
-        my_constants.pad["x_max"] = (
+        my_constants.pad["x_max"] = int(
             gameview_file.GameView.internal_width - my_constants.pad["width"] / 2
         )
-        my_constants.pad["x_min"] = my_constants.pad["width"] / 2
+        my_constants.pad["x_min"] = int(my_constants.pad["width"] / 2)
 
         Pad.list = arcade.SpriteList()
         function_file.bounce_count = 0
@@ -77,15 +77,6 @@ class Pad(items.item_file.Item):
                 )
                 if len(target_pad_collision_list) > 0:
                     gameview_file.GameView.score_factor = 1
-
-                # delete items on pad
-                # for each thing in items_close_to_pad, remove it
-                while len(hit_pad.items_close_to_pad) > 0:
-                    for pad_item_ in hit_pad.items_close_to_pad:
-                        pad_item_.remove_from_sprite_lists()
-
-                # delete the hit pad
-                hit_pad.remove_from_sprite_lists()
 
                 # ------------ Start of re-position pad
                 #  In this whole section, I teleport hit pad directly below the bottom pad. Then change the hit pad's x-position, slightly
@@ -128,7 +119,17 @@ class Pad(items.item_file.Item):
 
                 # play sound
                 arcade.play_sound(my_constants.pad["sound"])
-        # kill the player if they go below the top pad, outside of a party.
+
+                # delete items on pad
+                # for each thing in items_close_to_pad, remove it
+                while len(hit_pad.items_close_to_pad) > 0:
+                    for pad_item_ in hit_pad.items_close_to_pad:
+                        pad_item_.remove_from_sprite_lists()
+
+                # delete the hit pad
+                hit_pad.remove_from_sprite_lists()
+
+        # kill the player if they go below the top pad
         # find top pad
         top_pad = max(Pad.list, key=attrgetter("center_y"))
 
@@ -142,11 +143,8 @@ class Pad(items.item_file.Item):
             > my_constants.pad["MIN_PLAYER_PAD_HEIGHT_DIFFERENCE"]
         )
 
-        # determine if its a party
-        no_party = not gameview_file.GameView.party
-
-        # kill the player if both conditions are satisfied
-        if player_goes_below_top_pad and no_party:
+        # kill the player if condition is satisfied
+        if player_goes_below_top_pad:
             gameview_file.GameView.dead = True
 
 
@@ -170,7 +168,7 @@ def spawn_pad(
     spawned_pad = items.item_file.spawn(
         x_input=x_,
         y_input=y_,
-        **my_constants.pad,  # the item is a pad.
+        **my_constants.pad,
     )
     Pad.list.append(spawned_pad)
 
@@ -194,7 +192,11 @@ def spawn_pad(
                 # if temp length = my_constants.pad["width"] / 2 - item_dict["width"] / 2
                 # , then the item lies on the pad. Item's left edge cannot go further left than the pad's left edge.
                 # i changed the 2 to a 4 so that the item can hang off the pad a little bit.
-                temp_length = my_constants.pad["width"] / 2 - item_dict["width"] / 4
+                temp_length_1 = my_constants.pad["width"] / 2 - item_dict["width"] / 4
+                # take the maximum value of 2 lengths. If the item widths are much larger han the pad width, then left_bound > right_bound. So the random.randrange() function (a few loc below this line) doesn't work; the spawn function doesn't work.
+                # avoid this situation by forcing temp_length to be positive.
+                temp_length_2 = my_constants.pad["width"] / 2
+                temp_length = max(temp_length_1, temp_length_2)
                 left_bound = int(x_ - temp_length)
                 right_bound = int(x_ + temp_length)
 

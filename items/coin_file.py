@@ -12,10 +12,10 @@ import arcade
 import gameview_file
 import items.item_file
 import items.pad_file
+import items.player_file as player_file
 import items.spike_file
 import items.target_file
 import my_constants
-import items.player_file as player_file
 
 
 # ================================
@@ -84,8 +84,6 @@ class Coin(items.item_file.Item):
                 my_constants.game_speed_factor_party
             )
 
-            Coin.collected_count = 0
-
             # finish the party after a while.
             # this timer runs party_finish_true() after "seconds_per_party" seconds have passed.
 
@@ -101,6 +99,7 @@ class Coin(items.item_file.Item):
         # this code runs once per tick, during a party
         if gameview_file.GameView.party == True:
             coin_sound()
+            Coin.collected_count = 0
 
             # remove spikes, so that the player doesn't die
             for spike in items.spike_file.Spike.list:

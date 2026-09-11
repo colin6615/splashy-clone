@@ -8,17 +8,17 @@ import gameview_file
 # ==================================
 # (float) constant downward acceleration
 # NOTE: represented by the letter g in physics
-GRAVITATIONAL_ACCELERATION = 0.14  # 0.14
+GRAVITATIONAL_ACCELERATION = 0.4
 
 # (float) decrease DRAG_COEFFICIENT = player hovers over the apex of their jump arc for longer. Player is slower at the top of their bounce.
 # NOTE: In real life, the drag coefficient usually has a positive value; acceleration's magntiude DECREASES if speed INCREASES. In this game, I made it a negative value so that acceleration's magnitude INCREASES if speed INCREASES
 # NOTE: represented by the letter b in physics
-DRAG_COEFFICIENT = 0  # -0.01
+DRAG_COEFFICIENT = -0.03
 
 # (float) how much energy the player conserves during a bounce.
 # 1 = no energy is lost. The player will bounce back to their original y-position.
 # 0 = all energy is lost on a bounce. The player hits the pad and loses all of their velocity_y.
-BOUNCE_DECAY_CONSTANT = 0.5  # good value = 0.6
+BOUNCE_DECAY_CONSTANT = 0.45
 
 # ==================================
 # --- item dictionaries ---
@@ -36,17 +36,16 @@ Explanations of common dictionary keys:
 """
 pad = {
     "name": "pad",
-    "image_scale": 1.5,
+    # pad's image_scale causes bugs. if the pad is too small compared to the target, spike, and coin, then the program breaks.
+    "image_scale": 1.15,
     # (int) x-displacement between adjacent pads
-    # NOTE: good value is 100
-    "delta_x": 200,
+    "delta_x": 800,
     # (int) y-displacement between adjacent pads
-    # NOTE: good value is 100
-    "delta_y": 128,
+    "delta_y": 200,
     # (floats) the first 4 starting pads will spawn with x values in between these two bounds
     # NOTE: Currently, the bounds enclose the middle one third of the screen
-    "start_x_min": int(gameview_file.GameView.internal_width / 3),
-    "start_x_max": int(gameview_file.GameView.internal_width * 2 / 3),
+    "start_x_min": int(gameview_file.GameView.internal_width / 4),
+    "start_x_max": int(gameview_file.GameView.internal_width * 3 / 4),
     # (int) Kill the player after they go MIN_PLAYER_PAD_HEIGHT_DIFFERENCE pixels underneath a pad.
     "MIN_PLAYER_PAD_HEIGHT_DIFFERENCE": 0,
     "sound": arcade.load_sound(":resources:/sounds/coin1.wav"),
@@ -54,59 +53,49 @@ pad = {
 
 target = {
     "name": "target",
-    "image_scale": 4,
-    "spawn_rate": 0.3,  # good value: 0.3
-    "height from pad": 3,
+    "image_scale": 1,
+    "spawn_rate": 0.25,
+    "height from pad": 25,
     "sound": arcade.load_sound(":resources:/sounds/coin2.wav"),
 }
 
 coin = {
     "name": "coin",
-    "image_scale": 1,
-    "spawn_rate": 0.7,  # good value: 0.2
-    "height from pad": 50,
+    "image_scale": 0.66,
+    "spawn_rate": 1,  # 0.15,
+    "height from pad": 150,
     # if the user gets over the max number of coins, then they will earn a party!
-    "party_count": 5,
+    "party_count": 12,
     "sound": arcade.load_sound(":resources:/sounds/coin3.wav"),
     "seconds_per_party": 6.5,
 }
 
 spike = {
     "name": "spike",
-    "image_scale": 4,
+    "image_scale": 2,
     "spawn_rate": function_file.asymptotic_function(
         x=function_file.bounce_count, max_y=1.5, x_at_half_y=50
     )
-    * 0.1,  # goes from 0.1 to 0.1 * max_y
-    "height from pad": 12,
+    * 0.07,  # goes from 0.7 to 0.7 * max_y
+    "height from pad": 30,
 }
 
 player = {
     "name": "player",
-    "image_scale": 3,
+    "image_scale": 2,
 }
 
 # ==================================
 # --- IDK ---
 # ==================================
-game_speed_factor_party = 6
+game_speed_factor_party = 4.5
 game_speed_function = function_file.asymptotic_function(
-    x=function_file.bounce_count, max_y=6, x_at_half_y=80
+    x=function_file.bounce_count, max_y=4.5, x_at_half_y=80
 )
 # ==================================
 # --- OTHER ---
 # ==================================
-# camera
-# If the player moves further than this boundary away from the camera we use a
-# constraint to move the camera
-HORIZONTAL_BOUNDARY = gameview_file.GameView.internal_width / 2.0  # float
-BOTTOM_BOUNDARY = -150  # float
-TOP_BOUNDARY = gameview_file.GameView.INERNAL_HEIGHT / 2.0 - 25  # float
 
-
-# after the player dies, wait SLEEP_AFTER_DEAD seconds until you let them retry
-# remove upon release
-# SLEEP_AFTER_DEAD = 1.5
 
 death_sound = arcade.load_sound(":resources:/sounds/coin4.wav")
 

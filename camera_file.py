@@ -43,8 +43,8 @@ class My_camera:
         self.camera_boundary = arcade.LRBT(
             -2000,
             2000,
-            gameview_file.GameView.INERNAL_HEIGHT * 0.68,  # bottom boundary
-            gameview_file.GameView.INERNAL_HEIGHT * 0.86,  # Top boundary
+            gameview_file.GameView.INERNAL_HEIGHT * 0.77,  # bottom boundary
+            gameview_file.GameView.INERNAL_HEIGHT * 0.89,  # Top boundary
         )
         My_camera.viewport_width = self.width
 

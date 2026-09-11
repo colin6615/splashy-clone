@@ -91,10 +91,10 @@ class Coin(items.item_file.Item):
             #   Posted by Aaron Hall, modified by community. See post 'Timeline' for change history
             #   Retrieved 2026-09-10, License - CC BY-SA 4.0
 
-            Coin.party_deactivation_timer = Timer(
+            party_deactivation_timer = Timer(
                 my_constants.coin["seconds_per_party"], party_finish_true
             )
-            Coin.party_deactivation_timer.start()
+            party_deactivation_timer.start()
 
         # this code runs once per tick, during a party
         if gameview_file.GameView.party == True:

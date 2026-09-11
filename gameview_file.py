@@ -181,7 +181,6 @@ class GameView(arcade.View):
 
         # if player is dead, then go to game end screen
         if GameView.dead == True:
-            items.coin_file.Coin.party_deactivation_timer.cancel()
             GameView.game_over_function(self)
 
     def on_key_press(self, key, modifiers):

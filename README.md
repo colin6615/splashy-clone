@@ -15,6 +15,6 @@ python3.12 -m venv venv
 source venv/bin/activate
 
 git clone https://github.com/colin6615/my_arcade_stuff.git
-pip install arcade==3.3.3
+pip install -r requirements.txt
 ```
 Execute ```main.py```

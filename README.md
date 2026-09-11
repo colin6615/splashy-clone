@@ -6,6 +6,10 @@
 * Game design and mechanics inspired by *Splashy* by Voodoo.
 * I used some graphic and audio assets from [Kenney.nl](https://kenney.nl/)
 * To improve my Python coding skills, I minimized my usage of AI to write or analyze Python code in this repository.
+# Known Issues
+* if you try to exit the game during a coin party, the game will wait several seconds before exiting
+* If you move the mouse too fast during a coin party, you might die.
+
 # How to use
 If you want to play my game, then install Python 3.12
 

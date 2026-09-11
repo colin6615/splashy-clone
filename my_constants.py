@@ -62,7 +62,7 @@ target = {
 coin = {
     "name": "coin",
     "image_scale": 0.66,
-    "spawn_rate": 1,  # 0.15,
+    "spawn_rate": 0.15,
     "height from pad": 150,
     # if the user gets over the max number of coins, then they will earn a party!
     "party_count": 12,
@@ -100,3 +100,8 @@ game_speed_function = function_file.asymptotic_function(
 death_sound = arcade.load_sound(":resources:/sounds/coin4.wav")
 
 instruction_text = "Left click = start, Esc = close, F = fullscreen"
+
+"""Remove triple quotes, except when testing on dev branch.
+coin["spawn_rate"] = 1
+coin["party_count"] = 4
+"""

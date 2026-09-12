@@ -38,7 +38,7 @@ Explanations of common dictionary keys:
 pad = {
     "name": "pad",
     # pad's image_scale causes bugs. if the pad is too small compared to the target, spike, and coin, then the program breaks.
-    "image_scale": 1.15,
+    "image_scale": 0.3,
     # (int) x-displacement between adjacent pads
     "delta_x": 800,
     # (int) y-displacement between adjacent pads
@@ -96,7 +96,7 @@ death_sound = arcade.load_sound("assets/death.wav")
 instruction_text = "Left click = start, Esc = close, F = fullscreen"
 
 # if testing on dev branch, then remove hashtags below this line.
-# """
+"""
 coin["spawn_rate"] = 1
 coin["party_count"] = 4
-# """
+"""

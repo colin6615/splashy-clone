@@ -147,9 +147,9 @@ class Pad(items.item_file.Item):
         # gameplay / real-life result: if the player too fast, then the game will kill the player before deleting the pad.
         # we don't want to kill a player for moving through a pad.
         # therefore, i rewrote the code to give the player some leeyway. they are allowed to go a little below the pad. "a little below the pad" depends on the player velocity. If the player is moving really fast, then they are allowed to move a lot under the pad.
-        player_below_top_pad = (
-            player_pad_height_difference
-            > player_file.Player.sprite.velocity_y - my_constants.pad["height"] / 2
+        player_below_top_pad = player_pad_height_difference > max(
+            my_constants.pad["height"] / 2,
+            player_file.Player.sprite.velocity_y - my_constants.pad["height"] / 2,
         )
         if player_below_top_pad and not gameview_file.GameView.party:
             gameview_file.GameView.dead = True

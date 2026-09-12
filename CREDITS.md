@@ -2,5 +2,5 @@
 * Game design and mechanics inspired by *Splashy* by Voodoo.
 * To improve my Python coding skills, I minimized my usage of AI to write or analyze Python code in this repository.
 * assets
-    * coin.png and all audio (.wav) files from [Kenney.nl](https://kenney.nl/)
-    * player.png from [Exforinn](https://www.youtube.com/@Exforinn)
+    * coin.png and all audio (.wav) files from [Kenney.nl](https://kenney.nl/). Licensed under CC0 1.0 Universal (Public Domain)
+    * player.png made by [Exforinn](https://www.youtube.com/@Exforinn). This repository is the only place that publically showcases their assets to my knowledge. I have Exforinn's permission to use their assets.

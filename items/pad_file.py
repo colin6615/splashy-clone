@@ -116,7 +116,7 @@ class Pad(items.item_file.Item):
                 gameview_file.GameView.bounce_count += 1
                 gameview_file.GameView.score += gameview_file.GameView.score_factor
 
-                # refresh values that change with bounce
+                # refresh game speed because it changes with every bounce
                 gameview_file.GameView.update_game_speed()
 
                 # play sound

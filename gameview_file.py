@@ -203,7 +203,7 @@ class GameView(arcade.View):
         camera_file.My_camera.scroll_to_player(self)
 
         # if player is dead, then go to game end screen
-        if GameView.dead == True:
+        if GameView.dead:
             GameView.game_over_function(self)
 
     def on_key_press(self, key, modifiers):

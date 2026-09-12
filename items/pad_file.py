@@ -139,11 +139,15 @@ class Pad(items.item_file.Item):
         player_pad_height_difference = (
             top_pad.center_y - player_file.Player.sprite.center_y
         )
-        # figure out if player is below top pad.
-        player_goes_slightly_below_top_pad = player_pad_height_difference > 0
+        # create thresholds that describe how far the player goes underneath the pad.
+        slightly_below_top_pad = player_pad_height_difference > 5
+        way_below_top_pad = player_pad_height_difference > 500
 
-        # kill the player if they go below the top pad
-        if player_goes_slightly_below_top_pad:
+        # kill the player if they cross the current threshold
+
+        if slightly_below_top_pad and not gameview_file.GameView.party:
+            gameview_file.GameView.dead = True
+        if way_below_top_pad and gameview_file.GameView.party:
             gameview_file.GameView.dead = True
 
 

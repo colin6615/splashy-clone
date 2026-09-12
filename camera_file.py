@@ -7,7 +7,7 @@ from items import player_file
 
 # (float) How fast the camera pans to the player.
 # NOTE: 1.0 is instant.
-CAMERA_SPEED = 0.6
+CAMERA_SPEED = 0.09
 
 
 class My_camera:

@@ -37,17 +37,18 @@ class Player(items.item_file.Item):
 
         # free-fall physics in the y-direciton
         # must update acceleration every tick because acceleration changes with velocity_y.
-        # define acceleration: a = game_speed * (- g + b * |v|)
-        # speeds up the game over time
-        game_speed = (
-            gameview_file.GameView.game_speed_factor
-            * gameview_file.GameView.game_speed_function
-        )
+        # define acceleration
         v = Player.sprite.velocity_y
         g = my_constants.GRAVITATIONAL_ACCELERATION
         b = my_constants.DRAG_COEFFICIENT
 
-        Player.sprite.acceleration = (-g + b * abs(v)) * game_speed
+        # speeds up the game over time
+        game_speed = gameview_file.GameView.game_speed_function
+
+        # scales gravity
+        gf = gameview_file.GameView.gravity_factor
+
+        Player.sprite.acceleration = (-g * gf + b * abs(v)) * game_speed
 
         # calculate position and velocity_y using kinematics
         if gameview_file.GameView.started == True:

@@ -52,7 +52,7 @@ class Coin(items.item_file.Item):
 
         # non-party values
         gameview_file.GameView.party = False
-        gameview_file.GameView.game_speed_factor = 1
+        gameview_file.GameView.gravity_factor = 1
 
     def update(self, delta_time):
         """Triggers coin party or collects coins, if needed.
@@ -80,9 +80,7 @@ class Coin(items.item_file.Item):
             gameview_file.GameView.party = True
 
             # increase game speed
-            gameview_file.GameView.game_speed_factor = (
-                my_constants.game_speed_factor_party
-            )
+            gameview_file.GameView.gravity_factor = my_constants.gravity_factor_party
 
             # finish the party after a while.
             # this timer runs party_finish_true() after "seconds_per_party" seconds have passed.
@@ -118,11 +116,11 @@ class Coin(items.item_file.Item):
         # This prevents this scenario:
         # player is moving fast. stop the party. -> player retains fast speed
         player_move_slow = abs(player_file.Player.sprite.velocity_y) < 2.5
-        if Coin.party_finish == True and player_move_slow == True:
+        if Coin.party_finish and player_move_slow:
             # revert to non-party values
             gameview_file.GameView.party = False
             Coin.party_finish = False
-            gameview_file.GameView.game_speed_factor = 1
+            gameview_file.GameView.gravity_factor = 1
 
 
 my_constants.coin["Input_class"] = Coin

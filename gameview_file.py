@@ -78,11 +78,11 @@ class GameView(arcade.View):
             # sprite width = image width * image scale
             dictionary["width"] = width_height[0] * dictionary["image_scale"]
             dictionary["height"] = width_height[1] * dictionary["image_scale"]
-            print(
-                f"{dictionary['name']}. width:{dictionary['width']}. height: {dictionary['height']}"
-            )
+            # remove upon release
+            # print(
+            #     f"{dictionary['name']}. width:{dictionary['width']}. height: {dictionary['height']}"
+            # )
         # load sounds
-        
 
         GameView.score = 0
         GameView.score_factor = 1

@@ -1,11 +1,6 @@
 * Splashy is a 3D, casual mobile game by Voodoo. Voodoo removed it from Apple app-store, so I made a 2D version of it. 
 * To improve my Python coding skills, I minimized my usage of AI to write or analyze Python code in this repository.
-
-# Credits
-* Some of my code is adapted from examples in the textbook [*Arcade Academy - Learn Python*](https://learn.arcade.academy/) by Paul Craven.
-* Game design and mechanics inspired by *Splashy* by Voodoo.
-* I used some graphic and audio assets from [Kenney.nl](https://kenney.nl/)
-* To improve my Python coding skills, I minimized my usage of AI to write or analyze Python code in this repository.
+* credits are in the CREDITS.md file
 # Known Issues
 * if you try to exit the game during a coin party, the game will wait several seconds before exiting
 * If you move the mouse too fast during a coin party, you might die.

@@ -9,13 +9,12 @@ from threading import Timer
 
 import arcade
 
-import gameview_file
 import items.item_file
 import items.pad_file
-import items.player_file as player_file
 import items.spike_file
 import items.target_file
 import my_constants
+from items import player_file
 
 
 # ================================
@@ -40,7 +39,7 @@ class Coin(items.item_file.Item):
     Class Attributes:
         list (SpriteList): list of all coin sprites
             * created in setup()
-            * updated in 
+            * updated in
         collected_count (float): how many coins were collected by the player
             updates under update() during a party or when player collects a coin
         party (bool): Are we in a party time?
@@ -110,7 +109,7 @@ class Coin(items.item_file.Item):
             Coin.collected_count = 0
 
             # remove spikes, so that the player doesn't die
-            for spike in items.spike_file.Spike.list:
+            for spike in items.spike_file.Spike:
                 spike.remove_from_sprite_lists()
 
             # move the pads, targets, and coins to the player

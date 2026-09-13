@@ -12,9 +12,9 @@ import arcade
 import camera_file
 import items.coin_file
 import items.item_file
-import items.player_file as player_file
 import items.target_file
 import my_constants
+from items import player_file
 
 # list of item dictionaries used later.
 # NOTE: excludes pad

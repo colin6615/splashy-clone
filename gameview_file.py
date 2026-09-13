@@ -72,13 +72,18 @@ class GameView(arcade.View):
     def on_mouse_press(self, x, y, button, key_modifiers):
         """
         Start the game when the user clicks
+        args:
+            button (idk???): button that is currently pressed.
         """
         if button == arcade.MOUSE_BUTTON_LEFT:
             GameView.started = True
 
     def on_mouse_motion(self, x, y, dx, dy):
-        """move the player's x-position with mouse"""
-        # account for projection of screen (change screen size)
+        """move the player's x-position with mouse
+        args:
+            x (float): horizontal position of mouse on the internal resolution"""
+        # the internal resolution  is different than the user's viewport resolution
+        # We must account for the projection of screen in camera_file:
         scaling_factor = (
             camera_file.My_camera.internal_width / camera_file.My_camera.viewport_width
         )
@@ -176,7 +181,9 @@ class GameView(arcade.View):
             GameView.game_over_function(self)
 
     def on_key_press(self, key, modifiers):
-        """preform actions using keybinds"""
+        """preform actions using keybinds
+        args:
+            key (idk??): key pressed."""
         # Escape key closes window
         if key == arcade.key.ESCAPE:
             arcade.close_window()
@@ -190,7 +197,7 @@ import camera_file
 import gameover_file
 import items.coin_file
 import items.pad_file
-import items.player_file as player_file
 import items.spike_file
 import items.target_file
 import my_constants
+from items import player_file

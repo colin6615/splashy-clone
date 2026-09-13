@@ -39,7 +39,17 @@ class Coin(items.item_file.Item):
 
     Class Attributes:
         list (SpriteList): list of all coin sprites
+            * created in setup()
+            * updated in 
         collected_count (float): how many coins were collected by the player
+            updates under update() during a party or when player collects a coin
+        party (bool): Are we in a party time?
+            * Parties happen for a short time (my_constants.coin["seconds_per_party]) after the player collects enough coins(my_constants.coin["party_count]).
+            * During a party,
+                * player_file.Player.gravity_factor temporarily increases.
+                * the player can't die
+                * pads, targets, and coins move to the player
+            * updates in update()
     """
 
     def setup():
@@ -51,8 +61,8 @@ class Coin(items.item_file.Item):
         Coin.collected_count = 0
 
         # non-party values
-        gameview_file.GameView.party = False
-        gameview_file.GameView.gravity_factor = 1
+        Coin.party = False
+        player_file.Player.gravity_factor = 1
 
     def update(self, delta_time):
         """Triggers coin party or collects coins, if needed.
@@ -77,10 +87,10 @@ class Coin(items.item_file.Item):
 
         # this "if" statement is only true, at the start of a party, for one update-tick.
         if my_constants.coin["party_count"] <= Coin.collected_count:
-            gameview_file.GameView.party = True
+            Coin.party = True
 
             # increase game speed
-            gameview_file.GameView.gravity_factor = my_constants.gravity_factor_party
+            player_file.Player.gravity_factor = my_constants.gravity_factor_party
 
             # finish the party after a while.
             # this timer runs party_finish_true() after "seconds_per_party" seconds have passed.
@@ -95,7 +105,7 @@ class Coin(items.item_file.Item):
             party_deactivation_timer.start()
 
         # this code runs once per tick, during a party
-        if gameview_file.GameView.party == True:
+        if Coin.party == True:
             coin_sound()
             Coin.collected_count = 0
 
@@ -118,9 +128,9 @@ class Coin(items.item_file.Item):
         player_move_slow = abs(player_file.Player.sprite.velocity_y) < 2.5
         if Coin.party_finish and player_move_slow:
             # revert to non-party values
-            gameview_file.GameView.party = False
+            Coin.party = False
             Coin.party_finish = False
-            gameview_file.GameView.gravity_factor = 1
+            player_file.Player.gravity_factor = 1
 
 
 my_constants.coin["Input_class"] = Coin

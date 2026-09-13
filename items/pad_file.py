@@ -10,6 +10,7 @@ from operator import attrgetter
 import arcade
 
 import camera_file
+import items.coin_file
 import items.item_file
 import items.player_file as player_file
 import items.target_file
@@ -30,8 +31,6 @@ class Pad(items.item_file.Item):
 
     Class Attributes:
         list (SpriteList): list of all pad sprites
-
-    Instance Attributes:
     """
 
     def setup():
@@ -55,7 +54,7 @@ class Pad(items.item_file.Item):
                 y_=y * my_constants.pad["delta_y"],
             )
 
-        gameview_file.GameView.update_game_speed()
+        player_file.Player.update_acceleration_factor()
         Pad.underneath_pad_duration = 0
 
     def update(self, delta_time):
@@ -92,11 +91,11 @@ class Pad(items.item_file.Item):
                 )
 
                 # increase bounce count and score
-                gameview_file.GameView.bounce_count += 1
+                player_file.Player.bounce_count += 1
                 gameview_file.GameView.score += gameview_file.GameView.score_factor
 
-                # refresh game speed because it changes with every bounce
-                gameview_file.GameView.update_game_speed()
+                # refresh acceleration factor because it changes with every bounce
+                player_file.Player.update_acceleration_factor()
 
                 # play sound
                 arcade.play_sound(my_constants.pad["sound"])
@@ -117,7 +116,7 @@ class Pad(items.item_file.Item):
         )
 
         # if player goes underneath a pad, during non-party, for 2 ticks, then kill them
-        if player_underneath_pad and not gameview_file.GameView.party:
+        if player_underneath_pad and not items.coin_file.Coin.party:
             Pad.underneath_pad_duration += 1
         else:
             Pad.underneath_pad_duration = 0
@@ -126,7 +125,7 @@ class Pad(items.item_file.Item):
             gameview_file.GameView.dead = True
 
         # if player goes underneath a pad during party, don't kill them. teleport them above the pad because I don't want them to die during a party.
-        if player_underneath_pad and gameview_file.GameView.party:
+        if player_underneath_pad and items.coin_file.Coin.party:
             player_file.Player.sprite.center_y = (
                 top_pad.center_y + player_file.Player.sprite.velocity_y
             )

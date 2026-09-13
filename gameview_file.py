@@ -20,38 +20,9 @@ class GameView(arcade.View):
         dead (bool): Is the player dead?
     """
 
-    def asymptotic_function(x, max_y, x_at_half_y):
-        """
-        inputs 3 numbers and outputs 1 number.
-
-        Args:
-            x (float): input variable
-            max_y (float): maximum output
-                reached at infinity
-                asymptotic_function(x = infinity) = max_y
-            x_at_half_y (float): At this x value, output is  (sort of) halfway maxed out.
-                asymptotic_function(x = x_at_half_y) = [(max_y - 1) / 2] + 1
-        Returns:
-            output (float)
-        """
-
-        numerator = (max_y - 1) * x
-        denominator = x + x_at_half_y
-        y = 1 + numerator / denominator
-        return y
-
-    def update_game_speed():
-        """updates GameView.game_speed_function, which appears in player acceleration
-
-        This is super jank. Future-me please find a better way to update this variable.
-        """
-        GameView.game_speed_function = GameView.asymptotic_function(
-            x=GameView.bounce_count, max_y=2.5, x_at_half_y=36
-        )
-
     def setup(self):
         """Set up the game and initialize the variables."""
-        GameView.bounce_count = 0
+        player_file.Player.bounce_count = 0
 
         camera_file.My_camera.setup(self)
 
@@ -86,7 +57,7 @@ class GameView(arcade.View):
         # other initial values
         GameView.started = False
         GameView.dead = False
-        GameView.bounce_count = 0
+        player_file.Player.bounce_count = 0
 
         # create SpriteLists and initial values for sprites
         items.target_file.Target.setup()
@@ -123,7 +94,7 @@ class GameView(arcade.View):
             # This command has to happen before we start drawing
             self.clear()
 
-            # Select the (unscrolled) camera for our GUI
+            # Select the (unscrolled) camera for our GUI. Draw the back-most stuff
             self.camera_gui.use()
 
             # Draw the score

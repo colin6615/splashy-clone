@@ -57,7 +57,7 @@ class Coin(items.item_file.Item):
     def update(self, delta_time):
         """Triggers coin party or collects coins, if needed.
         Args:
-            delta_time (int): framerate in hertz. how many times per second that the game updates.
+            delta_time (float): time between ticks or updates. Unit is seconds. Default is 1/60 seconds.
 
         During a coin party, the player can't die, and game speed increases
         If the player hits a coin, then increase the score multiplier and delete the coin"""

@@ -6,8 +6,8 @@ It also adds the "input class" key to the target dictionary.
 import arcade
 
 import items.item_file
-import my_constants
 import items.player_file as player_file
+import my_constants
 
 
 class Target(items.item_file.Item):
@@ -23,7 +23,7 @@ class Target(items.item_file.Item):
     def update(self, delta_time):
         """
         Args:
-            delta_time (int): framerate in hertz. how many times per second that the game updates.
+            delta_time (float): time between ticks or updates. Unit is seconds. Default is 1/60 seconds.
         If the player hits a target, then increase the score multiplier and delete the target"""
         # next few lines: if player hits pad, then for each colliding target:
         Target.colliding_player_and_target = arcade.check_for_collision_with_list(

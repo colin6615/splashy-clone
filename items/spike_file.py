@@ -7,8 +7,8 @@ import arcade
 
 import gameview_file
 import items.item_file
-import my_constants
 import items.player_file as player_file
+import my_constants
 
 
 class Spike(items.item_file.Item):
@@ -24,7 +24,7 @@ class Spike(items.item_file.Item):
     def update(self, delta_time):
         """
         Args:
-            delta_time (int): framerate in hertz. how many times per second that the game updates.
+            delta_time (float): time between ticks or updates. Unit is seconds. Default is 1/60 seconds.
         if player hits spike, then kill the player"""
         Spike.colliding_player_and_spike = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Spike.list

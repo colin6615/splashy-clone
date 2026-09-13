@@ -35,13 +35,14 @@ class Pad(items.item_file.Item):
 
     def setup():
         """create sprite list and spawn the first pads"""
-        # add bounds for pads
+        # add bounds for pads x-position, so that the pads don't spawn off screen. The player can't bounce on pads if they are completely off screen.
         my_constants.pad["x_max"] = int(
             gameview_file.GameView.internal_width - my_constants.pad["width"] / 2
         )
         my_constants.pad["x_min"] = int(my_constants.pad["width"] / 2)
 
         Pad.list = arcade.SpriteList()
+
         # spawn the first 4 pads
         for y in range(-4, 0):
             spawn_pad(
@@ -49,14 +50,17 @@ class Pad(items.item_file.Item):
                 x_=random.randrange(
                     my_constants.pad["start_x_min"], my_constants.pad["start_x_max"]
                 ),
+                # pad y-positions are delta_y apart
                 y_=y * my_constants.pad["delta_y"],
             )
+
+        # defines the gamespeed variable. You need to do this at the start of the program, or else other files can't use the gamespeed variable.
         gameview_file.GameView.update_game_speed()
 
     def update(self, delta_time):
         """
         Args:
-            delta_time (int): framerate in hertz. how many times per second that the game updates.
+            delta_time (float): time between ticks or updates. Unit is seconds. Default is 1/60 seconds.
         """
         # whole seciton: if player hits a pad, then bounce player, remove pad, create new pad, and change score
         # next few lines: if player hits a pad, then:
@@ -70,7 +74,7 @@ class Pad(items.item_file.Item):
                     -my_constants.BOUNCE_DECAY_CONSTANT
                 )
 
-                # if the pad is touching a target, then reset score factor
+                # if the pad is touching a target, then reset score factor to 1.
                 target_pad_collision_list = arcade.check_for_collision_with_list(
                     hit_pad, items.target_file.Target.list
                 )
@@ -146,7 +150,7 @@ class Pad(items.item_file.Item):
         # the code is: if the player is 0 units below the pad, then kill them.
         # gameplay / real-life result: if the player too fast, then the game will kill the player before deleting the pad.
         # we don't want to kill a player for moving through a pad.
-        # therefore, i rewrote the code to give the player some leeyway. they are allowed to go a little below the pad. "a little below the pad" depends on the player velocity. If the player is moving really fast, then they are allowed to move a lot under the pad.
+        # therefore, i rewrote the code to give the player some leeway. they are allowed to go a little below the pad. "a little below the pad" depends on the player velocity. If the player is moving really fast, then they are allowed to move a lot under the pad.
         player_below_top_pad = player_pad_height_difference > max(
             my_constants.pad["height"] / 2,
             player_file.Player.sprite.velocity_y - my_constants.pad["height"] / 2,

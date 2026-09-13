@@ -49,6 +49,10 @@ class GameView(arcade.View):
     INERNAL_HEIGHT = 1080
 
     def update_game_speed():
+        """updates GameView.game_speed_function, which appears in player acceleration
+
+        This is super jank. Future-me please find a better way to update this variable.
+        """
         GameView.game_speed_function = GameView.asymptotic_function(
             x=GameView.bounce_count, max_y=2.5, x_at_half_y=36
         )
@@ -190,7 +194,7 @@ class GameView(arcade.View):
     def on_update(self, delta_time):
         """Movement and game logic. This function calls every game tick
         Args:
-            delta_time (int): framerate in hertz. how many times per second that the game updates.
+            delta_time (float): time between ticks or updates. Unit is seconds. Default is 1/60 seconds.
         """
         # update sprites .
         items.player_file.Player.update()

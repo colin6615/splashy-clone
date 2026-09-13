@@ -1,4 +1,4 @@
-"""placeholder."""
+"""holds camera class"""
 
 import arcade
 
@@ -12,7 +12,11 @@ CAMERA_SPEED = 0.09
 
 class My_camera:
     def setup(self):
-        """make the cameras. Create camera width as class variable."""
+        """make the cameras
+
+        Class Attributes:
+            My_camera.viewport_width (int): horizontal length of user's window.
+        """
 
         # make the camerea for the sprites.
         self.camera_sprites = arcade.Camera2D(

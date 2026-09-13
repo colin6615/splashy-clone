@@ -1,7 +1,4 @@
-"""start the game
-
-Creates an instance of the window class, which shows up on screen.
-"""
+"""start the games"""
 
 import arcade
 
@@ -11,16 +8,16 @@ WINDOW_TITLE = "Splashy Clone"
 
 
 def main():
-
-    # make instance of window class
+    """creates a window and starts the game"""
     window = arcade.Window(950, 550, WINDOW_TITLE, fullscreen=False)
 
     # start the gameplay
     gameview = gameview_file.GameView()
     gameview.setup()
 
-    # put gameplay in the window instance
+    # show gameplay in the window
     window.show_view(gameview)
+
     arcade.run()
 
 

@@ -2,15 +2,20 @@
 
 import arcade
 
-import gameview_file
-from items import player_file
-
 # (float) How fast the camera pans to the player.
 # NOTE: 1.0 is instant.
 CAMERA_SPEED = 0.09
 
 
 class My_camera:
+    # Height and width of the game's internal canvas.
+    # DEFAULT ASPECT RATIO = 1.7
+    # This aspect ratio is the same for all users.
+    # when not in fullscreen, this is the screen resolution
+    # WIDTH = height * (DEFAULT ASPECT RATIO)
+    internal_width = 1836
+    INERNAL_HEIGHT = 1080
+
     def setup(self):
         """make the cameras
 
@@ -23,9 +28,9 @@ class My_camera:
             position=(0, 0),
             projection=arcade.types.LRBT(
                 left=0,
-                right=gameview_file.GameView.internal_width,
+                right=My_camera.internal_width,
                 bottom=0,
-                top=gameview_file.GameView.INERNAL_HEIGHT,
+                top=My_camera.INERNAL_HEIGHT,
             ),
             viewport=self.window.rect,
         )
@@ -34,9 +39,9 @@ class My_camera:
             position=(0, 0),
             projection=arcade.types.LRBT(
                 left=0,
-                right=gameview_file.GameView.internal_width,
+                right=My_camera.internal_width,
                 bottom=0,
-                top=gameview_file.GameView.INERNAL_HEIGHT,
+                top=My_camera.INERNAL_HEIGHT,
             ),
             viewport=self.window.rect,
         )
@@ -48,8 +53,8 @@ class My_camera:
         self.camera_boundary = arcade.LRBT(
             -2000,  # left bound
             2000,  # right bound
-            gameview_file.GameView.INERNAL_HEIGHT * 0.77,  # bottom boundary
-            gameview_file.GameView.INERNAL_HEIGHT * 0.89,  # Top boundary
+            My_camera.INERNAL_HEIGHT * 0.77,  # bottom boundary
+            My_camera.INERNAL_HEIGHT * 0.89,  # Top boundary
         )
 
         My_camera.viewport_width = self.width
@@ -86,23 +91,21 @@ class My_camera:
 
             # update window width to match the user's aspect ratio
             USERS_ASPECT_RATIO = self.width / self.height
-            gameview_file.GameView.internal_width = (
-                gameview_file.GameView.INERNAL_HEIGHT * USERS_ASPECT_RATIO
-            )
+            My_camera.internal_width = My_camera.INERNAL_HEIGHT * USERS_ASPECT_RATIO
 
             # set sprite and gui size relative to the window
             self.camera_sprites.projection = arcade.types.LRBT(
                 left=0,
-                right=gameview_file.GameView.internal_width,
+                right=My_camera.internal_width,
                 bottom=0,
-                top=gameview_file.GameView.INERNAL_HEIGHT,
+                top=My_camera.INERNAL_HEIGHT,
             )
 
             self.camera_gui.projection = arcade.types.LRBT(
                 left=0,
-                right=gameview_file.GameView.internal_width,
+                right=My_camera.internal_width,
                 bottom=0,
-                top=gameview_file.GameView.INERNAL_HEIGHT,
+                top=My_camera.INERNAL_HEIGHT,
             )
 
             # set the projections' size relative to the screen.
@@ -112,3 +115,7 @@ class My_camera:
 
             # we changed the width, so update the width variable.
             My_camera.viewport_width = self.width
+
+
+import gameview_file
+from items import player_file

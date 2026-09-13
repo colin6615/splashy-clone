@@ -40,14 +40,6 @@ class GameView(arcade.View):
         y = 1 + numerator / denominator
         return y
 
-    # Height and width of the game's internal canvas.
-    # DEFAULT ASPECT RATIO = 1.7
-    # This aspect ratio is the same for all users.
-    # when not in fullscreen, this is the screen resolution
-    # WIDTH = height * (DEFAULT ASPECT RATIO)
-    internal_width = 1836
-    INERNAL_HEIGHT = 1080
-
     def update_game_speed():
         """updates GameView.game_speed_function, which appears in player acceleration
 
@@ -116,7 +108,9 @@ class GameView(arcade.View):
     def on_mouse_motion(self, x, y, dx, dy):
         """move the player's x-position with mouse"""
         # account for projection of screen (change screen size)
-        scaling_factor = GameView.internal_width / camera_file.My_camera.viewport_width
+        scaling_factor = (
+            camera_file.My_camera.internal_width / camera_file.My_camera.viewport_width
+        )
 
         # move player to mouse
         items.player_file.Player.sprite.center_x = x * scaling_factor
@@ -137,8 +131,8 @@ class GameView(arcade.View):
             str(GameView.score)
             arcade.Text(
                 score_text,
-                x=GameView.internal_width / 2,
-                y=GameView.INERNAL_HEIGHT * 0.92,
+                x=camera_file.My_camera.internal_width / 2,
+                y=camera_file.My_camera.INERNAL_HEIGHT * 0.92,
                 color=arcade.color.BLACK_BEAN,
                 font_size=45,
                 anchor_x="center",
@@ -148,8 +142,8 @@ class GameView(arcade.View):
             score_factor_text = f"X {GameView.score_factor}"
             arcade.Text(
                 score_factor_text,
-                x=GameView.internal_width / 2,
-                y=GameView.INERNAL_HEIGHT * 0.42,
+                x=camera_file.My_camera.internal_width / 2,
+                y=camera_file.My_camera.INERNAL_HEIGHT * 0.42,
                 color=arcade.color.WHITE,
                 font_size=75,
                 anchor_x="center",
@@ -172,8 +166,8 @@ class GameView(arcade.View):
             if GameView.started == False:
                 arcade.Text(
                     my_constants.instruction_text,
-                    x=GameView.internal_width / 2,
-                    y=GameView.INERNAL_HEIGHT * 3 / 4,
+                    x=camera_file.My_camera.internal_width / 2,
+                    y=camera_file.My_camera.INERNAL_HEIGHT * 3 / 4,
                     color=arcade.color.COOL_BLACK,
                     font_size=45,
                     anchor_x="center",

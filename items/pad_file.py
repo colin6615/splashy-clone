@@ -9,6 +9,7 @@ from operator import attrgetter
 
 import arcade
 
+import camera_file
 import items.item_file
 import items.player_file as player_file
 import items.target_file
@@ -37,7 +38,7 @@ class Pad(items.item_file.Item):
         """create sprite list. spawn the first 4 pads. Initialize other values."""
         # add bounds for pads x-position, so that the pads don't spawn off screen. The player can't bounce on pads if they are completely off screen.
         my_constants.pad["x_max"] = int(
-            gameview_file.GameView.internal_width - my_constants.pad["width"] / 2
+            camera_file.My_camera.internal_width - my_constants.pad["width"] / 2
         )
         my_constants.pad["x_min"] = int(my_constants.pad["width"] / 2)
 
@@ -134,7 +135,6 @@ class Pad(items.item_file.Item):
 
                 # delete the hit pad
                 hit_pad.remove_from_sprite_lists()
-                print(player_file.Player.sprite.velocity_y)
 
         # find out if player is below a pad
         top_pad = max(Pad.list, key=attrgetter("center_y"))

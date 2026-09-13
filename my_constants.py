@@ -1,6 +1,6 @@
 import arcade
 
-import gameview_file
+import camera_file
 
 # ==================================
 # --- PHYSICS ----
@@ -45,8 +45,8 @@ pad = {
     "delta_y": 200,
     # (floats) the first 4 starting pads will spawn with x values in between these two bounds
     # NOTE: Currently, the bounds enclose the middle one third of the screen
-    "start_x_min": int(gameview_file.GameView.internal_width / 4),
-    "start_x_max": int(gameview_file.GameView.internal_width * 3 / 4),
+    "start_x_min": int(camera_file.My_camera.internal_width / 4),
+    "start_x_max": int(camera_file.My_camera.internal_width * 3 / 4),
     "sound": arcade.load_sound("assets/pad.wav"),
 }
 

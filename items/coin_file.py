@@ -109,7 +109,7 @@ class Coin(items.item_file.Item):
             Coin.collected_count = 0
 
             # remove spikes, so that the player doesn't die
-            for spike in items.spike_file.Spike:
+            for spike in items.spike_file.Spike.list:
                 spike.remove_from_sprite_lists()
 
             # move the pads, targets, and coins to the player

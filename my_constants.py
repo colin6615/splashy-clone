@@ -49,6 +49,11 @@ pad = {
     "start_x_min": int(camera_file.My_camera.internal_width / 4),
     "start_x_max": int(camera_file.My_camera.internal_width * 3 / 4),
     "sound": arcade.load_sound("assets/pad.wav"),
+    
+    # sprites are alternated
+    # the first, second, and third pads use image_path_1, image_path_2, and image_path_1, respectively.
+    "image_path_1": "assets/pad.png",
+    "image_path_2": "assets/pad2.png",
 }
 
 target = {

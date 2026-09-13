@@ -15,7 +15,7 @@ class Target(items.item_file.Item):
     If player hits a target, then the score multipler increases and the target dissapears.
 
     Class Attributes:
-        list (SpriteList): list of all pad sprites
+        list (SpriteList): list of all target sprites
 
     Instance Attributes:
     """
@@ -25,19 +25,15 @@ class Target(items.item_file.Item):
         Args:
             delta_time (float): time between ticks or updates. Unit is seconds. Default is 1/60 seconds.
         If the player hits a target, then increase the score multiplier and delete the target"""
-        # next few lines: if player hits pad, then for each colliding target:
-        Target.colliding_player_and_target = arcade.check_for_collision_with_list(
+        # next few lines: if player hits pad, then for remove target from sprite list to make sure that player interacts with target once
+        self.colliding_player_and_target = arcade.check_for_collision_with_list(
             player_file.Player.sprite, Target.list
         )
-        for colliding_sprite in Target.colliding_player_and_target:
-            # remove target from sprite list to make sure that player interacts with target once
+        for colliding_sprite in self.colliding_player_and_target:
             if colliding_sprite in Target.list:
                 colliding_sprite.remove_from_sprite_lists()
 
-                # increase score multiplier
                 gameview_file.GameView.score_factor += 1
-
-                # play sound
                 arcade.play_sound(my_constants.target["sound"])
 
     def setup():

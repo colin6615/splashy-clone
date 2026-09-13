@@ -40,12 +40,14 @@ class My_camera:
         # make a boundary for camera scrolling. It's difficult for the player, but not the background objects, to move past this boundary. If the player moves past this boundary, then the camera moves with the player.
         # top boundary must be greater than the bottom boundary, or else it looks weird
         # top boundary > bottom boundary
+        # left and right bounds are so big, that they are useless. The camera shouldn't move in the x-direction.
         self.camera_boundary = arcade.LRBT(
-            -2000,
-            2000,
+            -2000,  # left bound
+            2000,  # right bound
             gameview_file.GameView.INERNAL_HEIGHT * 0.77,  # bottom boundary
             gameview_file.GameView.INERNAL_HEIGHT * 0.89,  # Top boundary
         )
+
         My_camera.viewport_width = self.width
 
     def scroll_to_player(self):
@@ -78,19 +80,20 @@ class My_camera:
             # Flip between full and not full screen.
             self.window.set_fullscreen(not self.window.fullscreen)
 
-            # update window width to match the user's aspect ratio. Ex: some people might have 16:9 sized screens.
+            # update window width to match the user's aspect ratio
             USERS_ASPECT_RATIO = self.width / self.height
             gameview_file.GameView.internal_width = (
                 gameview_file.GameView.INERNAL_HEIGHT * USERS_ASPECT_RATIO
             )
 
-            # Write procjections. This controls sprite and gui size relative to the window
+            # set sprite and gui size relative to the window
             self.camera_sprites.projection = arcade.types.LRBT(
                 left=0,
                 right=gameview_file.GameView.internal_width,
                 bottom=0,
                 top=gameview_file.GameView.INERNAL_HEIGHT,
             )
+
             self.camera_gui.projection = arcade.types.LRBT(
                 left=0,
                 right=gameview_file.GameView.internal_width,
@@ -98,9 +101,10 @@ class My_camera:
                 top=gameview_file.GameView.INERNAL_HEIGHT,
             )
 
-            # write viewports. This controls the projections' size relative to the screen.
+            # set the projections' size relative to the screen.
             self.camera_sprites.viewport = self.window.rect
 
             self.camera_gui.viewport = self.window.rect
 
+            # we changed the width, so update the width variable.
             My_camera.viewport_width = self.width

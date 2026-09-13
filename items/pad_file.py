@@ -34,7 +34,7 @@ class Pad(items.item_file.Item):
     """
 
     def setup():
-        """create sprite list and spawn the first pads"""
+        """create sprite list. spawn the first 4 pads. Initialize other values."""
         # add bounds for pads x-position, so that the pads don't spawn off screen. The player can't bounce on pads if they are completely off screen.
         my_constants.pad["x_max"] = int(
             gameview_file.GameView.internal_width - my_constants.pad["width"] / 2
@@ -54,13 +54,11 @@ class Pad(items.item_file.Item):
                 y_=y * my_constants.pad["delta_y"],
             )
 
-        # defines the gamespeed variable. You need to do this at the start of the program, or else other files can't use the gamespeed variable.
         gameview_file.GameView.update_game_speed()
-
         Pad.underneath_pad_duration = 0
 
     def update(self, delta_time):
-        """
+        """Does stuff when the player bounces on, or moves below, a pad.
         Args:
             delta_time (float): time between ticks or updates. Unit is seconds. Default is 1/60 seconds.
         """

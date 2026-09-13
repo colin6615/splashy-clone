@@ -81,22 +81,17 @@ player = {
     "image_scale": 2,
 }
 
-# ==================================
-# --- IDK ---
-# ==================================
+# increase gravity strength during a party.
+# 1 = no change
+# 3 = 3 times stronger.
 gravity_factor_party = 4
-
-# ==================================
-# --- OTHER ---
-# ==================================
-
 
 death_sound = arcade.load_sound("assets/death.wav")
 
 instruction_text = "Left click = start, Esc = close, F = fullscreen"
 
 # if testing on dev branch, then remove hashtags below this line.
-# """
+"""
 coin["spawn_rate"] = 1
 coin["party_count"] = 4
-# """
+"""

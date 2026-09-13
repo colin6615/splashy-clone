@@ -14,11 +14,12 @@ class GameOverView(arcade.View):
 
     def on_show_view(self):
         self.window.background_color = arcade.color.GREEN_YELLOW
+
         # check if the user got a high score.
-        # The "with" block was sourced from
-        # https://stackoverflow.com/a/47422975
-        # Posted by TemporalWolf, modified by community. See post 'Timeline' for change history
-        # Retrieved 2026-08-30, License - CC BY-SA 3.0
+        #   The "with" block was sourced from
+        #   https://stackoverflow.com/a/47422975
+        #   Posted by TemporalWolf, modified by community. See post 'Timeline' for change history
+        #   Retrieved 2026-08-30, License - CC BY-SA 3.0
         with open("highscore.txt", "r+") as hisc:
             hi = hisc.read()
             if not hi:  # not hi will only be true for strings on an empty string
@@ -45,7 +46,7 @@ class GameOverView(arcade.View):
         previous_score_text = f"Previous Score: {gameview_file.GameView.score}"
         high_score_text = f"High Score: {self.high_score_variable}"
 
-        # create dictionaries to loop over. These dictionaries contain the text font and content
+        # create dictionaries to loop over. These dictionaries contain the text content and font size
         game_over = {"text": "Game Over", "font_size": 54}
         instruction = {"text": my_constants.instruction_text, "font_size": 24}
         previous_score = {"text": previous_score_text, "font_size": 24}

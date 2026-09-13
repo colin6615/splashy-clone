@@ -82,34 +82,8 @@ class Pad(items.item_file.Item):
                 if len(target_pad_collision_list) > 0:
                     gameview_file.GameView.score_factor = 1
 
-                # ------------ Start of re-position pad
-                #  In this whole section, I teleport hit pad directly below the bottom pad. Then change the hit pad's x-position, slightly
-                # First, randomize pad's x-position, but make sure that we don't touch the screen's edges. I achieve this thorugh the following loc
-                # Boolean variable if we successfully placed the pad.
-                pad_placed_successfully = False
-                # Keep trying until success.
-
-                # get bottom pad
-                bottom_pad = min(Pad.list, key=attrgetter("center_y"))
-                while not pad_placed_successfully:
-                    # ----------------- Change this pad's x-position to the bottom pad, and then add a random number to this.
-                    # generate random number to add later
-                    x_change = random.randrange(
-                        -my_constants.pad["delta_x"], my_constants.pad["delta_x"]
-                    )
-                    # add random number to bottom pad's x-position. Equate its value to the hit pad's x-position
-                    new_center_x = bottom_pad.center_x + x_change
-
-                    # if the pad is not touching the screen's edges, then pad was succesfully placed.
-                    if (
-                        new_center_x > my_constants.pad["x_min"]
-                        and new_center_x < my_constants.pad["x_max"]
-                    ):
-                        pad_placed_successfully = True
-                # ------------- after you successfully change the x-position
-                # move pad down
-                new_center_y = bottom_pad.center_y - my_constants.pad["delta_y"]
-                # ------------------- End of re-position pad
+                # get positions of the new pad.
+                new_center_x, new_center_y = position_pad()
 
                 # create new pad
                 spawn_pad(
@@ -235,3 +209,33 @@ def spawn_pad(
             class_ = item_dict["Input_class"]
 
             class_.list.append(spawned_item)
+
+
+def position_pad():
+    """generates a position for a new pad. This position is below the bottom pad, but the x-position is slightly different (than the bottom pad).
+
+    returns:
+        dummy_center_x (int): horizontal position of new pad.
+        dummy_center_y (int): horizontal position of vertical pad.
+    """
+    # generate pad's x-position, but make sure that we don't touch the screen's edges.
+    pad_placed_successfully = False
+    bottom_pad = min(Pad.list, key=attrgetter("center_y"))
+
+    while not pad_placed_successfully:
+        # add a random number to x-position of bottom pad.
+        x_change = random.randrange(
+            -my_constants.pad["delta_x"], my_constants.pad["delta_x"]
+        )
+
+        dummy_center_x = bottom_pad.center_x + x_change
+
+        # if the pad is not touching the screen's edges, then pad was succesfully placed.
+        if (
+            dummy_center_x > my_constants.pad["x_min"]
+            and dummy_center_x < my_constants.pad["x_max"]
+        ):
+            pad_placed_successfully = True
+    # after you successfully change the x-position, get y-position, which is below the bottom pad.
+    dummy_center_y = bottom_pad.center_y - my_constants.pad["delta_y"]
+    return dummy_center_x, dummy_center_y

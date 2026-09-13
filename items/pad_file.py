@@ -144,7 +144,8 @@ class Pad(items.item_file.Item):
             top_pad.center_y - player_file.Player.sprite.center_y
         )
 
-        # if player goes underneath a pad during non-party, then kill them! >:D
+        # if player goes underneath a pad, during non-party, for more than 2 ticks, then kill them
+
         # in the past, the following loc was:
         # player_below_top_pad = player_pad_height_difference > 0
         # the code is: if the player is 0 units below the pad, then kill them.
